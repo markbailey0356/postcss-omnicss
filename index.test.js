@@ -11,3 +11,9 @@ async function run(input, output, opts) {
 it("creates a utility class for a single property", async () => {
 	await run("", ".color-white { color: white }", { source: '<div class="color-white"></div>' });
 });
+
+it("creates multiple utility classes for single properties", async () => {
+	await run("", ".background-color-black { background-color: black } .position-absolute { position: absolute }", {
+		source: '<div class="background-color-black position-absolute"></div>"',
+	});
+});
