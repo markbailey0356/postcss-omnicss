@@ -23,3 +23,9 @@ it("handles hash color values in class names", async () => {
 		source: '<div class="background-color-#123456"></div>',
 	});
 });
+
+it("outputs more specific classes after less specific ones", async () => {
+	await run("", ".padding-2rem { padding: 2rem } .padding-right-3rem { padding-right: 3rem }", {
+		source: '<div class="padding-right-3rem padding-2rem"></div>'
+	})
+})
