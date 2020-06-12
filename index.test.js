@@ -36,6 +36,16 @@ it("handles flex-flow's compound values", async () => {
 	});
 });
 
+it("handles compound values without any hyphenated segments", async () => {
+	await run(
+		"",
+		".padding-1rem-10px { padding: 1rem 10px } .flex-1-1-0 { flex: 1 1 0 } .font-italic-25px-serif { font: italic 25px serif }",
+		{
+			source: '<div class="padding-1rem-10px flex-1-1-0 font-italic-25px-serif"></div>',
+		}
+	);
+});
+
 it("outputs flex-flow's child classes after it", async () => {
 	await run(
 		"",

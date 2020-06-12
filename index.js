@@ -11,6 +11,41 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
+const compoundProperties = new Set([
+	"animation",
+	"background",
+	"border",
+	"border-bottom",
+	"border-color",
+	"border-left",
+	"border-radius",
+	"border-right",
+	"border-style",
+	"border-top",
+	"border-width",
+	"column-rule",
+	"columns",
+	"flex",
+	"flex-flow",
+	"font",
+	"grid",
+	"grid-area",
+	"grid-column",
+	"grid-row",
+	"grid-template",
+	"list-style",
+	"margin",
+	"offset",
+	"outline",
+	"overflow",
+	"padding",
+	"place-content",
+	"place-items",
+	"place-self",
+	"text-decoration",
+	"transition",
+]);
+
 const extractor = content => content.match(/[A-Za-z0-9_#-]+/g) || [];
 
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
@@ -53,9 +88,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			if (!(prop && value)) continue;
 
+			if (compoundProperties.has(prop)) {
+				value = value.replace(/-/g, " ");
+			}
+
 			if (prop === "flex-flow") {
 				numberOfSegments = 1;
-				value = value.replace(/-/g, " ");
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
