@@ -49,13 +49,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let prop = selector.slice(0, splitIndex);
 			let value = selector.slice(splitIndex + 1);
-			let numberOfSegments = selector.match(/[^-]+/g).length;
+			let numberOfSegments = prop.match(/[^-]+/g).length;
 
-			if (prop && value) {
-				let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
-				nodesByNumberOfSegments[numberOfSegments] = nodesByNumberOfSegments[numberOfSegments] || [];
-				nodesByNumberOfSegments[numberOfSegments].push(node);
+			if (!(prop && value)) continue;
+
+			if (prop === "flex-flow") {
+			let numberOfSegments = selector.match(/[^-]+/g).length;
+				value = value.replace(/-/g, " ");
+				value = value.replace(/\s+reverse/g, "-reverse");
 			}
+
+			let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
+			nodesByNumberOfSegments[numberOfSegments] = nodesByNumberOfSegments[numberOfSegments] || [];
+			nodesByNumberOfSegments[numberOfSegments].push(node);
 		}
 
 		const nodes = _.chain(Object.entries(nodesByNumberOfSegments))
