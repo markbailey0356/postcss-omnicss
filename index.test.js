@@ -17,3 +17,9 @@ it("creates multiple utility classes for single properties", async () => {
 		source: '<div class="background-color-black position-absolute"></div>"',
 	});
 });
+
+it("handles hash color values in class names", async () => {
+	await run("", ".background-color-\\#123456 { background-color: #123456 }", {
+		source: '<div class="background-color-#123456"></div>',
+	});
+});

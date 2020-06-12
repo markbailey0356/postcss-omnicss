@@ -2,7 +2,7 @@ let postcss = require("postcss");
 let { PurgeCSS } = require("purgecss");
 let _knownCssProperties = require("known-css-properties");
 let knownCssProperties = new Set(_knownCssProperties.all);
-const path = require("path");
+const cssEscape = require("css.escape");
 
 const ignoredProperties = ["text-decoration-underline"];
 
@@ -10,11 +10,13 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
+const extractor = content => content.match(/[A-Za-z0-9_#-]+/g) || [];
+
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
 	const { source = "" } = opts;
 
-	return async (root, result) => {
+	return async root => {
 		// inputFiles.forEach(file => {
 		// 	result.messages.push({
 		// 		type: "dependency",
@@ -25,7 +27,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 		const { undetermined: selectors } = await new PurgeCSS().extractSelectorsFromString(
 			[{ raw: source, extension: "html" }],
-			[]
+			[{ extensions: ["html"], extractor }]
 		);
 
 		const nodes = [];
@@ -48,7 +50,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			let value = selector.slice(splitIndex + 1);
 
 			if (prop && value) {
-				let node = postcss.rule({ selector: "." + selector }).append(postcss.decl({ prop, value }));
+				let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
 				nodes.push(node);
 			}
 		}
