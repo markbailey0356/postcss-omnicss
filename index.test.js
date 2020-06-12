@@ -36,7 +36,7 @@ it("handles flex-flow's compound values", async () => {
 	});
 });
 
-it.skip("outputs flex-direction and flex-wrap after flex-flow", async () => {
+it("outputs flex-flow's child classes after it", async () => {
 	await run(
 		"",
 		`.flex-flow-row-reverse-wrap {

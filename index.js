@@ -54,7 +54,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (!(prop && value)) continue;
 
 			if (prop === "flex-flow") {
-			let numberOfSegments = selector.match(/[^-]+/g).length;
+				numberOfSegments = 1;
 				value = value.replace(/-/g, " ");
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
