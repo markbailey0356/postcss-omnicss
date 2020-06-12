@@ -3,6 +3,7 @@ let { PurgeCSS } = require("purgecss");
 let _knownCssProperties = require("known-css-properties");
 let knownCssProperties = new Set(_knownCssProperties.all);
 const cssEscape = require("css.escape");
+const _ = require("lodash");
 
 const ignoredProperties = ["text-decoration-underline"];
 
@@ -30,7 +31,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			[{ extensions: ["html"], extractor }]
 		);
 
-		const nodes = [];
+		const nodesByNumberOfSegments = {};
 		for (let selector of selectors) {
 			let splitIndex;
 			for (let i = 1; i <= selector.length; i++) {
@@ -48,12 +49,20 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let prop = selector.slice(0, splitIndex);
 			let value = selector.slice(splitIndex + 1);
+			let numberOfSegments = selector.match(/[^-]+/g).length;
 
 			if (prop && value) {
 				let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
-				nodes.push(node);
+				nodesByNumberOfSegments[numberOfSegments] = nodesByNumberOfSegments[numberOfSegments] || [];
+				nodesByNumberOfSegments[numberOfSegments].push(node);
 			}
 		}
+
+		const nodes = _.chain(Object.entries(nodesByNumberOfSegments))
+			.sortBy(([key]) => key)
+			.flatMap(([, value]) => value)
+			.value();
+
 		root.prepend(nodes);
 	};
 });

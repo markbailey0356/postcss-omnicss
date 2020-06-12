@@ -13,7 +13,7 @@ it("creates a utility class for a single property", async () => {
 });
 
 it("creates multiple utility classes for single properties", async () => {
-	await run("", ".background-color-black { background-color: black } .position-absolute { position: absolute }", {
+	await run("", ".position-absolute { position: absolute } .background-color-black { background-color: black }", {
 		source: '<div class="background-color-black position-absolute"></div>"',
 	});
 });
@@ -26,6 +26,30 @@ it("handles hash color values in class names", async () => {
 
 it("outputs more specific classes after less specific ones", async () => {
 	await run("", ".padding-2rem { padding: 2rem } .padding-right-3rem { padding-right: 3rem }", {
-		source: '<div class="padding-right-3rem padding-2rem"></div>'
-	})
-})
+		source: '<div class="padding-right-3rem padding-2rem"></div>',
+	});
+});
+
+it("handles multi-word values", async () => {
+	await run("", ".flex-flow-row-reverse-nowrap { flex-flow: row-reverse nowrap }", {
+		source: '<div class="flex-flow-row-reverse-nowrap"></div>',
+	});
+});
+
+it("outputs flex-direction and flex-wrap after flex-flow", async () => {
+	await run(
+		"",
+		`.flex-flow-row-reverse-wrap {
+			flex-flow: row-reverse wrap
+		} 
+		.flex-direction-row-reverse {
+			flex-direction: row-reverse
+		}
+		.flex-wrap-nowrap {
+			flex-wrap: nowrap
+		}`,
+		{
+			source: '<div class="flex-direction-row-reverse flex-wrap-nowrap flex-flow-row-reverse-wrap"></div>',
+		}
+	);
+});
