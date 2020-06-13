@@ -147,3 +147,27 @@ it("provides a more-readable syntax for negating single values", async () => {
 		}
 	);
 });
+
+it("handles negating compound values", async () => {
+	await run(
+		"",
+		`.-margin-1rem-2rem-3rem-4rem {
+			margin: -1rem -2rem -3rem -4rem
+		}`,
+		{
+			source: '<div class="-margin-1rem-2rem-3rem-4rem"></div>',
+		}
+	);
+});
+
+it("handles negating mixed-sign compound values", async () => {
+	await run(
+		"",
+		`.-margin-1rem--2rem-3rem--4rem {
+			margin: -1rem 2rem -3rem 4rem
+		}`,
+		{
+			source: '<div class="-margin-1rem--2rem-3rem--4rem"></div>',
+		}
+	);
+});

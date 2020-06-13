@@ -110,12 +110,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			if (compoundProperties.has(prop)) {
 				value = value[0] + value.slice(1).replace(/-/g, " ");
-				value = value.replace("  ", " -");
+				value = value.replace(/ {2}/g, " -");
 			}
 
 			if (negated) {
+				let inserts = 0;
 				for (let { index } of matchAll(value, /[0-9.]/g)) {
-					let inserts = 0;
 					if (value[index - 1 + inserts] === "-") {
 						value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
 						inserts--;
