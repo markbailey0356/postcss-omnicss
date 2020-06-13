@@ -75,3 +75,15 @@ it("expands abbreviations for common properties", async () => {
 		}
 	);
 });
+
+it("handles floating point values", async () => {
+	await run(
+		"",
+		`.padding-0\\.5rem {
+			padding: 0.5rem
+		}`,
+		{
+			source: '<div class="padding-0.5rem"></div>',
+		}
+	);
+});

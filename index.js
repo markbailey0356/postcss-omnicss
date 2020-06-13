@@ -52,7 +52,7 @@ const abbreviations = new Map(
 	})
 );
 
-const extractor = content => content.match(/[A-Za-z0-9_#-]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.]+/g) || [];
 
 const splitSelector = selector => {
 	let splitIndex;
