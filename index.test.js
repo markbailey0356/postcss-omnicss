@@ -99,3 +99,15 @@ it("handles omitting leading zero in floating point values", async () => {
 		}
 	);
 });
+
+it("handles a negative value in non-compound property", async () => {
+	await run(
+		"",
+		`.margin-top--1rem {
+			margin-top: -1rem
+		}`,
+		{
+			source: '<div class="margin-top--1rem"></div>',
+		}
+	);
+});
