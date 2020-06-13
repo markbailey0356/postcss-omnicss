@@ -4,6 +4,7 @@ let _knownCssProperties = require("known-css-properties");
 let knownCssProperties = new Set(_knownCssProperties.all);
 const cssEscape = require("css.escape");
 const _ = require("lodash");
+const matchAll = require("string.prototype.matchall");
 
 const ignoredProperties = ["text-decoration-underline"];
 
@@ -55,11 +56,13 @@ const abbreviations = new Map(
 const extractor = content => content.match(/[A-Za-z0-9_#\-.]+/g) || [];
 
 const splitSelector = selector => {
+	const negated = selector[0] === "-";
+	const startIndex = negated ? 1 : 0;
 	let splitIndex;
 	for (let i = 1; i <= selector.length; i++) {
 		if (selector[i] !== "-" && i !== selector.length) continue;
 
-		let property = selector.slice(0, i);
+		let property = selector.slice(startIndex, i);
 		if (knownCssProperties.has(property)) {
 			splitIndex = i;
 		} else if (splitIndex != undefined) {
@@ -68,8 +71,9 @@ const splitSelector = selector => {
 	}
 
 	return {
-		prop: splitIndex && selector.slice(0, splitIndex),
+		prop: splitIndex && selector.slice(startIndex, splitIndex),
 		value: splitIndex && selector.slice(splitIndex + 1),
+		negated,
 	};
 };
 
@@ -98,7 +102,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				.map(segment => abbreviations.get(segment) || segment)
 				.join("-");
 
-			let { prop, value } = splitSelector(subbedSelector);
+			let { prop, value, negated } = splitSelector(subbedSelector);
 
 			if (!(prop && value)) continue;
 
@@ -107,6 +111,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (compoundProperties.has(prop)) {
 				value = value[0] + value.slice(1).replace(/-/g, " ");
 				value = value.replace("  ", " -");
+			}
+
+			if (negated) {
+				for (let { index } of matchAll(value, /[0-9.]/g)) {
+					let inserts = 0;
+					if (value[index - 1 + inserts] === "-") {
+						value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
+						inserts--;
+					} else {
+						value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
+						inserts++;
+					}
+				}
 			}
 
 			if (prop === "flex-flow") {

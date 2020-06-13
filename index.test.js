@@ -135,3 +135,15 @@ it("handles multiple negative values in compound property", async () => {
 		}
 	);
 });
+
+it("provides a more-readable syntax for negating single values", async () => {
+	await run(
+		"",
+		`.-margin-top-1rem {
+			margin-top: -1rem
+		}`,
+		{
+			source: '<div class="-margin-top-1rem"></div>',
+		}
+	);
+});
