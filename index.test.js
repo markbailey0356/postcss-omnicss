@@ -87,3 +87,15 @@ it("handles floating point values", async () => {
 		}
 	);
 });
+
+it("handles omitting leading zero in floating point values", async () => {
+	await run(
+		"",
+		`.padding-\\.5rem {
+			padding: .5rem
+		}`,
+		{
+			source: '<div class="padding-.5rem"></div>',
+		}
+	);
+});
