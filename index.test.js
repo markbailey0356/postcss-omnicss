@@ -63,3 +63,15 @@ it("outputs flex-flow's child classes after it", async () => {
 		}
 	);
 });
+
+it("expands abbreviations for common properties", async () => {
+	await run(
+		"",
+		`.pt-2rem {
+			padding-top: 2rem
+		}`,
+		{
+			source: '<div class="pt-2rem"></div>',
+		}
+	);
+});

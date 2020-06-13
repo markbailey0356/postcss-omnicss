@@ -46,7 +46,32 @@ const compoundProperties = new Set([
 	"transition",
 ]);
 
+const abbreviations = new Map(
+	Object.entries({
+		pt: "padding-top",
+	})
+);
+
 const extractor = content => content.match(/[A-Za-z0-9_#-]+/g) || [];
+
+const splitSelector = selector => {
+	let splitIndex;
+	for (let i = 1; i <= selector.length; i++) {
+		if (selector[i] !== "-" && i !== selector.length) continue;
+
+		let property = selector.slice(0, i);
+		if (knownCssProperties.has(property)) {
+			splitIndex = i;
+		} else if (splitIndex != undefined) {
+			break;
+		}
+	}
+
+	return {
+		prop: splitIndex && selector.slice(0, splitIndex),
+		value: splitIndex && selector.slice(splitIndex + 1),
+	};
+};
 
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
@@ -68,25 +93,16 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 		const nodesByNumberOfSegments = {};
 		for (let selector of selectors) {
-			let splitIndex;
-			for (let i = 1; i <= selector.length; i++) {
-				if (selector[i] !== "-" && i !== selector.length) continue;
+			const subbedSelector = selector
+				.split("-")
+				.map(segment => abbreviations.get(segment) || segment)
+				.join("-");
 
-				let property = selector.slice(0, i);
-				if (knownCssProperties.has(property)) {
-					splitIndex = i;
-				} else if (splitIndex != undefined) {
-					break;
-				}
-			}
-
-			if (splitIndex == undefined) continue;
-
-			let prop = selector.slice(0, splitIndex);
-			let value = selector.slice(splitIndex + 1);
-			let numberOfSegments = prop.match(/[^-]+/g).length;
+			let { prop, value } = splitSelector(subbedSelector);
 
 			if (!(prop && value)) continue;
+
+			let numberOfSegments = prop.match(/[^-]+/g).length;
 
 			if (compoundProperties.has(prop)) {
 				value = value.replace(/-/g, " ");
