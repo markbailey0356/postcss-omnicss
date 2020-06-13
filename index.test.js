@@ -64,7 +64,7 @@ it("outputs flex-flow's child classes after it", async () => {
 	);
 });
 
-it("expands abbreviations for common properties", async () => {
+it("expands abbreviations for single properties", async () => {
 	await run(
 		"",
 		`.pt-2rem {
@@ -72,6 +72,18 @@ it("expands abbreviations for common properties", async () => {
 		}`,
 		{
 			source: '<div class="pt-2rem"></div>',
+		}
+	);
+});
+
+it("expands abbreviations for compound properties", async () => {
+	await run(
+		"",
+		`.p-2rem-4rem {
+			padding: 2rem 4rem
+		}`,
+		{
+			source: '<div class="p-2rem-4rem"></div>',
 		}
 	);
 });
@@ -168,6 +180,18 @@ it("handles negating mixed-sign compound values", async () => {
 		}`,
 		{
 			source: '<div class="-margin-1rem--2rem-3rem--4rem"></div>',
+		}
+	);
+});
+
+it("handles negating abbreviated single properties", async () => {
+	await run(
+		"",
+		`.-pt-1rem {
+			padding-top: -1rem
+		}`,
+		{
+			source: '<div class="-pt-1rem"></div>',
 		}
 	);
 });

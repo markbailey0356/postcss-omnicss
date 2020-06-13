@@ -50,6 +50,7 @@ const compoundProperties = new Set([
 const abbreviations = new Map(
 	Object.entries({
 		pt: "padding-top",
+		p: "padding",
 	})
 );
 
