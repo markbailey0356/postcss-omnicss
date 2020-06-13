@@ -111,3 +111,27 @@ it("handles a negative value in non-compound property", async () => {
 		}
 	);
 });
+
+it("handles single negative value in compound property", async () => {
+	await run(
+		"",
+		`.margin--1rem {
+			margin: -1rem
+		}`,
+		{
+			source: '<div class="margin--1rem"></div>',
+		}
+	);
+});
+
+it("handles multiple negative values in compound property", async () => {
+	await run(
+		"",
+		`.margin--1rem--2rem {
+			margin: -1rem -2rem
+		}`,
+		{
+			source: '<div class="margin--1rem--2rem"></div>',
+		}
+	);
+});

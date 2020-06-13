@@ -105,7 +105,8 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			let numberOfSegments = prop.match(/[^-]+/g).length;
 
 			if (compoundProperties.has(prop)) {
-				value = value.replace(/-/g, " ");
+				value = value[0] + value.slice(1).replace(/-/g, " ");
+				value = value.replace("  ", " -");
 			}
 
 			if (prop === "flex-flow") {
