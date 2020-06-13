@@ -54,6 +54,30 @@ const abbreviations = new Map(
 	})
 );
 
+const _defaultUnits = {
+	rem: [
+		"padding",
+		"padding-top",
+		"padding-bottom",
+		"padding-left",
+		"padding-right",
+		"margin",
+		"margin-top",
+		"margin-bottom",
+		"margin-left",
+		"margin-right",
+		"width",
+		"height",
+	],
+};
+
+const defaultUnits = new Map();
+for (let [unit, properties] of Object.entries(_defaultUnits)) {
+	for (let property of properties) {
+		defaultUnits.set(property, unit);
+	}
+}
+
 const extractor = content => content.match(/[A-Za-z0-9_#\-.]+/g) || [];
 
 const splitSelector = selector => {
@@ -114,15 +138,27 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/ {2}/g, " -");
 			}
 
-			if (negated) {
+			const defaultUnit = defaultUnits.get(prop);
+			if (negated || defaultUnit) {
 				let inserts = 0;
-				for (let { index } of matchAll(value, /[0-9.]/g)) {
-					if (value[index - 1 + inserts] === "-") {
-						value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
-						inserts--;
-					} else {
-						value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
-						inserts++;
+				for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
+					const lastIndex = index + match.length;
+					if (negated) {
+						if (value[index - 1 + inserts] === "-") {
+							value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
+							inserts--;
+						} else {
+							value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
+							inserts++;
+						}
+					}
+					if (defaultUnit) {
+						const lastChar = value[lastIndex + inserts];
+						if (!lastChar || !lastChar.match(/[a-zA-Z]/)) {
+							value =
+								value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
+							inserts += defaultUnit.length;
+						}
 					}
 				}
 			}

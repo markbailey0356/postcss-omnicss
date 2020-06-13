@@ -195,3 +195,27 @@ it("handles negating abbreviated single properties", async () => {
 		}
 	);
 });
+
+it("appends sensible default units for values if omitted", async () => {
+	await run(
+		"",
+		`.padding-top-1 {
+			padding-top: 1rem
+		}`,
+		{
+			source: '<div class="padding-top-1"></div>',
+		}
+	);
+});
+
+it("appends defaults for compound properties", async () => {
+	await run(
+		"",
+		`.padding-1-1 {
+			padding: 1rem 1rem
+		}`,
+		{
+			source: '<div class="padding-1-1"></div>',
+		}
+	);
+});
