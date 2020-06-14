@@ -88,6 +88,13 @@ const tests = {
 		"-webkit-overflow-scrolling-touch": "-webkit-overflow-scrolling: touch",
 		"-webkit-overflow-scrolling-auto": "-webkit-overflow-scrolling: auto",
 	},
+	position: {
+		"position-absolute": "position: absolute",
+		"position-static": "position: static",
+		"position-relative": "position: relative",
+		"position-fixed": "position: fixed",
+		"position-sticky": "position: sticky",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
