@@ -42,6 +42,13 @@ const tests = {
 		"clear-inline-start": "clear: inline-start",
 		"clear-inline-end": "clear: inline-end",
 	},
+	"object-fit": {
+		"object-fit-contain": "object-fit: contain",
+		"object-fit-cover": "object-fit: cover",
+		"object-fit-fill": "object-fit: fill",
+		"object-fit-none": "object-fit: none",
+		"object-fit-scale-down": "object-fit: scale-down",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
