@@ -114,6 +114,30 @@ const tests = {
 		"top-25%": "top: 25%",
 		"top--5%": "top: -5%",
 	},
+	bottom: {
+		"bottom-0": "bottom: 0",
+		"bottom-auto": "bottom: auto",
+		"bottom-0.5em": "bottom: 0.5em",
+		"bottom--1rem": "bottom: -1rem",
+		"bottom-10%": "bottom: 10%",
+		"bottom--50%": "bottom: -50%",
+	},
+	left: {
+		"left-0": "left: 0",
+		"left-auto": "left: auto",
+		"left-0.5em": "left: 0.5em",
+		"left--1rem": "left: -1rem",
+		"left-10%": "left: 10%",
+		"left--50%": "left: -50%",
+	},
+	right: {
+		"right-0": "right: 0",
+		"right-auto": "right: auto",
+		"right-0.5em": "right: 0.5em",
+		"right--1rem": "right: -1rem",
+		"right-10%": "right: 10%",
+		"right--50%": "right: -50%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
