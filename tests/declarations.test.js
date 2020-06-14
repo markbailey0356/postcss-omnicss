@@ -27,6 +27,21 @@ const tests = {
 		"display-table-row-group": "display: table-row-group",
 		"display-table-row": "display: table-row",
 	},
+	float: {
+		"float-none": "float: none",
+		"float-left": "float: left",
+		"float-right": "float: right",
+		"float-inline-start": "float: inline-start",
+		"float-inline-end": "float: inline-end",
+	},
+	clear: {
+		"clear-none": "clear: none",
+		"clear-left": "clear: left",
+		"clear-right": "clear: right",
+		"clear-both": "clear: both",
+		"clear-inline-start": "clear: inline-start",
+		"clear-inline-end": "clear: inline-end",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
