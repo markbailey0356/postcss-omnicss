@@ -79,7 +79,7 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.%]+/g) || [];
 
 const splitSelector = selector => {
 	const leadingHyphen = selector[0] === "-";
@@ -157,7 +157,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					}
 					if (defaultUnit) {
 						const lastChar = value[lastIndex + inserts];
-						if (!lastChar || !lastChar.match(/[a-zA-Z]/)) {
+						if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
 							value =
 								value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
 							inserts += defaultUnit.length;

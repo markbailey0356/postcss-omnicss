@@ -112,6 +112,18 @@ it("handles omitting leading zero in floating point values", async () => {
 	);
 });
 
+it("handles percentage values", async () => {
+	await run(
+		"",
+		`.padding-10\\% {
+			padding: 10%
+		}`,
+		{
+			source: '<div class="padding-10%"></div>',
+		}
+	);
+});
+
 it("handles a negative value in non-compound property", async () => {
 	await run(
 		"",

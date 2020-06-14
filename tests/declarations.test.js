@@ -95,6 +95,25 @@ const tests = {
 		"position-fixed": "position: fixed",
 		"position-sticky": "position: sticky",
 	},
+	top: {
+		"top-0": "top: 0",
+		"top-auto": "top: auto",
+		"top-0.5em": "top: 0.5em",
+		"top-1.75ch": "top: 1.75ch",
+		"top--1rem": "top: -1rem",
+		"top--2.5vh": "top: -2.5vh",
+		"top-3vw": "top: 3vw",
+		"top-15vmin": "top: 15vmin",
+		"top-100vmax": "top: 100vmax",
+		"top-10px": "top: 10px",
+		"top-1cm": "top: 1cm",
+		"top-18mm": "top: 18mm",
+		"top-1in": "top: 1in",
+		"top-1pc": "top: 1pc",
+		"top-1pt": "top: 1pt",
+		"top-25%": "top: 25%",
+		"top--5%": "top: -5%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
