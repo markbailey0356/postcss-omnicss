@@ -36,6 +36,7 @@ const compoundProperties = new Set([
 	"grid-template",
 	"list-style",
 	"margin",
+	"object-position",
 	"offset",
 	"outline",
 	"overflow",

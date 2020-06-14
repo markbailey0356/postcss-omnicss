@@ -49,6 +49,21 @@ const tests = {
 		"object-fit-none": "object-fit: none",
 		"object-fit-scale-down": "object-fit: scale-down",
 	},
+	"object-position": {
+		"object-position-bottom": "object-position: bottom",
+		"object-position-top": "object-position: top",
+		"object-position-left": "object-position: left",
+		"object-position-right": "object-position: right",
+		"object-position-center": "object-position: center",
+		"object-position-left-bottom": "object-position: left bottom",
+		"object-position-right-bottom": "object-position: right bottom",
+		"object-position-left-top": "object-position: left top",
+		"object-position-right-top": "object-position: right top",
+		"object-position-bottom-left": "object-position: bottom left",
+		"object-position-bottom-right": "object-position: bottom right",
+		"object-position-top-left": "object-position: top left",
+		"object-position-top-right": "object-position: top right",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
