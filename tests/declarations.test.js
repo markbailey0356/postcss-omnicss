@@ -84,6 +84,10 @@ const tests = {
 		"overflow-y-visible": "overflow-y: visible",
 		"overflow-y-scroll": "overflow-y: scroll",
 	},
+	"-webkit-overflow-scrolling": {
+		"-webkit-overflow-scrolling-touch": "-webkit-overflow-scrolling: touch",
+		"-webkit-overflow-scrolling-auto": "-webkit-overflow-scrolling: auto",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

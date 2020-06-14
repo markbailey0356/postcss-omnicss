@@ -82,22 +82,24 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 const extractor = content => content.match(/[A-Za-z0-9_#\-.]+/g) || [];
 
 const splitSelector = selector => {
-	const negated = selector[0] === "-";
-	const startIndex = negated ? 1 : 0;
+	const leadingHyphen = selector[0] === "-";
 	let splitIndex;
+	let negated = false;
 	for (let i = 1; i <= selector.length; i++) {
 		if (selector[i] !== "-" && i !== selector.length) continue;
 
-		let property = selector.slice(startIndex, i);
-		if (knownCssProperties.has(property)) {
+		if (knownCssProperties.has(selector.slice(0, i))) {
 			splitIndex = i;
+		} else if (leadingHyphen && knownCssProperties.has(selector.slice(1, i))) {
+			splitIndex = i;
+			negated = true;
 		} else if (splitIndex != undefined) {
 			break;
 		}
 	}
 
 	return {
-		prop: splitIndex && selector.slice(startIndex, splitIndex),
+		prop: splitIndex && selector.slice(negated ? 1 : 0, splitIndex),
 		value: splitIndex && selector.slice(splitIndex + 1),
 		negated,
 	};
