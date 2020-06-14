@@ -79,9 +79,12 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.%]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.%:]+/g) || [];
 
 const splitSelector = selector => {
+	const modifierSplits = selector.split(":");
+	const modifiers = modifierSplits.slice(0, -1);
+	selector = modifierSplits[modifierSplits.length - 1];
 	const leadingHyphen = selector[0] === "-";
 	let splitIndex;
 	let negated = false;
@@ -102,6 +105,7 @@ const splitSelector = selector => {
 		prop: splitIndex && selector.slice(negated ? 1 : 0, splitIndex),
 		value: splitIndex && selector.slice(splitIndex + 1),
 		negated,
+		modifiers,
 	};
 };
 
@@ -123,14 +127,17 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			[{ extensions: ["html"], extractor }]
 		);
 
-		const nodesByNumberOfSegments = {};
+		const nodesByContainer = {
+			root: [],
+			desktop: [],
+		};
 		for (let selector of selectors) {
 			const subbedSelector = selector
 				.split("-")
 				.map(segment => abbreviations.get(segment) || segment)
 				.join("-");
 
-			let { prop, value, negated } = splitSelector(subbedSelector);
+			let { prop, value, negated, modifiers } = splitSelector(subbedSelector);
 
 			if (!(prop && value)) continue;
 
@@ -171,16 +178,24 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
+			const container = modifiers.includes("desktop") ? "desktop" : "root";
+
 			let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
-			nodesByNumberOfSegments[numberOfSegments] = nodesByNumberOfSegments[numberOfSegments] || [];
-			nodesByNumberOfSegments[numberOfSegments].push(node);
+			nodesByContainer[container][numberOfSegments] = nodesByContainer[container][numberOfSegments] || [];
+			nodesByContainer[container][numberOfSegments].push(node);
 		}
 
-		const nodes = _.chain(Object.entries(nodesByNumberOfSegments))
-			.sortBy(([key]) => key)
-			.flatMap(([, value]) => value)
-			.value();
+		const nodes = _.mapValues(nodesByContainer, _.flow(_.compact, _.flatten));
 
-		root.prepend(nodes);
+		if (nodes.desktop.length) {
+			const desktopContainer = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 768px)",
+				nodes: nodes.desktop,
+			});
+			root.prepend(desktopContainer);
+		}
+
+		root.prepend(nodes.root);
 	};
 });

@@ -231,3 +231,17 @@ it("appends defaults for compound properties", async () => {
 		}
 	);
 });
+
+it("has a modifier to target desktop screen sizes", async () => {
+	await run(
+		"",
+		`@media screen and (min-width: 768px) 
+		{.desktop\\:display-none {
+				display: none
+			}
+		}`,
+		{
+			source: '<div class="desktop:display-none"></div>',
+		}
+	);
+});
