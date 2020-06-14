@@ -143,6 +143,15 @@ const tests = {
 		"visibility-hidden": "visibility: hidden",
 		"visibility-collapse": "visibility: collapse",
 	},
+	"z-index": {
+		"z-index--1": "z-index: -1",
+		"z-index-auto": "z-index: auto",
+		"z-index-0": "z-index: 0",
+		"z-index-1": "z-index: 1",
+		"z-index-5": "z-index: 5",
+		"z-index-43": "z-index: 43",
+		"z-index-113": "z-index: 113",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
