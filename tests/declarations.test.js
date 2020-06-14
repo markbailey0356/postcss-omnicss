@@ -138,6 +138,11 @@ const tests = {
 		"right-10%": "right: 10%",
 		"right--50%": "right: -50%",
 	},
+	visibiliity: {
+		"visibility-visible": "visibility: visible",
+		"visibility-hidden": "visibility: hidden",
+		"visibility-collapse": "visibility: collapse",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
