@@ -331,6 +331,14 @@ const tests = {
 		"flex-shrink-20": "flex-shrink: 20",
 		"flex-shrink-1000": "flex-shrink: 1000",
 	},
+	"flex-basis": {
+		"flex-basis-0": "flex-basis: 0",
+		"flex-basis-auto": "flex-basis: auto",
+		"flex-basis-0.5em": "flex-basis: 0.5em",
+		"flex-basis-1rem": "flex-basis: 1rem",
+		"flex-basis-10%": "flex-basis: 10%",
+		"flex-basis-content": "flex-basis: content",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
