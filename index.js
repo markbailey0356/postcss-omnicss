@@ -215,7 +215,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			if (["grid-template-columns", "grid-template-rows"].includes(prop)) {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
-					value = value.replace(match, match.replace(/ /g, "-").replace(/,/g, " "));
+					value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
 				}
 				value = value
 					.replace(/\s+content/, "-content")
