@@ -152,6 +152,12 @@ const tests = {
 		"z-index-43": "z-index: 43",
 		"z-index-113": "z-index: 113",
 	},
+	"flex-direction": {
+		"flex-direction-row": "flex-direction: row",
+		"flex-direction-row-reverse": "flex-direction: row-reverse",
+		"flex-direction-column": "flex-direction: column",
+		"flex-direction-column-reverse": "flex-direction: column-reverse",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
