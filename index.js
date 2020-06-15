@@ -5,6 +5,7 @@ let knownCssProperties = new Set(_knownCssProperties.all);
 const cssEscape = require("css.escape");
 const _ = require("lodash");
 const matchAll = require("string.prototype.matchall");
+const path = require("path");
 
 const ignoredProperties = ["text-decoration-underline"];
 
@@ -111,21 +112,31 @@ const splitSelector = selector => {
 
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
-	const { source = "" } = opts;
+	const { source = "", files = [] } = opts;
 
-	return async root => {
-		// inputFiles.forEach(file => {
-		// 	result.messages.push({
-		// 		type: "dependency",
-		// 		parent: root.source.input.file,
-		// 		file: path.resolve(file),
-		// 	});
-		// });
+	return async (root, result) => {
+		let selectors;
 
-		const { undetermined: selectors } = await new PurgeCSS().extractSelectorsFromString(
-			[{ raw: source, extension: "html" }],
-			[{ extensions: ["html"], extractor }]
-		);
+		if (source.length) {
+			const { undetermined } = await new PurgeCSS().extractSelectorsFromString(
+				[{ raw: source, extension: "html" }],
+				[{ extensions: ["html"], extractor }]
+			);
+			selectors = undetermined;
+		} else if (files.length) {
+			files.forEach(file => {
+				result.messages.push({
+					type: "dependency",
+					parent: root.source.input.file,
+					file: path.resolve(file),
+				});
+			});
+
+			const { undetermined } = await new PurgeCSS().extractSelectorsFromFiles(files, [
+				{ extensions: ["html"], extractor },
+			]);
+			selectors = undetermined;
+		}
 
 		const nodesByContainer = {
 			root: [],
