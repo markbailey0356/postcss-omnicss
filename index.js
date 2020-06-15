@@ -14,6 +14,7 @@ ignoredProperties.forEach(x => {
 });
 
 const spaceSeparatedProperties = new Set([
+	"align-content",
 	"align-items",
 	"animation",
 	"background",
@@ -190,9 +191,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
-			if (prop === "align-items") {
+			if (prop === "align-items" || prop === "align-content") {
 				value = value.replace(/flex\s+/g, "flex-");
 				value = value.replace(/self\s+/g, "self-");
+				value = value.replace(/space\s+/g, "space-");
 			}
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
