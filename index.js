@@ -215,6 +215,9 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
 					value = value.replace(match, match.replace(/,/g, " "));
 				}
+				value = value.replace(/\s+content/, "-content");
+				value = value.replace("auto fit", "auto-fit");
+				value = value.replace("auto fill", "auto-fill");
 			}
 
 			value = value.replace(/,/g, ", ");
