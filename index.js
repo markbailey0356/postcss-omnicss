@@ -207,18 +207,20 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					"justify-self",
 				].includes(prop)
 			) {
-				value = value.replace(/flex\s+/g, "flex-");
-				value = value.replace(/self\s+/g, "self-");
-				value = value.replace(/space\s+/g, "space-");
+				value = value
+					.replace(/flex\s+/g, "flex-")
+					.replace(/self\s+/g, "self-")
+					.replace(/space\s+/g, "space-");
 			}
 
 			if (["grid-template-columns", "grid-template-rows"].includes(prop)) {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
 					value = value.replace(match, match.replace(/ /g, "-").replace(/,/g, " "));
 				}
-				value = value.replace(/\s+content/, "-content");
-				value = value.replace("auto fit", "auto-fit");
-				value = value.replace("auto fill", "auto-fill");
+				value = value
+					.replace(/\s+content/, "-content")
+					.replace("auto fit", "auto-fit")
+					.replace("auto fill", "auto-fill");
 			}
 
 			if (prop === "grid-template-areas" && !["none", "initial", "unset", "inherit"].includes(value)) {
