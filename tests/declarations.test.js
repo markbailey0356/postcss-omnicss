@@ -356,6 +356,15 @@ const tests = {
 		"flex-50%-1-0": "flex: 50% 1 0",
 		"flex-0-1-0": "flex: 0 1 0",
 	},
+	order: {
+		"order-0": "order: 0",
+		"order-1": "order: 1",
+		"order-5": "order: 5",
+		"order-13": "order: 13",
+		"order-111": "order: 111",
+		"order--1": "order: -1",
+		"order--999": "order: -999",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
