@@ -40,6 +40,7 @@ const spaceSeparatedProperties = new Set([
 	"grid-template",
 	"grid-template-columns",
 	"grid-template-rows",
+	"grid-template-areas",
 	"justify-content",
 	"justify-items",
 	"justify-self",
@@ -213,19 +214,39 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					.replace(/space\s+/g, "space-");
 			}
 
-			if (["grid-template-columns", "grid-template-rows"].includes(prop)) {
+			if (["grid-template-columns", "grid-template-rows", "grid-template"].includes(prop)) {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
 					value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
 				}
 				value = value
-					.replace(/\s+content/, "-content")
-					.replace("auto fit", "auto-fit")
-					.replace("auto fill", "auto-fill");
+					.replace(/\s+content/g, "-content")
+					.replace(/auto fit/g, "auto-fit")
+					.replace(/auto fill/g, "auto-fill");
 			}
 
-			if (prop === "grid-template-areas" && !["none", "initial", "unset", "inherit"].includes(value)) {
-				value = value.replace(/_/g, " ").trim().replace(/-/g, '" "');
-				value = '"' + value + '"';
+			if (["grid-template-areas", "grid-template"].includes(prop)) {
+				for (let token of value.replace(/\[.*?\]/g, "").split(" ")) {
+					if (
+						token.match(/^[a-zA-Z][\w\d-]*[\w\d]?$/m) &&
+						![
+							"min-content",
+							"max-content",
+							"auto-fill",
+							"auto-fit",
+							"auto",
+							"minmax",
+							"repeat",
+							"fit-content",
+							"subgrid",
+							"inherit",
+							"unset",
+							"initial",
+							"none",
+						].includes(token)
+					) {
+						value = value.replace(new RegExp(`\\b${token}\\b`), `"${token.replace(/_/g, " ")}"`);
+					}
+				}
 			}
 
 			value = value.replace(/,\s*/g, ", ").replace(/\s*\/\s*/g, " / ");

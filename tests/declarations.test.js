@@ -413,12 +413,16 @@ const tests = {
 		"grid-template-none": "grid-template: none",
 		"grid-template-100px-1fr/50px-1fr": "grid-template: 100px 1fr / 50px 1fr",
 		"grid-template-100px-1fr-/-50px-1fr": "grid-template: 100px 1fr / 50px 1fr",
-		// "grid-template-auto-1fr/auto-1fr-auto": "grid-template: auto 1fr / auto 1fr auto",
-		// "grid-template-[linename]-100px/[columnname1]-30%-[columnname2]-70%": "grid-template: [linename] 100px / [columnname1] 30% [columnname2] 70%",
-		// "grid-template-fit-content(100px)/fit-content(40%)": "grid-template: fit-content(100px) / fit-content(40%)",
-		// "grid-template-a_a_a-b_b_b": 'grid-template: "a a a" "b b b"',
-		// "grid-template-a_a_a-20%-b_b_b-auto": 'grid-template: "a a a" 20% "b b b" auto',
-		// "grid-template-[header-top]-a_a_a-[header-bottom]-[main-top]-b_b_b-1fr-[main-bottom]/auto-1fr-auto": 'grid-template: [header-top] "a a a" [header-bottom] [main-top] "b b b" 1fr [main-bottom] / auto 1fr auto',
+		"grid-template-auto-1fr/auto-1fr-auto": "grid-template: auto 1fr / auto 1fr auto",
+		"grid-template-[linename]-100px/[columnname1]-30%-[columnname2]-70%":
+			"grid-template: [linename] 100px / [columnname1] 30% [columnname2] 70%",
+		"grid-template-fit-content(100px)/fit-content(40%)": "grid-template: fit-content(100px) / fit-content(40%)",
+		"grid-template-a_a_a-b_b_b": 'grid-template: "a a a" "b b b"',
+		"grid-template-a-b": 'grid-template: "a" "b"',
+		"grid-template-a-auto-b-auto": 'grid-template: "a" auto "b" auto',
+		"grid-template-a_a_a-20%-b_b_b-auto": 'grid-template: "a a a" 20% "b b b" auto',
+		"grid-template-[header-top]-a_a_a-[header-bottom]-[main-top]-b_b_b-1fr-[main-bottom]/auto-1fr-auto":
+			'grid-template: [header-top] "a a a" [header-bottom] [main-top] "b b b" 1fr [main-bottom] / auto 1fr auto',
 	},
 };
 
