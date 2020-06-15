@@ -206,6 +206,27 @@ const tests = {
 		"align-content-unsafe-self-end": "align-content: unsafe self-end",
 		"align-content-unsafe-flex-end": "align-content: unsafe flex-end",
 	},
+	"align-self": {
+		"align-self-auto": "align-self: auto",
+		"align-self-normal": "align-self: normal",
+		"align-self-flex-start": "align-self: flex-start",
+		"align-self-flex-end": "align-self: flex-end",
+		"align-self-center": "align-self: center",
+		"align-self-start": "align-self: start",
+		"align-self-end": "align-self: end",
+		"align-self-self-start": "align-self: self-start",
+		"align-self-self-end": "align-self: self-end",
+		"align-self-baseline": "align-self: baseline",
+		"align-self-first-baseline": "align-self: first baseline",
+		"align-self-last-baseline": "align-self: last baseline",
+		"align-self-stretch": "align-self: stretch",
+		"align-self-safe-center": "align-self: safe center",
+		"align-self-safe-self-start": "align-self: safe self-start",
+		"align-self-safe-flex-start": "align-self: safe flex-start",
+		"align-self-unsafe-end": "align-self: unsafe end",
+		"align-self-unsafe-self-end": "align-self: unsafe self-end",
+		"align-self-unsafe-flex-end": "align-self: unsafe flex-end",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

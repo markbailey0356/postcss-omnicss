@@ -16,6 +16,7 @@ ignoredProperties.forEach(x => {
 const spaceSeparatedProperties = new Set([
 	"align-content",
 	"align-items",
+	"align-self",
 	"animation",
 	"background",
 	"border",
@@ -191,7 +192,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
-			if (prop === "align-items" || prop === "align-content") {
+			if (["align-items", "align-content", "align-self"].includes(prop)) {
 				value = value.replace(/flex\s+/g, "flex-");
 				value = value.replace(/self\s+/g, "self-");
 				value = value.replace(/space\s+/g, "space-");
