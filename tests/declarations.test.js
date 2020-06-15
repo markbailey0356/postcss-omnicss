@@ -313,6 +313,24 @@ const tests = {
 		"justify-self-unsafe-self-end": "justify-self: unsafe self-end",
 		"justify-self-unsafe-flex-end": "justify-self: unsafe flex-end",
 	},
+	"flex-grow": {
+		"flex-grow-0": "flex-grow: 0",
+		"flex-grow-1": "flex-grow: 1",
+		"flex-grow-0.4": "flex-grow: 0.4",
+		"flex-grow-.25": "flex-grow: .25",
+		"flex-grow-1.7": "flex-grow: 1.7",
+		"flex-grow-20": "flex-grow: 20",
+		"flex-grow-1000": "flex-grow: 1000",
+	},
+	"flex-shrink": {
+		"flex-shrink-0": "flex-shrink: 0",
+		"flex-shrink-1": "flex-shrink: 1",
+		"flex-shrink-0.4": "flex-shrink: 0.4",
+		"flex-shrink-.25": "flex-shrink: .25",
+		"flex-shrink-1.7": "flex-shrink: 1.7",
+		"flex-shrink-20": "flex-shrink: 20",
+		"flex-shrink-1000": "flex-shrink: 1000",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
