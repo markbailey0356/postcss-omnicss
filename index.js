@@ -39,6 +39,7 @@ const spaceSeparatedProperties = new Set([
 	"grid-row",
 	"grid-template",
 	"grid-template-columns",
+	"grid-template-rows",
 	"justify-content",
 	"justify-items",
 	"justify-self",
@@ -211,7 +212,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/space\s+/g, "space-");
 			}
 
-			if (["grid-template-columns"].includes(prop)) {
+			if (["grid-template-columns", "grid-template-rows"].includes(prop)) {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
 					value = value.replace(match, match.replace(/ /g, "-").replace(/,/g, " "));
 				}

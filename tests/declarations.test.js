@@ -384,6 +384,25 @@ const tests = {
 		"grid-template-columns-[linename1,linename2]-100px-repeat(auto-fit,[line-name1]-300px)-[linename3]":
 			"grid-template-columns: [linename1 linename2] 100px repeat(auto-fit, [line-name1] 300px) [linename3]",
 	},
+	"grid-template-rows": {
+		"grid-template-rows-none": "grid-template-rows: none",
+		"grid-template-rows-100px-1fr": "grid-template-rows: 100px 1fr",
+		"grid-template-rows-[linename]-100px": "grid-template-rows: [linename] 100px",
+		"grid-template-rows-[linename1]-100px-[linename2,linename3]":
+			"grid-template-rows: [linename1] 100px [linename2 linename3]",
+		"grid-template-rows-minmax(100px,1fr)": "grid-template-rows: minmax(100px, 1fr)",
+		"grid-template-rows-fit-content(40%)": "grid-template-rows: fit-content(40%)",
+		"grid-template-rows-repeat(3,200px)": "grid-template-rows: repeat(3, 200px)",
+		"grid-template-rows-subgrid": "grid-template-rows: subgrid",
+		"grid-template-rows-200px-repeat(auto-fill,100px)-200px":
+			"grid-template-rows: 200px repeat(auto-fill, 100px) 200px",
+		"grid-template-rows-minmax(100px,max-content)-repeat(auto-fill,200px)-20%":
+			"grid-template-rows: minmax(100px, max-content) repeat(auto-fill, 200px) 20%",
+		"grid-template-rows-[linename1]-100px-[linename2]-repeat(auto-fit,[line-name3,linename4]-300px)-100px":
+			"grid-template-rows: [linename1] 100px [linename2] repeat(auto-fit, [line-name3 linename4] 300px) 100px",
+		"grid-template-rows-[linename1,linename2]-100px-repeat(auto-fit,[line-name1]-300px)-[linename3]":
+			"grid-template-rows: [linename1 linename2] 100px repeat(auto-fit, [line-name1] 300px) [linename3]",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
