@@ -163,6 +163,26 @@ const tests = {
 		"flex-wrap-wrap": "flex-wrap: wrap",
 		"flex-wrap-wrap-reverse": "flex-wrap: wrap-reverse",
 	},
+	"align-items": {
+		"align-items-normal": "align-items: normal",
+		"align-items-flex-start": "align-items: flex-start",
+		"align-items-flex-end": "align-items: flex-end",
+		"align-items-center": "align-items: center",
+		"align-items-start": "align-items: start",
+		"align-items-end": "align-items: end",
+		"align-items-self-start": "align-items: self-start",
+		"align-items-self-end": "align-items: self-end",
+		"align-items-baseline": "align-items: baseline",
+		"align-items-first-baseline": "align-items: first baseline",
+		"align-items-last-baseline": "align-items: last baseline",
+		"align-items-stretch": "align-items: stretch",
+		"align-items-safe-center": "align-items: safe center",
+		"align-items-safe-self-start": "align-items: safe self-start",
+		"align-items-safe-flex-start": "align-items: safe flex-start",
+		"align-items-unsafe-end": "align-items: unsafe end",
+		"align-items-unsafe-self-end": "align-items: unsafe self-end",
+		"align-items-unsafe-flex-end": "align-items: unsafe flex-end",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

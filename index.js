@@ -13,7 +13,8 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
-const compoundProperties = new Set([
+const spaceSeparatedProperties = new Set([
+	"align-items",
 	"animation",
 	"background",
 	"border",
@@ -154,7 +155,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let numberOfSegments = prop.match(/[^-]+/g).length;
 
-			if (compoundProperties.has(prop)) {
+			if (spaceSeparatedProperties.has(prop)) {
 				value = value[0] + value.slice(1).replace(/-/g, " ");
 				value = value.replace(/ {2}/g, " -");
 			}
@@ -187,6 +188,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (prop === "flex-flow") {
 				numberOfSegments = 1;
 				value = value.replace(/\s+reverse/g, "-reverse");
+			}
+
+			if (prop === "align-items") {
+				value = value.replace(/flex\s+/g, "flex-");
+				value = value.replace(/self\s+/g, "self-");
 			}
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
