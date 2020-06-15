@@ -405,11 +405,10 @@ const tests = {
 	},
 	"grid-template-areas": {
 		"grid-template-areas-none": "grid-template-areas: none",
-		"grid-template-areas-a-b": 'grid-template-areas: "a b"',
-		"grid-template-areas-a-b-b,a-c-d": 'grid-template-areas: "a b b" "a c d"',
-		"grid-template-areas-col_1-col_2-col_3": 'grid-template-areas: "col_1 col_2 col_3"',
-		"grid-template-areas-col_left-col_right,col_left-col-right": 'grid-template-areas: "col_left col_right" "col_left col_right"'
-	}
+		"grid-template-areas-a_b": 'grid-template-areas: "a b"',
+		"grid-template-areas-a-b": 'grid-template-areas: "a" "b"',
+		"grid-template-areas-a_b_b-a_c_d": 'grid-template-areas: "a b b" "a c d"',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

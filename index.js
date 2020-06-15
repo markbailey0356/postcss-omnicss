@@ -221,6 +221,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace("auto fill", "auto-fill");
 			}
 
+			if (prop === "grid-template-areas" && !["none", "initial", "unset", "inherit"].includes(value)) {
+				value = value.replace(/_/g, " ").trim().replace(/-/g, '" "');
+				value = '"' + value + '"';
+			}
+
 			value = value.replace(/,/g, ", ");
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
