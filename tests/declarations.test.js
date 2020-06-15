@@ -403,6 +403,13 @@ const tests = {
 		"grid-template-rows-[linename1,linename2]-100px-repeat(auto-fit,[line-name1]-300px)-[linename3]":
 			"grid-template-rows: [linename1 linename2] 100px repeat(auto-fit, [line-name1] 300px) [linename3]",
 	},
+	"grid-template-areas": {
+		"grid-template-areas-none": "grid-template-areas: none",
+		"grid-template-areas-a-b": 'grid-template-areas: "a b"',
+		"grid-template-areas-a-b-b,a-c-d": 'grid-template-areas: "a b b" "a c d"',
+		"grid-template-areas-col_1-col_2-col_3": 'grid-template-areas: "col_1 col_2 col_3"',
+		"grid-template-areas-col_left-col_right,col_left-col-right": 'grid-template-areas: "col_left col_right" "col_left col_right"'
+	}
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
