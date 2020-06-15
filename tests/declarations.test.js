@@ -339,6 +339,23 @@ const tests = {
 		"flex-basis-10%": "flex-basis: 10%",
 		"flex-basis-content": "flex-basis: content",
 	},
+	flex: {
+		"flex-auto": "flex: auto",
+		"flex-initial": "flex: initial",
+		"flex-none": "flex: none",
+		"flex-1": "flex: 1",
+		"flex-3.5": "flex: 3.5",
+		"flex-50%": "flex: 50%",
+		"flex-100px": "flex: 100px",
+		"flex-1-1": "flex: 1 1",
+		"flex-0-2.5": "flex: 0 2.5",
+		"flex-50rem-1": "flex: 50rem 1",
+		"flex-1-25%": "flex: 1 25%",
+		"flex-1-1-1rem": "flex: 1 1 1rem",
+		"flex-1rem-1-1": "flex: 1rem 1 1",
+		"flex-50%-1-0": "flex: 50% 1 0",
+		"flex-0-1-0": "flex: 0 1 0",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
