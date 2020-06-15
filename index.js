@@ -38,6 +38,7 @@ const spaceSeparatedProperties = new Set([
 	"grid-column",
 	"grid-row",
 	"grid-template",
+	"grid-template-columns",
 	"justify-content",
 	"justify-items",
 	"justify-self",
@@ -86,7 +87,7 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.%:]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]]+/g) || [];
 
 const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
@@ -208,6 +209,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/flex\s+/g, "flex-");
 				value = value.replace(/self\s+/g, "self-");
 				value = value.replace(/space\s+/g, "space-");
+			}
+
+			if (["grid-template-columns"].includes(prop)) {
+				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
+					value = value.replace(match, match.replace(/,/g, " "));
+				}
 			}
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
