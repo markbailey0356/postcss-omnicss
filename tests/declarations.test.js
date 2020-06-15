@@ -371,7 +371,7 @@ const tests = {
 		"grid-template-columns-[linename]-100px": "grid-template-columns: [linename] 100px",
 		"grid-template-columns-[linename1]-100px-[linename2,linename3]":
 			"grid-template-columns: [linename1] 100px [linename2 linename3]",
-		// "grid-template-columns-minmax(100px,1fr)": "grid-template-columns: minmax(100px, 1fr)",
+		"grid-template-columns-minmax(100px,1fr)": "grid-template-columns: minmax(100px, 1fr)",
 		// "grid-template-columns-fit-content(40%)": "grid-template-columns: fit-content(40%)",
 		// "grid-template-columns-repeat(3,200px)": "grid-template-columns: repeat(3, 200px)",
 		// "grid-template-columns-subgrid": "grid-template-columns: subgrid",

@@ -87,7 +87,7 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]()]+/g) || [];
 
 const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
@@ -216,6 +216,8 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					value = value.replace(match, match.replace(/,/g, " "));
 				}
 			}
+
+			value = value.replace(/,/g, ", ");
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
