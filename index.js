@@ -213,7 +213,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			if (["grid-template-columns"].includes(prop)) {
 				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
-					value = value.replace(match, match.replace(/,/g, " "));
+					value = value.replace(match, match.replace(/ /g, "-").replace(/,/g, " "));
 				}
 				value = value.replace(/\s+content/, "-content");
 				value = value.replace("auto fit", "auto-fit");
