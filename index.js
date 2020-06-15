@@ -39,6 +39,7 @@ const spaceSeparatedProperties = new Set([
 	"grid-row",
 	"grid-template",
 	"justify-content",
+	"justify-items",
 	"list-style",
 	"margin",
 	"object-position",
@@ -193,7 +194,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
-			if (["align-items", "align-content", "align-self", "justify-content"].includes(prop)) {
+			if (["align-items", "align-content", "align-self", "justify-content", "justify-items"].includes(prop)) {
 				value = value.replace(/flex\s+/g, "flex-");
 				value = value.replace(/self\s+/g, "self-");
 				value = value.replace(/space\s+/g, "space-");
