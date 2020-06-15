@@ -158,6 +158,11 @@ const tests = {
 		"flex-direction-column": "flex-direction: column",
 		"flex-direction-column-reverse": "flex-direction: column-reverse",
 	},
+	"flex-wrap": {
+		"flex-wrap-nowrap": "flex-wrap: nowrap",
+		"flex-wrap-wrap": "flex-wrap: wrap",
+		"flex-wrap-wrap-reverse": "flex-wrap: wrap-reverse",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
