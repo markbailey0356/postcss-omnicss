@@ -456,6 +456,18 @@ const tests = {
 		"row-gap-0.5cm": "row-gap: 0.5cm",
 		"row-gap-10%": "row-gap: 10%",
 	},
+	"grid-column-gap": {
+		"grid-column-gap-20px": "grid-column-gap: 20px",
+		"grid-column-gap-1em": "grid-column-gap: 1em",
+		"grid-column-gap-3vmin": "grid-column-gap: 3vmin",
+		"grid-column-gap-0.5cm": "grid-column-gap: 0.5cm",
+		"grid-column-gap-10%": "grid-column-gap: 10%",
+		"column-gap-20px": "column-gap: 20px",
+		"column-gap-1em": "column-gap: 1em",
+		"column-gap-3vmin": "column-gap: 3vmin",
+		"column-gap-0.5cm": "column-gap: 0.5cm",
+		"column-gap-10%": "column-gap: 10%",
+	},
 	"grid-column-start": {
 		"grid-column-start-auto": "grid-column-start: auto",
 		"grid-column-start-somegridarea": "grid-column-start: somegridarea",
