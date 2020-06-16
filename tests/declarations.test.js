@@ -434,6 +434,18 @@ const tests = {
 		"grid-row-start-span-some-gridarea": "grid-row-start: span some-gridarea",
 		"grid-row-start-5-somegrid-area-span": "grid-row-start: 5 somegrid-area span",
 	},
+	"grid-row-gap": {
+		"grid-row-gap-20px": "grid-row-gap: 20px",
+		"grid-row-gap-1em": "grid-row-gap: 1em",
+		"grid-row-gap-3vmin": "grid-row-gap: 3vmin",
+		"grid-row-gap-0.5cm": "grid-row-gap: 0.5cm",
+		"grid-row-gap-10%": "grid-row-gap: 10%",
+		"row-gap-20px": "row-gap: 20px",
+		"row-gap-1em": "row-gap: 1em",
+		"row-gap-3vmin": "row-gap: 3vmin",
+		"row-gap-0.5cm": "row-gap: 0.5cm",
+		"row-gap-10%": "row-gap: 10%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
