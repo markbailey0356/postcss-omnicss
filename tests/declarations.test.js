@@ -434,6 +434,16 @@ const tests = {
 		"grid-row-start-span-some-gridarea": "grid-row-start: span some-gridarea",
 		"grid-row-start-5-somegrid-area-span": "grid-row-start: 5 somegrid-area span",
 	},
+	"grid-row-end": {
+		"grid-row-end-auto": "grid-row-end: auto",
+		"grid-row-end-somegridarea": "grid-row-end: somegridarea",
+		"grid-row-end-some_grid-area": "grid-row-end: some_grid-area",
+		"grid-row-end-2": "grid-row-end: 2",
+		"grid-row-end-some-grid-area-4": "grid-row-end: some-grid-area 4",
+		"grid-row-end-span-3": "grid-row-end: span 3",
+		"grid-row-end-span-some-gridarea": "grid-row-end: span some-gridarea",
+		"grid-row-end-5-somegrid-area-span": "grid-row-end: 5 somegrid-area span",
+	},
 	"grid-row-gap": {
 		"grid-row-gap-20px": "grid-row-gap: 20px",
 		"grid-row-gap-1em": "grid-row-gap: 1em",
@@ -445,6 +455,26 @@ const tests = {
 		"row-gap-3vmin": "row-gap: 3vmin",
 		"row-gap-0.5cm": "row-gap: 0.5cm",
 		"row-gap-10%": "row-gap: 10%",
+	},
+	"grid-column-start": {
+		"grid-column-start-auto": "grid-column-start: auto",
+		"grid-column-start-somegridarea": "grid-column-start: somegridarea",
+		"grid-column-start-some_grid-area": "grid-column-start: some_grid-area",
+		"grid-column-start-2": "grid-column-start: 2",
+		"grid-column-start-some-grid-area-4": "grid-column-start: some-grid-area 4",
+		"grid-column-start-span-3": "grid-column-start: span 3",
+		"grid-column-start-span-some-gridarea": "grid-column-start: span some-gridarea",
+		"grid-column-start-5-somegrid-area-span": "grid-column-start: 5 somegrid-area span",
+	},
+	"grid-column-end": {
+		"grid-column-end-auto": "grid-column-end: auto",
+		"grid-column-end-somegridarea": "grid-column-end: somegridarea",
+		"grid-column-end-some_grid-area": "grid-column-end: some_grid-area",
+		"grid-column-end-2": "grid-column-end: 2",
+		"grid-column-end-some-grid-area-4": "grid-column-end: some-grid-area 4",
+		"grid-column-end-span-3": "grid-column-end: span 3",
+		"grid-column-end-span-some-gridarea": "grid-column-end: span some-gridarea",
+		"grid-column-end-5-somegrid-area-span": "grid-column-end: 5 somegrid-area span",
 	},
 };
 
