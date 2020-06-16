@@ -34,7 +34,6 @@ const spaceSeparatedProperties = new Set([
 	"flex-flow",
 	"font",
 	"grid",
-	"grid-area",
 	"grid-template",
 	"grid-template-columns",
 	"grid-template-rows",
@@ -255,6 +254,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					"grid-column-end",
 					"grid-row",
 					"grid-column",
+					"grid-area",
 				].includes(prop)
 			) {
 				value = value.replace(/-*\/-*/g, "-/-");
