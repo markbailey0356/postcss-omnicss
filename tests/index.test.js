@@ -269,3 +269,18 @@ it("provides a shorthand for setting a custom property", async () => {
 		}
 	);
 });
+
+it("allows the use of the var() function to set values by custom properties", async () => {
+	await run(
+		"",
+		`.--font-large-10rem {
+			--font-large: 10rem
+		}
+		.font-size-var\\(--font-large\\) {
+			font-size: var(--font-large)
+		}`,
+		{
+			source: '<div class="--font-large-10rem font-size-var(--font-large)"></div>',
+		}
+	);
+});
