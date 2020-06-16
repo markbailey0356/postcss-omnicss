@@ -249,6 +249,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				}
 			}
 
+			if (["grid-row-start"].includes(prop)) {
+				const tokens = value.split("-");
+				const isKeyword = tokens.map(x => !!x.match(/^\d/) || x === "span");
+				value = tokens[0];
+				for (let i = 1; i < tokens.length; i++) {
+					if (isKeyword[i - 1] || isKeyword[i]) {
+						value += " " + tokens[i];
+					} else {
+						value += "-" + tokens[i];
+					}
+				}
+			}
+
 			value = value.replace(/,\s*/g, ", ").replace(/\s*\/\s*/g, " / ");
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";

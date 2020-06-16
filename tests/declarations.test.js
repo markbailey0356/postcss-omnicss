@@ -424,6 +424,16 @@ const tests = {
 		"grid-template-[header-top]-a_a_a-[header-bottom]-[main-top]-b_b_b-1fr-[main-bottom]/auto-1fr-auto":
 			'grid-template: [header-top] "a a a" [header-bottom] [main-top] "b b b" 1fr [main-bottom] / auto 1fr auto',
 	},
+	"grid-row-start": {
+		"grid-row-start-auto": "grid-row-start: auto",
+		"grid-row-start-somegridarea": "grid-row-start: somegridarea",
+		"grid-row-start-some_grid-area": "grid-row-start: some_grid-area",
+		"grid-row-start-2": "grid-row-start: 2",
+		"grid-row-start-some-grid-area-4": "grid-row-start: some-grid-area 4",
+		"grid-row-start-span-3": "grid-row-start: span 3",
+		"grid-row-start-span-some-gridarea": "grid-row-start: span some-gridarea",
+		"grid-row-start-5-somegrid-area-span": "grid-row-start: 5 somegrid-area span",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
