@@ -35,8 +35,6 @@ const spaceSeparatedProperties = new Set([
 	"font",
 	"grid",
 	"grid-area",
-	"grid-column",
-	"grid-row",
 	"grid-template",
 	"grid-template-columns",
 	"grid-template-rows",
@@ -249,9 +247,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				}
 			}
 
-			if (["grid-row-start", "grid-row-end", "grid-column-start", "grid-column-end"].includes(prop)) {
+			if (["grid-row-start", "grid-row-end", "grid-column-start", "grid-column-end", "grid-row"].includes(prop)) {
+				value = value.replace(/-*\/-*/g, "-/-");
 				const tokens = value.split("-");
-				const isKeyword = tokens.map(x => !!x.match(/^\d/) || x === "span");
+				const isKeyword = tokens.map(x => !!x.match(/^\d/) || ["/", "span", "auto"].includes(x));
 				value = tokens[0];
 				for (let i = 1; i < tokens.length; i++) {
 					if (isKeyword[i - 1] || isKeyword[i]) {

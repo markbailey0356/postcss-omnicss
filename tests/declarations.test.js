@@ -488,6 +488,25 @@ const tests = {
 		"grid-column-end-span-some-gridarea": "grid-column-end: span some-gridarea",
 		"grid-column-end-5-somegrid-area-span": "grid-column-end: 5 somegrid-area span",
 	},
+	"grid-row": {
+		"grid-row-auto": "grid-row: auto",
+		"grid-row-auto/auto": "grid-row: auto / auto",
+		"grid-row-auto-/-auto": "grid-row: auto / auto",
+		"grid-row-somegridarea": "grid-row: somegridarea",
+		"grid-row-some-grid_area": "grid-row: some-grid_area",
+		"grid-row-somegridarea/someothergridarea": "grid-row: somegridarea / someothergridarea",
+		"grid-row-somegridarea-/-someothergridarea": "grid-row: somegridarea / someothergridarea",
+		"grid-row-some-grid_area-/-some-other_grid-area": "grid-row: some-grid_area / some-other_grid-area",
+		"grid-row-somegridarea-4": "grid-row: somegridarea 4",
+		"grid-row-4-some-grid_area/6": "grid-row: 4 some-grid_area / 6",
+		"grid-row-span-3": "grid-row: span 3",
+		"grid-row-span-somegrid-area": "grid-row: span somegrid-area",
+		"grid-row-5-some-grid-area1-span": "grid-row: 5 some-grid-area1 span",
+		"grid-row-span-3/6": "grid-row: span 3 / 6",
+		"grid-row-span-some-grid-area_1/span-some_other-grid-area2":
+			"grid-row: span some-grid-area_1 / span some_other-grid-area2",
+		"grid-row-5-some-grid1_area-span/2-span": "grid-row: 5 some-grid1_area span / 2 span",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
