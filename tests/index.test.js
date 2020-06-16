@@ -245,3 +245,15 @@ it("has a modifier to target desktop screen sizes", async () => {
 		}
 	);
 });
+
+it("can set the value of a custom property", async () => {
+	await run(
+		"",
+		`.--color-green-\\#00ff00 {
+			--color-green: #00ff00
+		}`,
+		{
+			source: '<div class="--color-green-#00ff00"></div>',
+		}
+	);
+});

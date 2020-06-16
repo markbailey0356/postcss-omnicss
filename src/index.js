@@ -86,25 +86,43 @@ const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
 	const modifiers = modifierSplits.slice(0, -1);
 	selector = modifierSplits[modifierSplits.length - 1];
-	const leadingHyphen = selector[0] === "-";
-	let splitIndex;
-	let negated = false;
-	for (let i = 1; i <= selector.length; i++) {
-		if (selector[i] !== "-" && i !== selector.length) continue;
 
-		if (knownCssProperties.has(selector.slice(0, i))) {
-			splitIndex = i;
-		} else if (leadingHyphen && knownCssProperties.has(selector.slice(1, i))) {
-			splitIndex = i;
-			negated = true;
-		} else if (splitIndex != undefined) {
-			break;
+	let prop, value;
+	let negated = false;
+
+	if (selector.slice(0, 2) === "--") {
+		const segments = selector.slice(2).split("-");
+		let i;
+		for (i = 0; i < segments.length - 1; i++) {
+			const segment = segments[i];
+			if (!segment.match(/^[a-zA-Z0-9]*$/)) break;
 		}
+		if (i > 0) {
+			prop = "--" + segments.slice(0, i).join("-");
+			value = selector.slice(prop.length + 1);
+		}
+	} else {
+		const leadingHyphen = selector[0] === "-";
+		let splitIndex;
+		for (let i = 1; i <= selector.length; i++) {
+			if (selector[i] !== "-" && i !== selector.length) continue;
+
+			if (knownCssProperties.has(selector.slice(0, i))) {
+				splitIndex = i;
+			} else if (leadingHyphen && knownCssProperties.has(selector.slice(1, i))) {
+				splitIndex = i;
+				negated = true;
+			} else if (splitIndex != undefined) {
+				break;
+			}
+		}
+		prop = splitIndex && selector.slice(negated ? 1 : 0, splitIndex);
+		value = splitIndex && selector.slice(splitIndex + 1);
 	}
 
 	return {
-		prop: splitIndex && selector.slice(negated ? 1 : 0, splitIndex),
-		value: splitIndex && selector.slice(splitIndex + 1),
+		prop,
+		value,
 		negated,
 		modifiers,
 	};
