@@ -507,6 +507,25 @@ const tests = {
 			"grid-row: span some-grid-area_1 / span some_other-grid-area2",
 		"grid-row-5-some-grid1_area-span/2-span": "grid-row: 5 some-grid1_area span / 2 span",
 	},
+	"grid-column": {
+		"grid-column-auto": "grid-column: auto",
+		"grid-column-auto/auto": "grid-column: auto / auto",
+		"grid-column-auto-/-auto": "grid-column: auto / auto",
+		"grid-column-somegridarea": "grid-column: somegridarea",
+		"grid-column-some-grid_area": "grid-column: some-grid_area",
+		"grid-column-somegridarea/someothergridarea": "grid-column: somegridarea / someothergridarea",
+		"grid-column-somegridarea-/-someothergridarea": "grid-column: somegridarea / someothergridarea",
+		"grid-column-some-grid_area-/-some-other_grid-area": "grid-column: some-grid_area / some-other_grid-area",
+		"grid-column-somegridarea-4": "grid-column: somegridarea 4",
+		"grid-column-4-some-grid_area/6": "grid-column: 4 some-grid_area / 6",
+		"grid-column-span-3": "grid-column: span 3",
+		"grid-column-span-somegrid-area": "grid-column: span somegrid-area",
+		"grid-column-5-some-grid-area1-span": "grid-column: 5 some-grid-area1 span",
+		"grid-column-span-3/6": "grid-column: span 3 / 6",
+		"grid-column-span-some-grid-area_1/span-some_other-grid-area2":
+			"grid-column: span some-grid-area_1 / span some_other-grid-area2",
+		"grid-column-5-some-grid1_area-span/2-span": "grid-column: 5 some-grid1_area span / 2 span",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

@@ -247,7 +247,16 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				}
 			}
 
-			if (["grid-row-start", "grid-row-end", "grid-column-start", "grid-column-end", "grid-row"].includes(prop)) {
+			if (
+				[
+					"grid-row-start",
+					"grid-row-end",
+					"grid-column-start",
+					"grid-column-end",
+					"grid-row",
+					"grid-column",
+				].includes(prop)
+			) {
 				value = value.replace(/-*\/-*/g, "-/-");
 				const tokens = value.split("-");
 				const isKeyword = tokens.map(x => !!x.match(/^\d/) || ["/", "span", "auto"].includes(x));
