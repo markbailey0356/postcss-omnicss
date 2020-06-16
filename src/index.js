@@ -31,7 +31,6 @@ const spaceSeparatedProperties = new Set([
 	"column-rule",
 	"columns",
 	"flex",
-	"flex-flow",
 	"font",
 	"grid",
 	"grid-gap",
@@ -118,9 +117,41 @@ const splitSelector = selector => {
 	};
 };
 
+const propertyValues = prop => {
+	const flexItems = ["flex-start", "flex-end", "self-start", "self-end"];
+	switch (prop) {
+		case "flex-flow":
+		case "flex-direction":
+			return ["row", "column", "row-reverse", "column-reverse"];
+		case "align-items":
+		case "align-self":
+		case "justify-items":
+		case "justify-self":
+			return flexItems;
+		case "justify-content":
+		case "align-content":
+			return [...flexItems, "space-evenly", "space-around", "space-between"];
+		case "grid-template-columns":
+		case "grid-template-rows":
+		case "grid-template":
+			return ["min-content", "max-content", "fit-content", "auto-fit", "auto-fill"];
+		case "grid-row-start":
+		case "grid-row-end":
+		case "grid-column-start":
+		case "grid-column-end":
+		case "grid-row":
+		case "grid-column":
+		case "grid-area":
+			return ["span", "auto"];
+		default:
+			return [];
+	}
+};
+
 const processValue = (prop, value) => {
-	if (prop === "flex-flow") {
-		value = value.replace(/\s+reverse/g, "-reverse");
+	if (spaceSeparatedProperties.has(prop)) {
+		value = value[0] + value.slice(1).replace(/-/g, " ");
+		value = value.replace(/ {2}/g, " -");
 	}
 
 	if (
@@ -171,6 +202,7 @@ const processValue = (prop, value) => {
 
 	if (
 		[
+			"flex-flow",
 			"grid-row-start",
 			"grid-row-end",
 			"grid-column-start",
@@ -180,9 +212,20 @@ const processValue = (prop, value) => {
 			"grid-area",
 		].includes(prop)
 	) {
+		const options = propertyValues(prop);
+		const multiWordOptions = options.filter(x => x.includes("-"));
+		const multiWordReplacements = multiWordOptions.map(x => x.replace(/-/g, "="));
+		for (let i = 0; i < multiWordOptions.length; i++) {
+			value = value.replace(new RegExp(multiWordOptions[i], "g"), multiWordReplacements[i]);
+		}
 		value = value.replace(/-*\/-*/g, "-/-");
-		const tokens = value.split("-");
-		const isKeyword = tokens.map(x => !!x.match(/^\d/) || ["/", "span", "auto"].includes(x));
+		let tokens = value.split("-");
+		for (let i = 0; i < multiWordOptions.length; i++) {
+			tokens = tokens.map(x => (x === multiWordReplacements[i] ? multiWordOptions[i] : x));
+		}
+		const isKeyword = tokens.map(
+			x => !!x.match(/^\d/) || ["/", "unset", "initial", "inherit"].concat(options).includes(x)
+		);
 		value = tokens[0];
 		for (let i = 1; i < tokens.length; i++) {
 			if (isKeyword[i - 1] || isKeyword[i]) {
@@ -242,10 +285,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let numberOfSegments = prop.match(/[^-]+/g).length;
 
-			if (spaceSeparatedProperties.has(prop)) {
-				value = value[0] + value.slice(1).replace(/-/g, " ");
-				value = value.replace(/ {2}/g, " -");
+			if (prop === "flex-flow") {
+				numberOfSegments = 1;
 			}
+
+			value = processValue(prop, value);
 
 			const defaultUnit = defaultUnits.get(prop);
 			if (negated || defaultUnit) {
@@ -271,12 +315,6 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					}
 				}
 			}
-
-			if (prop === "flex-flow") {
-				numberOfSegments = 1;
-			}
-
-			value = processValue(prop, value);
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
