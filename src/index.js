@@ -33,7 +33,6 @@ const spaceSeparatedProperties = new Set([
 	"grid-gap",
 	"gap",
 	"grid-template",
-	"grid-template-columns",
 	"grid-template-rows",
 	"grid-template-areas",
 	"list-style",
@@ -164,7 +163,7 @@ const processValue = (prop, value) => {
 		value = value.replace(/ {2}/g, " -");
 	}
 
-	if (["grid-template-columns", "grid-template-rows", "grid-template"].includes(prop)) {
+	if (["grid-template-rows", "grid-template"].includes(prop)) {
 		for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
 			value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
 		}
@@ -215,33 +214,53 @@ const processValue = (prop, value) => {
 			"grid-row",
 			"grid-column",
 			"grid-area",
+			"grid-template-columns",
 		].includes(prop)
 	) {
+		value = value.replace(/-*([/[\]),])-*/g, "$1");
 		const options = propertyValues(prop);
 		const multiWordOptions = options.filter(x => x.includes("-"));
 		const multiWordReplacements = multiWordOptions.map(x => x.replace(/-/g, "="));
 		for (let i = 0; i < multiWordOptions.length; i++) {
 			value = value.replace(new RegExp(multiWordOptions[i], "g"), multiWordReplacements[i]);
 		}
-		value = value.replace(/-*\/-*/g, "-/-");
-		let tokens = value.split("-");
+		let tokens = value.split(/([-/[\]_,)])/);
 		for (let i = 0; i < multiWordOptions.length; i++) {
-			tokens = tokens.map(x => (x === multiWordReplacements[i] ? multiWordOptions[i] : x));
+			tokens = tokens.map(x => x.replace(new RegExp(multiWordReplacements[i], "g"), multiWordOptions[i]));
 		}
 		const isKeyword = tokens.map(
-			x => !!x.match(/^\d/) || ["/", "unset", "initial", "inherit"].concat(options).includes(x)
+			x => x !== "-" && (!!x.match(/^\d/) || ["unset", "initial", "inherit"].concat(options).includes(x))
 		);
 		value = tokens[0];
+		let squareBrackets = 0;
 		for (let i = 1; i < tokens.length; i++) {
-			if (isKeyword[i - 1] || isKeyword[i]) {
-				value += " " + tokens[i];
-			} else {
-				value += "-" + tokens[i];
+			let token = tokens[i];
+			const trailingSpace = value.length && value[value.length - 1] === " ";
+			if (token === "/") {
+				token = trailingSpace ? "/ " : " / ";
+			} else if (token === ",") {
+				token = ", ";
+			} else if (token === "[") {
+				squareBrackets++;
+				token = trailingSpace ? "[" : " [";
+			} else if (token === "]") {
+				squareBrackets--;
+				token = "] ";
+			} else if (token === ")") {
+				token = ") ";
+			} else if (token === "_" && squareBrackets > 0) {
+				token = " ";
+			} else if (tokens[i] === "-" && (isKeyword[i - 1] || isKeyword[i + 1])) {
+				token = " ";
 			}
+			value += token;
 		}
 	}
 
-	value = value.replace(/,\s*/g, ", ").replace(/\s*\/\s*/g, " / ");
+	value = value
+		.replace(/,\s*/g, ", ")
+		.replace(/\s*\/\s*/g, " / ")
+		.trim();
 
 	return value;
 };
