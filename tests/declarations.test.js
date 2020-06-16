@@ -1,6 +1,6 @@
 let postcss = require("postcss");
 
-let plugin = require("../");
+let plugin = require("../src");
 
 const tests = {
 	"box-sizing": {

@@ -1,6 +1,6 @@
 let postcss = require("postcss");
 
-let plugin = require("../");
+let plugin = require("../src");
 
 async function run(input, output, opts) {
 	let result = await postcss([plugin(opts)]).process(input, { from: undefined });
