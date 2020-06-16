@@ -257,3 +257,15 @@ it("can set the value of a custom property", async () => {
 		}
 	);
 });
+
+it("provides a shorthand for setting a custom property", async () => {
+	await run(
+		"",
+		`.\\$primary-color-white {
+			--primary-color: white
+		}`,
+		{
+			source: '<div class="$primary-color-white"></div>',
+		}
+	);
+});

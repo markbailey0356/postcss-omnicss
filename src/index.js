@@ -80,7 +80,7 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]()/]+/g) || [];
+const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]()/$]+/g) || [];
 
 const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
@@ -90,6 +90,7 @@ const splitSelector = selector => {
 	let prop, value;
 	let negated = false;
 
+	selector = selector.replace(/^\$/, "--");
 	if (selector.slice(0, 2) === "--") {
 		const segments = selector.slice(2).split("-");
 		let i;
