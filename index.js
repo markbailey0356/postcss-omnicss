@@ -118,6 +118,86 @@ const splitSelector = selector => {
 	};
 };
 
+const processValue = (prop, value) => {
+	if (prop === "flex-flow") {
+		value = value.replace(/\s+reverse/g, "-reverse");
+	}
+
+	if (
+		["align-items", "align-content", "align-self", "justify-content", "justify-items", "justify-self"].includes(
+			prop
+		)
+	) {
+		value = value
+			.replace(/flex\s+/g, "flex-")
+			.replace(/self\s+/g, "self-")
+			.replace(/space\s+/g, "space-");
+	}
+
+	if (["grid-template-columns", "grid-template-rows", "grid-template"].includes(prop)) {
+		for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
+			value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
+		}
+		value = value
+			.replace(/\s+content/g, "-content")
+			.replace(/auto fit/g, "auto-fit")
+			.replace(/auto fill/g, "auto-fill");
+	}
+
+	if (["grid-template-areas", "grid-template"].includes(prop)) {
+		for (let token of value.replace(/\[.*?\]/g, "").split(" ")) {
+			if (
+				token.match(/^[a-zA-Z][\w\d-]*[\w\d]?$/m) &&
+				![
+					"min-content",
+					"max-content",
+					"auto-fill",
+					"auto-fit",
+					"auto",
+					"minmax",
+					"repeat",
+					"fit-content",
+					"subgrid",
+					"inherit",
+					"unset",
+					"initial",
+					"none",
+				].includes(token)
+			) {
+				value = value.replace(new RegExp(`\\b${token}\\b`), `"${token.replace(/_/g, " ")}"`);
+			}
+		}
+	}
+
+	if (
+		[
+			"grid-row-start",
+			"grid-row-end",
+			"grid-column-start",
+			"grid-column-end",
+			"grid-row",
+			"grid-column",
+			"grid-area",
+		].includes(prop)
+	) {
+		value = value.replace(/-*\/-*/g, "-/-");
+		const tokens = value.split("-");
+		const isKeyword = tokens.map(x => !!x.match(/^\d/) || ["/", "span", "auto"].includes(x));
+		value = tokens[0];
+		for (let i = 1; i < tokens.length; i++) {
+			if (isKeyword[i - 1] || isKeyword[i]) {
+				value += " " + tokens[i];
+			} else {
+				value += "-" + tokens[i];
+			}
+		}
+	}
+
+	value = value.replace(/,\s*/g, ", ").replace(/\s*\/\s*/g, " / ");
+
+	return value;
+};
+
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
 	const { source = "", files = [] } = opts;
@@ -194,85 +274,9 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			if (prop === "flex-flow") {
 				numberOfSegments = 1;
-				value = value.replace(/\s+reverse/g, "-reverse");
 			}
 
-			if (
-				[
-					"align-items",
-					"align-content",
-					"align-self",
-					"justify-content",
-					"justify-items",
-					"justify-self",
-				].includes(prop)
-			) {
-				value = value
-					.replace(/flex\s+/g, "flex-")
-					.replace(/self\s+/g, "self-")
-					.replace(/space\s+/g, "space-");
-			}
-
-			if (["grid-template-columns", "grid-template-rows", "grid-template"].includes(prop)) {
-				for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
-					value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
-				}
-				value = value
-					.replace(/\s+content/g, "-content")
-					.replace(/auto fit/g, "auto-fit")
-					.replace(/auto fill/g, "auto-fill");
-			}
-
-			if (["grid-template-areas", "grid-template"].includes(prop)) {
-				for (let token of value.replace(/\[.*?\]/g, "").split(" ")) {
-					if (
-						token.match(/^[a-zA-Z][\w\d-]*[\w\d]?$/m) &&
-						![
-							"min-content",
-							"max-content",
-							"auto-fill",
-							"auto-fit",
-							"auto",
-							"minmax",
-							"repeat",
-							"fit-content",
-							"subgrid",
-							"inherit",
-							"unset",
-							"initial",
-							"none",
-						].includes(token)
-					) {
-						value = value.replace(new RegExp(`\\b${token}\\b`), `"${token.replace(/_/g, " ")}"`);
-					}
-				}
-			}
-
-			if (
-				[
-					"grid-row-start",
-					"grid-row-end",
-					"grid-column-start",
-					"grid-column-end",
-					"grid-row",
-					"grid-column",
-					"grid-area",
-				].includes(prop)
-			) {
-				value = value.replace(/-*\/-*/g, "-/-");
-				const tokens = value.split("-");
-				const isKeyword = tokens.map(x => !!x.match(/^\d/) || ["/", "span", "auto"].includes(x));
-				value = tokens[0];
-				for (let i = 1; i < tokens.length; i++) {
-					if (isKeyword[i - 1] || isKeyword[i]) {
-						value += " " + tokens[i];
-					} else {
-						value += "-" + tokens[i];
-					}
-				}
-			}
-
-			value = value.replace(/,\s*/g, ", ").replace(/\s*\/\s*/g, " / ");
+			value = processValue(prop, value);
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
