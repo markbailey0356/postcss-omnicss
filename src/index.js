@@ -14,9 +14,6 @@ ignoredProperties.forEach(x => {
 });
 
 const spaceSeparatedProperties = new Set([
-	"align-content",
-	"align-items",
-	"align-self",
 	"animation",
 	"background",
 	"border",
@@ -39,9 +36,6 @@ const spaceSeparatedProperties = new Set([
 	"grid-template-columns",
 	"grid-template-rows",
 	"grid-template-areas",
-	"justify-content",
-	"justify-items",
-	"justify-self",
 	"list-style",
 	"margin",
 	"object-position",
@@ -118,7 +112,23 @@ const splitSelector = selector => {
 };
 
 const propertyValues = prop => {
-	const flexItems = ["flex-start", "flex-end", "self-start", "self-end"];
+	const flexItems = [
+		"normal",
+		"unsafe",
+		"safe",
+		"start",
+		"end",
+		"center",
+		"first",
+		"last",
+		"baseline",
+		"flex-start",
+		"flex-end",
+		"self-start",
+		"self-end",
+		"stretch",
+		"legacy",
+	];
 	switch (prop) {
 		case "flex-flow":
 		case "flex-direction":
@@ -152,17 +162,6 @@ const processValue = (prop, value) => {
 	if (spaceSeparatedProperties.has(prop)) {
 		value = value[0] + value.slice(1).replace(/-/g, " ");
 		value = value.replace(/ {2}/g, " -");
-	}
-
-	if (
-		["align-items", "align-content", "align-self", "justify-content", "justify-items", "justify-self"].includes(
-			prop
-		)
-	) {
-		value = value
-			.replace(/flex\s+/g, "flex-")
-			.replace(/self\s+/g, "self-")
-			.replace(/space\s+/g, "space-");
 	}
 
 	if (["grid-template-columns", "grid-template-rows", "grid-template"].includes(prop)) {
@@ -202,6 +201,12 @@ const processValue = (prop, value) => {
 
 	if (
 		[
+			"align-items",
+			"align-content",
+			"align-self",
+			"justify-content",
+			"justify-items",
+			"justify-self",
 			"flex-flow",
 			"grid-row-start",
 			"grid-row-end",
