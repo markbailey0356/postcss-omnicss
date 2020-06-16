@@ -34,6 +34,8 @@ const spaceSeparatedProperties = new Set([
 	"flex-flow",
 	"font",
 	"grid",
+	"grid-gap",
+	"gap",
 	"grid-template",
 	"grid-template-columns",
 	"grid-template-rows",
