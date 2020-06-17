@@ -113,7 +113,7 @@ for (let [unit, properties] of Object.entries(_defaultUnits)) {
 	}
 }
 
-const extractor = content => content.match(/[A-Za-z0-9_#\-.,%:[\]()/$]+/g) || [];
+const extractor = content => content.match(/[^"'=<>\s]+/g) || [];
 
 const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
