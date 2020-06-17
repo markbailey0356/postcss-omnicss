@@ -48,6 +48,7 @@ const propertiesProcessedByRegex = new Set([
 	"grid-template-rows",
 	"grid-template-areas",
 	"grid-template",
+	"grid-row-start",
 ]);
 
 const compoundProperties = new Set([
@@ -218,6 +219,10 @@ const propertyValues = prop => {
 		"legacy",
 	];
 	switch (prop) {
+		case "overflow":
+			return ["visible", "hidden", "clip", "scroll", "auto"];
+		case "object-position":
+			return ["left", "center", "right", "top", "bottom"];
 		case "flex-flow":
 		case "flex-direction":
 			return ["row", "column", "row-reverse", "column-reverse"];
@@ -369,14 +374,22 @@ const processValue = (prop, value) => {
 const tokenizeCompoundValue = (prop, value) => {
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
-	const regex = new RegExp(possibleValuesSorted.concat(["[[\\](){},/]", "[^-[\\](){},/]+", "-"]).join("|"), "g");
-	const matches = matchAll(value, regex);
+	const regex = new RegExp(
+		"(" + possibleValuesSorted.concat(["\\b[\\d.]+[a-zA-Z%]*", "[[\\](){},/]"]).join("|") + ")",
+		"g"
+	);
+	let matches = value.split(regex);
+	matches = _.compact(matches.map(x => _.trim(x, "-")));
+	return collectBracketTokens(matches);
+};
+
+const collectBracketTokens = matches => {
 	let roundBrackets = 0;
 	let squareBrackets = 0;
 	let curlyBrackets = 0;
 	let currentToken = [];
 	const tokens = [];
-	for (let { 0: match } of matches) {
+	for (let match of matches) {
 		// console.log({ match, tokens, curlyBrackets });
 		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0 && match === "-") continue;
 
