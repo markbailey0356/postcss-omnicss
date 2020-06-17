@@ -160,7 +160,7 @@ it("handles multiple negative values in compound property", async () => {
 	);
 });
 
-it.skip("provides a more-readable syntax for negating single values", async () => {
+it("provides a more-readable syntax for negating single values", async () => {
 	await run(
 		"",
 		`.-margin-top-1rem {
@@ -172,7 +172,7 @@ it.skip("provides a more-readable syntax for negating single values", async () =
 	);
 });
 
-it.skip("handles negating compound values", async () => {
+it("handles negating compound values", async () => {
 	await run(
 		"",
 		`.-margin-1rem-2rem-3rem-4rem {
@@ -184,7 +184,7 @@ it.skip("handles negating compound values", async () => {
 	);
 });
 
-it.skip("handles negating mixed-sign compound values", async () => {
+it("handles negating mixed-sign compound values", async () => {
 	await run(
 		"",
 		`.-margin-1rem--2rem-3rem--4rem {
@@ -196,7 +196,7 @@ it.skip("handles negating mixed-sign compound values", async () => {
 	);
 });
 
-it.skip("handles negating abbreviated single properties", async () => {
+it("handles negating abbreviated single properties", async () => {
 	await run(
 		"",
 		`.-pt-1rem {

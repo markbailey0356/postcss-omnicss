@@ -204,7 +204,14 @@ const tokenizeCompoundValue = (prop, value) => {
 		"g"
 	);
 	let matches = value.split(regex);
-	matches = _.compact(matches.map(x => x.replace(/^-{1,2}(\d)/, "-$1").replace(/^-+(\D)/, "$1").replace(/-+$/, "")));
+	matches = _.compact(
+		matches.map(x =>
+			x
+				.replace(/^-{1,2}(\d)/, "-$1")
+				.replace(/^-+(\D)/, "$1")
+				.replace(/-+$/, "")
+		)
+	);
 	return collectBracketTokens(matches);
 };
 
@@ -326,30 +333,30 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			value = processValueByRegex(prop, value);
 
-			// const defaultUnit = defaultUnits.get(prop);
-			// if (negated || defaultUnit) {
-			// 	let inserts = 0;
-			// 	for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
-			// 		const lastIndex = index + match.length;
-			// 		if (negated) {
-			// 			if (value[index - 1 + inserts] === "-") {
-			// 				value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
-			// 				inserts--;
-			// 			} else {
-			// 				value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
-			// 				inserts++;
-			// 			}
-			// 		}
-			// 		if (defaultUnit) {
-			// 			const lastChar = value[lastIndex + inserts];
-			// 			if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
-			// 				value =
-			// 					value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
-			// 				inserts += defaultUnit.length;
-			// 			}
-			// 		}
-			// 	}
-			// }
+			const defaultUnit = defaultUnits.get(prop);
+			if (negated || defaultUnit) {
+				let inserts = 0;
+				for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
+					// const lastIndex = index + match.length;
+					if (negated) {
+						if (value[index - 1 + inserts] === "-") {
+							value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
+							inserts--;
+						} else {
+							value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
+							inserts++;
+						}
+					}
+					// if (defaultUnit) {
+					// 	const lastChar = value[lastIndex + inserts];
+					// 	if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
+					// 		value =
+					// 			value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
+					// 		inserts += defaultUnit.length;
+					// 	}
+					// }
+				}
+			}
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
