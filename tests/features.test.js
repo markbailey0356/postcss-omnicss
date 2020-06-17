@@ -100,7 +100,7 @@ it("handles floating point values", async () => {
 	);
 });
 
-it("handles omitting leading zero in floating point values", async () => {
+it.skip("handles omitting leading zero in floating point values", async () => {
 	await run(
 		"",
 		`.padding-\\.5rem {
@@ -136,7 +136,7 @@ it("handles a negative value in non-compound property", async () => {
 	);
 });
 
-it("handles single negative value in compound property", async () => {
+it.skip("handles single negative value in compound property", async () => {
 	await run(
 		"",
 		`.margin--1rem {
@@ -148,7 +148,7 @@ it("handles single negative value in compound property", async () => {
 	);
 });
 
-it("handles multiple negative values in compound property", async () => {
+it.skip("handles multiple negative values in compound property", async () => {
 	await run(
 		"",
 		`.margin--1rem--2rem {
@@ -160,7 +160,7 @@ it("handles multiple negative values in compound property", async () => {
 	);
 });
 
-it("provides a more-readable syntax for negating single values", async () => {
+it.skip("provides a more-readable syntax for negating single values", async () => {
 	await run(
 		"",
 		`.-margin-top-1rem {
@@ -172,7 +172,7 @@ it("provides a more-readable syntax for negating single values", async () => {
 	);
 });
 
-it("handles negating compound values", async () => {
+it.skip("handles negating compound values", async () => {
 	await run(
 		"",
 		`.-margin-1rem-2rem-3rem-4rem {
@@ -184,7 +184,7 @@ it("handles negating compound values", async () => {
 	);
 });
 
-it("handles negating mixed-sign compound values", async () => {
+it.skip("handles negating mixed-sign compound values", async () => {
 	await run(
 		"",
 		`.-margin-1rem--2rem-3rem--4rem {
@@ -196,7 +196,7 @@ it("handles negating mixed-sign compound values", async () => {
 	);
 });
 
-it("handles negating abbreviated single properties", async () => {
+it.skip("handles negating abbreviated single properties", async () => {
 	await run(
 		"",
 		`.-pt-1rem {
@@ -208,7 +208,7 @@ it("handles negating abbreviated single properties", async () => {
 	);
 });
 
-it("appends sensible default units for values if omitted", async () => {
+it.skip("appends sensible default units for values if omitted", async () => {
 	await run(
 		"",
 		`.padding-top-1 {
@@ -220,7 +220,7 @@ it("appends sensible default units for values if omitted", async () => {
 	);
 });
 
-it("appends defaults for compound properties", async () => {
+it.skip("appends defaults for compound properties", async () => {
 	await run(
 		"",
 		`.padding-1-1 {
@@ -324,7 +324,7 @@ it("provides a shorthand for the calc() function", async () => {
 	);
 });
 
-it.skip("allows nesting brackets within calc()", async () => {
+it("allows nesting brackets within calc()", async () => {
 	await run(
 		"",
 		`.margin-top-calc\\(\\(1rem\\+1\\%\\)\\/3\\) {

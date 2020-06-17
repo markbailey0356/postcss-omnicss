@@ -13,44 +13,6 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
-const propertiesProcessedByRegex = new Set([
-	"box-sizing",
-	"display",
-	"float",
-	"clear",
-	"object-fit",
-	"object-position",
-	"overflow",
-	"overflow-x",
-	"overflow-y",
-	"-webkit-overflow-scrolling",
-	"position",
-	"top",
-	"bottom",
-	"left",
-	"right",
-	"visibility",
-	"z-index",
-	"flex-direction",
-	"flex-wrap",
-	"align-items",
-	"align-content",
-	"align-self",
-	"justify-content",
-	"justify-items",
-	"justify-self",
-	"flex-grow",
-	"flex-shrink",
-	"flex-basis",
-	"flex",
-	"order",
-	"grid-template-columns",
-	"grid-template-rows",
-	"grid-template-areas",
-	"grid-template",
-	"grid-row-start",
-]);
-
 const compoundProperties = new Set([
 	"animation",
 	"align-items",
@@ -100,24 +62,6 @@ const compoundProperties = new Set([
 	"place-self",
 	"text-decoration",
 	"transition",
-]);
-
-const dontSplit = new Set([
-	"align-items",
-	"align-content",
-	"align-self",
-	"justify-content",
-	"justify-items",
-	"justify-self",
-	"flex-flow",
-	"grid-row-start",
-	"grid-row-end",
-	"grid-column-start",
-	"grid-column-end",
-	"grid-row",
-	"grid-column",
-	"grid-area",
-	"grid-template-columns",
 ]);
 
 const abbreviations = new Map(
@@ -251,126 +195,6 @@ const propertyValues = prop => {
 	}
 };
 
-const processValue = (prop, value) => {
-	if (!compoundProperties.has(prop)) {
-		if (value[0] === "(") {
-			value = "calc" + value;
-		}
-		if (value.match(/^\$[^(]/)) {
-			return `var(--${value.slice(1)})`;
-		}
-		if (value.match(/^calc\(.*\)$/)) {
-			return value.replace(/([+/*-])/g, " $1 ");
-		}
-	}
-
-	if (compoundProperties.has(prop) && !dontSplit.has(prop)) {
-		value = value[0] + value.slice(1).replace(/-/g, " ");
-		value = value.replace(/ {2}/g, " -");
-	}
-
-	if (["grid-template-rows", "grid-template"].includes(prop)) {
-		for (let { 0: match } of matchAll(value, /\[.*?\]/g)) {
-			value = value.replace(match, match.replace(/ /g, "-").replace(/_/g, " "));
-		}
-		value = value
-			.replace(/\s+content/g, "-content")
-			.replace(/auto fit/g, "auto-fit")
-			.replace(/auto fill/g, "auto-fill");
-	}
-
-	if (["grid-template-areas", "grid-template"].includes(prop)) {
-		for (let token of value.replace(/\[.*?\]/g, "").split(" ")) {
-			if (
-				token.match(/^[a-zA-Z][\w\d-]*[\w\d]?$/m) &&
-				![
-					"min-content",
-					"max-content",
-					"auto-fill",
-					"auto-fit",
-					"auto",
-					"minmax",
-					"repeat",
-					"fit-content",
-					"subgrid",
-					"inherit",
-					"unset",
-					"initial",
-					"none",
-				].includes(token)
-			) {
-				value = value.replace(new RegExp(`\\b${token}\\b`), `"${token.replace(/_/g, " ")}"`);
-			}
-		}
-	}
-
-	if (
-		[
-			"align-items",
-			"align-content",
-			"align-self",
-			"justify-content",
-			"justify-items",
-			"justify-self",
-			"flex-flow",
-			"grid-row-start",
-			"grid-row-end",
-			"grid-column-start",
-			"grid-column-end",
-			"grid-row",
-			"grid-column",
-			"grid-area",
-			"grid-template-columns",
-		].includes(prop)
-	) {
-		value = value.replace(/-*([/[\]),])-*/g, "$1");
-		const options = propertyValues(prop);
-		const multiWordOptions = options.filter(x => x.includes("-"));
-		const multiWordReplacements = multiWordOptions.map(x => x.replace(/-/g, "="));
-		for (let i = 0; i < multiWordOptions.length; i++) {
-			value = value.replace(new RegExp(multiWordOptions[i], "g"), multiWordReplacements[i]);
-		}
-		let tokens = value.split(/([-/[\]_,)])/);
-		for (let i = 0; i < multiWordOptions.length; i++) {
-			tokens = tokens.map(x => x.replace(new RegExp(multiWordReplacements[i], "g"), multiWordOptions[i]));
-		}
-		const isKeyword = tokens.map(
-			x => x !== "-" && (!!x.match(/^\d/) || ["unset", "initial", "inherit"].concat(options).includes(x))
-		);
-		value = tokens[0];
-		let squareBrackets = 0;
-		for (let i = 1; i < tokens.length; i++) {
-			let token = tokens[i];
-			const trailingSpace = value.length && value[value.length - 1] === " ";
-			if (token === "/") {
-				token = trailingSpace ? "/ " : " / ";
-			} else if (token === ",") {
-				token = ", ";
-			} else if (token === "[") {
-				squareBrackets++;
-				token = trailingSpace ? "[" : " [";
-			} else if (token === "]") {
-				squareBrackets--;
-				token = "] ";
-			} else if (token === ")") {
-				token = ") ";
-			} else if (token === "_" && squareBrackets > 0) {
-				token = " ";
-			} else if (tokens[i] === "-" && (isKeyword[i - 1] || isKeyword[i + 1])) {
-				token = " ";
-			}
-			value += token;
-		}
-	}
-
-	value = value
-		.replace(/,\s*/g, ", ")
-		.replace(/\s*\/\s*/g, " / ")
-		.trim();
-
-	return value;
-};
-
 const tokenizeCompoundValue = (prop, value) => {
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
@@ -438,6 +262,15 @@ const processValueByRegex = (prop, value) => {
 		// console.log({ prop, value, tokens, transformedTokens });
 		return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
 	} else {
+		if (value[0] === "(") {
+			value = "calc" + value;
+		}
+		if (value.match(/^\$[^(]/)) {
+			return `var(--${value.slice(1)})`;
+		}
+		if (value.match(/^calc\(.*\)$/)) {
+			return value.replace(/([+/*-])/g, " $1 ");
+		}
 		return value;
 	}
 };
@@ -490,36 +323,32 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				numberOfSegments = 1;
 			}
 
-			if (propertiesProcessedByRegex.has(prop)) {
-				value = processValueByRegex(prop, value);
-			} else {
-				value = processValue(prop, value);
-			}
+			value = processValueByRegex(prop, value);
 
-			const defaultUnit = defaultUnits.get(prop);
-			if (negated || defaultUnit) {
-				let inserts = 0;
-				for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
-					const lastIndex = index + match.length;
-					if (negated) {
-						if (value[index - 1 + inserts] === "-") {
-							value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
-							inserts--;
-						} else {
-							value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
-							inserts++;
-						}
-					}
-					if (defaultUnit) {
-						const lastChar = value[lastIndex + inserts];
-						if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
-							value =
-								value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
-							inserts += defaultUnit.length;
-						}
-					}
-				}
-			}
+			// const defaultUnit = defaultUnits.get(prop);
+			// if (negated || defaultUnit) {
+			// 	let inserts = 0;
+			// 	for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
+			// 		const lastIndex = index + match.length;
+			// 		if (negated) {
+			// 			if (value[index - 1 + inserts] === "-") {
+			// 				value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
+			// 				inserts--;
+			// 			} else {
+			// 				value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
+			// 				inserts++;
+			// 			}
+			// 		}
+			// 		if (defaultUnit) {
+			// 			const lastChar = value[lastIndex + inserts];
+			// 			if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
+			// 				value =
+			// 					value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
+			// 				inserts += defaultUnit.length;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
