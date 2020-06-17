@@ -46,6 +46,8 @@ const propertiesProcessedByRegex = new Set([
 	"order",
 	"grid-template-columns",
 	"grid-template-rows",
+	"grid-template-areas",
+	"grid-template",
 ]);
 
 const compoundProperties = new Set([
@@ -367,14 +369,16 @@ const processValue = (prop, value) => {
 const tokenizeCompoundValue = (prop, value) => {
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
-	const regex = new RegExp(possibleValuesSorted.concat(["[[\\]()),]", "[^-[\\](),]+", "-"]).join("|"), "g");
+	const regex = new RegExp(possibleValuesSorted.concat(["[[\\](){},/]", "[^-[\\](){},/]+", "-"]).join("|"), "g");
 	const matches = matchAll(value, regex);
 	let roundBrackets = 0;
 	let squareBrackets = 0;
+	let curlyBrackets = 0;
 	let currentToken = [];
 	const tokens = [];
 	for (let { 0: match } of matches) {
-		if (squareBrackets <= 0 && roundBrackets <= 0 && match === "-") continue;
+		// console.log({ match, tokens, curlyBrackets });
+		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0 && match === "-") continue;
 
 		currentToken.push(match);
 
@@ -382,16 +386,18 @@ const tokenizeCompoundValue = (prop, value) => {
 			squareBrackets++;
 		} else if (match === "]") {
 			squareBrackets--;
-		}
-
-		if (match === "(") {
+		} else if (match === "(") {
 			roundBrackets++;
 			currentToken.unshift(tokens.pop());
 		} else if (match === ")") {
 			roundBrackets--;
+		} else if (match === "{") {
+			curlyBrackets++;
+		} else if (match === "}") {
+			curlyBrackets--;
 		}
 
-		if (squareBrackets <= 0 && roundBrackets <= 0) {
+		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0) {
 			tokens.push(currentToken.join(""));
 			currentToken = [];
 		}
@@ -406,6 +412,9 @@ const processValueByRegex = (prop, value) => {
 			if (token.match(/^\[.*\]$/)) {
 				return token.replace(/,/g, " ");
 			}
+			if (token.match(/^\{.*\}$/)) {
+				return token.replace(/[{}]/g, '"').replace(/,/g, " ");
+			}
 			let match = token.match(/^([\w-]*)\((.*)\)/);
 			if (match) {
 				const [, functionName, args] = match;
@@ -413,7 +422,7 @@ const processValueByRegex = (prop, value) => {
 			}
 			return token;
 		});
-		// console.log({ prop, value, transformedTokens });
+		// console.log({ prop, value, tokens, transformedTokens });
 		return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
 	} else {
 		return value;

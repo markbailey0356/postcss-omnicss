@@ -399,9 +399,9 @@ const tests = {
 	},
 	"grid-template-areas": {
 		"grid-template-areas-none": "grid-template-areas: none",
-		"grid-template-areas-a_b": 'grid-template-areas: "a b"',
-		"grid-template-areas-a-b": 'grid-template-areas: "a" "b"',
-		"grid-template-areas-a_b_b-a_c_d": 'grid-template-areas: "a b b" "a c d"',
+		"grid-template-areas-{a,b}": 'grid-template-areas: "a b"',
+		"grid-template-areas-{a}-{b}": 'grid-template-areas: "a" "b"',
+		"grid-template-areas-{a,b,b}-{a,c,d}": 'grid-template-areas: "a b b" "a c d"',
 	},
 	"grid-template": {
 		"grid-template-none": "grid-template: none",
@@ -411,11 +411,11 @@ const tests = {
 		"grid-template-[linename]-100px/[columnname1]-30%-[columnname2]-70%":
 			"grid-template: [linename] 100px / [columnname1] 30% [columnname2] 70%",
 		"grid-template-fit-content(100px)/fit-content(40%)": "grid-template: fit-content(100px) / fit-content(40%)",
-		"grid-template-a_a_a-b_b_b": 'grid-template: "a a a" "b b b"',
-		"grid-template-a-b": 'grid-template: "a" "b"',
-		"grid-template-a-auto-b-auto": 'grid-template: "a" auto "b" auto',
-		"grid-template-a_a_a-20%-b_b_b-auto": 'grid-template: "a a a" 20% "b b b" auto',
-		"grid-template-[header-top]-a_a_a-[header-bottom]-[main-top]-b_b_b-1fr-[main-bottom]/auto-1fr-auto":
+		"grid-template-{a,a,a}-{b,b,b}": 'grid-template: "a a a" "b b b"',
+		"grid-template-{a}-{b}": 'grid-template: "a" "b"',
+		"grid-template-{a}-auto-{b}-auto": 'grid-template: "a" auto "b" auto',
+		"grid-template-{a,a,a}-20%-{b,b,b}-auto": 'grid-template: "a a a" 20% "b b b" auto',
+		"grid-template-[header-top]-{a,a,a}-[header-bottom]-[main-top]-{b,b,b}-1fr-[main-bottom]/auto-1fr-auto":
 			'grid-template: [header-top] "a a a" [header-bottom] [main-top] "b b b" 1fr [main-bottom] / auto 1fr auto',
 	},
 	"grid-row-start": {
@@ -564,7 +564,7 @@ const tests = {
 for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
-			// if (selector !== "grid-template-columns-minmax(100px,max-content)-repeat(auto-fill,200px)-20%") continue;
+			// if (selector !== "grid-template-areas-{a,b,b}-{a,c,d}") continue;
 			it(declaration, async () => {
 				let result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
 				expect(result.css).toEqual(expect.stringContaining(declaration));
