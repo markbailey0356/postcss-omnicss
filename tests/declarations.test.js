@@ -363,7 +363,7 @@ const tests = {
 		"grid-template-columns-none": "grid-template-columns: none",
 		"grid-template-columns-100px-1fr": "grid-template-columns: 100px 1fr",
 		"grid-template-columns-[linename]-100px": "grid-template-columns: [linename] 100px",
-		"grid-template-columns-[linename1]-100px-[linename2_linename3]":
+		"grid-template-columns-[linename1]-100px-[linename2,linename3]":
 			"grid-template-columns: [linename1] 100px [linename2 linename3]",
 		"grid-template-columns-minmax(100px,1fr)": "grid-template-columns: minmax(100px, 1fr)",
 		"grid-template-columns-fit-content(40%)": "grid-template-columns: fit-content(40%)",
@@ -373,16 +373,16 @@ const tests = {
 			"grid-template-columns: 200px repeat(auto-fill, 100px) 200px",
 		"grid-template-columns-minmax(100px,max-content)-repeat(auto-fill,200px)-20%":
 			"grid-template-columns: minmax(100px, max-content) repeat(auto-fill, 200px) 20%",
-		"grid-template-columns-[linename1]-100px-[area-name-start]-repeat(auto-fit,[area-name-end_linename4]-300px)-100px":
+		"grid-template-columns-[linename1]-100px-[area-name-start]-repeat(auto-fit,[area-name-end,linename4]-300px)-100px":
 			"grid-template-columns: [linename1] 100px [area-name-start] repeat(auto-fit, [area-name-end linename4] 300px) 100px",
-		"grid-template-columns-[line-name1-start_linename2]-100px-repeat(auto-fit,[line-name1-end]-300px)-[linename3]":
+		"grid-template-columns-[line-name1-start,linename2]-100px-repeat(auto-fit,[line-name1-end]-300px)-[linename3]":
 			"grid-template-columns: [line-name1-start linename2] 100px repeat(auto-fit, [line-name1-end] 300px) [linename3]",
 	},
 	"grid-template-rows": {
 		"grid-template-rows-none": "grid-template-rows: none",
 		"grid-template-rows-100px-1fr": "grid-template-rows: 100px 1fr",
 		"grid-template-rows-[linename]-100px": "grid-template-rows: [linename] 100px",
-		"grid-template-rows-[linename1]-100px-[linename2_linename3]":
+		"grid-template-rows-[linename1]-100px-[linename2,linename3]":
 			"grid-template-rows: [linename1] 100px [linename2 linename3]",
 		"grid-template-rows-minmax(100px,1fr)": "grid-template-rows: minmax(100px, 1fr)",
 		"grid-template-rows-fit-content(40%)": "grid-template-rows: fit-content(40%)",
@@ -392,9 +392,9 @@ const tests = {
 			"grid-template-rows: 200px repeat(auto-fill, 100px) 200px",
 		"grid-template-rows-minmax(100px,max-content)-repeat(auto-fill,200px)-20%":
 			"grid-template-rows: minmax(100px, max-content) repeat(auto-fill, 200px) 20%",
-		"grid-template-rows-[linename1]-100px-[area-name-start]-repeat(auto-fit,[area-name-end_linename4]-300px)-100px":
+		"grid-template-rows-[linename1]-100px-[area-name-start]-repeat(auto-fit,[area-name-end,linename4]-300px)-100px":
 			"grid-template-rows: [linename1] 100px [area-name-start] repeat(auto-fit, [area-name-end linename4] 300px) 100px",
-		"grid-template-rows-[line-name1-start_linename2]-100px-repeat(auto-fit,[line-name1-end]-300px)-[linename3]":
+		"grid-template-rows-[line-name1-start,linename2]-100px-repeat(auto-fit,[line-name1-end]-300px)-[linename3]":
 			"grid-template-rows: [line-name1-start linename2] 100px repeat(auto-fit, [line-name1-end] 300px) [linename3]",
 	},
 	"grid-template-areas": {

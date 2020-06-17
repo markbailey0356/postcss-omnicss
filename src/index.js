@@ -404,7 +404,7 @@ const processValueByRegex = (prop, value) => {
 		const tokens = tokenizeCompoundValue(prop, value);
 		const transformedTokens = tokens.map(token => {
 			if (token.match(/^\[.*\]$/)) {
-				return token.replace(/_/g, " ");
+				return token.replace(/,/g, " ");
 			}
 			let match = token.match(/^([\w-]*)\((.*)\)/);
 			if (match) {
