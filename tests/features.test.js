@@ -299,3 +299,27 @@ it("provides a shorthand for the var() function", async () => {
 		}
 	);
 });
+
+it("allows the use of the calc() function in property values", async () => {
+	await run(
+		"",
+		`.width-calc\\(100vh-5rem\\) {
+			width: calc(100vh - 5rem)
+		}`,
+		{
+			source: '<div class="width-calc(100vh-5rem)"></div>',
+		}
+	);
+});
+
+it("provides a shorthand for the calc() function", async () => {
+	await run(
+		"",
+		`.height-\\(10vh\\+1rem\\) {
+			height: calc(10vh + 1rem)
+		}`,
+		{
+			source: '<div class="height-(10vh+1rem)"></div>',
+		}
+	);
+});

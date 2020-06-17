@@ -210,8 +210,16 @@ const propertyValues = prop => {
 };
 
 const processValue = (prop, value) => {
-	if (!compoundProperties.has(prop) && value.match(/^\$[^(]/)) {
-		return `var(--${value.slice(1)})`;
+	if (!compoundProperties.has(prop)) {
+		if (value[0] === "(") {
+			value = "calc" + value;
+		}
+		if (value.match(/^\$[^(]/)) {
+			return `var(--${value.slice(1)})`;
+		}
+		if (value.match(/^calc\(.*\)$/)) {
+			return value.replace(/([+/*-])/g, " $1 ");
+		}
 	}
 
 	if (compoundProperties.has(prop) && !dontSplit.has(prop)) {
