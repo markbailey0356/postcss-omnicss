@@ -323,3 +323,15 @@ it("provides a shorthand for the calc() function", async () => {
 		}
 	);
 });
+
+it.skip("allows nesting brackets within calc()", async () => {
+	await run(
+		"",
+		`.margin-top-calc\\(\\(1rem\\+1\\%\\)\\/3\\) {
+			margin-top: calc((1rem + 1%) / 3)
+		}`,
+		{
+			source: '<div class="margin-top-calc((1rem+1%)/3)"></div>',
+		}
+	);
+});
