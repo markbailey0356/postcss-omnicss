@@ -138,7 +138,7 @@ const tests = {
 		"right-10%": "right: 10%",
 		"right--50%": "right: -50%",
 	},
-	visibiliity: {
+	visibility: {
 		"visibility-visible": "visibility: visible",
 		"visibility-hidden": "visibility: hidden",
 		"visibility-collapse": "visibility: collapse",
@@ -269,9 +269,6 @@ const tests = {
 		"justify-items-first-baseline": "justify-items: first baseline",
 		"justify-items-last-baseline": "justify-items: last baseline",
 		"justify-items-stretch": "justify-items: stretch",
-		"justify-items-space-between": "justify-items: space-between",
-		"justify-items-space-around": "justify-items: space-around",
-		"justify-items-space-evenly": "justify-items: space-evenly",
 		"justify-items-safe-center": "justify-items: safe center",
 		"justify-items-safe-left": "justify-items: safe left",
 		"justify-items-safe-self-start": "justify-items: safe self-start",
@@ -301,9 +298,6 @@ const tests = {
 		"justify-self-first-baseline": "justify-self: first baseline",
 		"justify-self-last-baseline": "justify-self: last baseline",
 		"justify-self-stretch": "justify-self: stretch",
-		"justify-self-space-between": "justify-self: space-between",
-		"justify-self-space-around": "justify-self: space-around",
-		"justify-self-space-evenly": "justify-self: space-evenly",
 		"justify-self-safe-center": "justify-self: safe center",
 		"justify-self-safe-left": "justify-self: safe left",
 		"justify-self-safe-self-start": "justify-self: safe self-start",
