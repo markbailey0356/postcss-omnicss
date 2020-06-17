@@ -13,8 +13,11 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
-const spaceSeparatedProperties = new Set([
+const compoundProperties = new Set([
 	"animation",
+	"align-items",
+	"align-content",
+	"align-self",
 	"background",
 	"border",
 	"border-bottom",
@@ -28,13 +31,25 @@ const spaceSeparatedProperties = new Set([
 	"column-rule",
 	"columns",
 	"flex",
+	"flex-flow",
 	"font",
-	"grid",
-	"grid-gap",
 	"gap",
+	"grid",
+	"grid-area",
+	"grid-gap",
+	"grid-column",
+	"grid-column-end",
+	"grid-column-start",
+	"grid-row",
+	"grid-row-end",
+	"grid-row-start",
 	"grid-template",
-	"grid-template-rows",
 	"grid-template-areas",
+	"grid-template-columns",
+	"grid-template-rows",
+	"justify-content",
+	"justify-items",
+	"justify-self",
 	"list-style",
 	"margin",
 	"object-position",
@@ -47,6 +62,24 @@ const spaceSeparatedProperties = new Set([
 	"place-self",
 	"text-decoration",
 	"transition",
+]);
+
+const dontSplit = new Set([
+	"align-items",
+	"align-content",
+	"align-self",
+	"justify-content",
+	"justify-items",
+	"justify-self",
+	"flex-flow",
+	"grid-row-start",
+	"grid-row-end",
+	"grid-column-start",
+	"grid-column-end",
+	"grid-row",
+	"grid-column",
+	"grid-area",
+	"grid-template-columns",
 ]);
 
 const abbreviations = new Map(
@@ -177,7 +210,11 @@ const propertyValues = prop => {
 };
 
 const processValue = (prop, value) => {
-	if (spaceSeparatedProperties.has(prop)) {
+	if (!compoundProperties.has(prop) && value.match(/^\$[^(]/)) {
+		return `var(--${value.slice(1)})`;
+	}
+
+	if (compoundProperties.has(prop) && !dontSplit.has(prop)) {
 		value = value[0] + value.slice(1).replace(/-/g, " ");
 		value = value.replace(/ {2}/g, " -");
 	}

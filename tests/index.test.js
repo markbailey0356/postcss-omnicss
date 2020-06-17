@@ -284,3 +284,18 @@ it("allows the use of the var() function to set values by custom properties", as
 		}
 	);
 });
+
+it("provides a shorthand for the var() function", async () => {
+	await run(
+		"",
+		`.\\$dark-red-\\#880000 {
+			--dark-red: #880000
+		}
+		.background-color-\\$dark-red {
+			background-color: var(--dark-red)
+		}`,
+		{
+			source: '<div class="$dark-red-#880000 background-color-$dark-red"></div>',
+		}
+	);
+});
