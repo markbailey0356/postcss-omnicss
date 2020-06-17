@@ -196,6 +196,7 @@ const propertyValues = prop => {
 };
 
 const tokenizeCompoundValue = (prop, value) => {
+	value = value.replace(/(^|-)\./g, "$10.");
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
