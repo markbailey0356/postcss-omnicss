@@ -136,7 +136,7 @@ it("handles a negative value in non-compound property", async () => {
 	);
 });
 
-it.skip("handles single negative value in compound property", async () => {
+it("handles single negative value in compound property", async () => {
 	await run(
 		"",
 		`.margin--1rem {
@@ -148,7 +148,7 @@ it.skip("handles single negative value in compound property", async () => {
 	);
 });
 
-it.skip("handles multiple negative values in compound property", async () => {
+it("handles multiple negative values in compound property", async () => {
 	await run(
 		"",
 		`.margin--1rem--2rem {

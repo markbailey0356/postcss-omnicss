@@ -200,11 +200,11 @@ const tokenizeCompoundValue = (prop, value) => {
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
-		"(" + possibleValuesSorted.concat(["\\b[\\d.]+[a-zA-Z%]*", "[[\\](){},/]"]).join("|") + ")",
+		"(" + possibleValuesSorted.concat(["(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"]).join("|") + ")",
 		"g"
 	);
 	let matches = value.split(regex);
-	matches = _.compact(matches.map(x => _.trim(x, "-")));
+	matches = _.compact(matches.map(x => x.replace(/^-{1,2}(\d)/, "-$1").replace(/^-+(\D)/, "$1").replace(/-+$/, "")));
 	return collectBracketTokens(matches);
 };
 
