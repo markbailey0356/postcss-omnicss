@@ -44,6 +44,8 @@ const propertiesProcessedByRegex = new Set([
 	"flex-basis",
 	"flex",
 	"order",
+	"grid-template-columns",
+	"grid-template-rows",
 ]);
 
 const compoundProperties = new Set([
@@ -362,13 +364,57 @@ const processValue = (prop, value) => {
 	return value;
 };
 
+const tokenizeCompoundValue = (prop, value) => {
+	const possibleValues = propertyValues(prop);
+	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
+	const regex = new RegExp(possibleValuesSorted.concat(["[[\\]()),]", "[^-[\\](),]+", "-"]).join("|"), "g");
+	const matches = matchAll(value, regex);
+	let roundBrackets = 0;
+	let squareBrackets = 0;
+	let currentToken = [];
+	const tokens = [];
+	for (let { 0: match } of matches) {
+		if (squareBrackets <= 0 && roundBrackets <= 0 && match === "-") continue;
+
+		currentToken.push(match);
+
+		if (match === "[") {
+			squareBrackets++;
+		} else if (match === "]") {
+			squareBrackets--;
+		}
+
+		if (match === "(") {
+			roundBrackets++;
+			currentToken.unshift(tokens.pop());
+		} else if (match === ")") {
+			roundBrackets--;
+		}
+
+		if (squareBrackets <= 0 && roundBrackets <= 0) {
+			tokens.push(currentToken.join(""));
+			currentToken = [];
+		}
+	}
+	return tokens;
+};
+
 const processValueByRegex = (prop, value) => {
 	if (compoundProperties.has(prop)) {
-		const possibleValues = propertyValues(prop);
-		const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
-		const regex = new RegExp(possibleValuesSorted.concat(["[^-]+"]).join("|"), "g");
-		const matches = [...matchAll(value, regex)];
-		return matches.join(" ");
+		const tokens = tokenizeCompoundValue(prop, value);
+		const transformedTokens = tokens.map(token => {
+			if (token.match(/^\[.*\]$/)) {
+				return token.replace(/_/g, " ");
+			}
+			let match = token.match(/^([\w-]*)\((.*)\)/);
+			if (match) {
+				const [, functionName, args] = match;
+				return `${functionName}(${processValueByRegex(prop, args)})`;
+			}
+			return token;
+		});
+		// console.log({ prop, value, transformedTokens });
+		return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
 	} else {
 		return value;
 	}
