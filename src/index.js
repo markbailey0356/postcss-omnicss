@@ -13,6 +13,39 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
+const propertiesProcessedByRegex = new Set([
+	"box-sizing",
+	"display",
+	"float",
+	"clear",
+	"object-fit",
+	"object-position",
+	"overflow",
+	"overflow-x",
+	"overflow-y",
+	"-webkit-overflow-scrolling",
+	"position",
+	"top",
+	"bottom",
+	"left",
+	"right",
+	"visibility",
+	"z-index",
+	"flex-direction",
+	"flex-wrap",
+	"align-items",
+	"align-content",
+	"align-self",
+	"justify-content",
+	"justify-items",
+	"justify-self",
+	"flex-grow",
+	"flex-shrink",
+	"flex-basis",
+	"flex",
+	"order",
+]);
+
 const compoundProperties = new Set([
 	"animation",
 	"align-items",
@@ -329,6 +362,18 @@ const processValue = (prop, value) => {
 	return value;
 };
 
+const processValueByRegex = (prop, value) => {
+	if (compoundProperties.has(prop)) {
+		const possibleValues = propertyValues(prop);
+		const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
+		const regex = new RegExp(possibleValuesSorted.concat(["[^-]+"]).join("|"), "g");
+		const matches = [...matchAll(value, regex)];
+		return matches.join(" ");
+	} else {
+		return value;
+	}
+};
+
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
 	const { source = "", files = [] } = opts;
@@ -377,7 +422,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				numberOfSegments = 1;
 			}
 
-			value = processValue(prop, value);
+			if (propertiesProcessedByRegex.has(prop)) {
+				value = processValueByRegex(prop, value);
+			} else {
+				value = processValue(prop, value);
+			}
 
 			const defaultUnit = defaultUnits.get(prop);
 			if (negated || defaultUnit) {
