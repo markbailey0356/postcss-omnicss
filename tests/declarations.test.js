@@ -648,7 +648,9 @@ for (const [property, propertyTests] of Object.entries(tests)) {
 			// if (selector !== "grid-gap-21px-82%") continue;
 			it(declaration, async () => {
 				let result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
-				expect(result.css).toEqual(expect.stringContaining(declaration));
+				expect(result.root.nodes).toHaveLength(1);
+				expect(result.root.nodes[0].nodes).toHaveLength(1);
+				expect(result.root.nodes[0].nodes[0].toString()).toEqual(declaration);
 				expect(result.warnings()).toHaveLength(0);
 			});
 		}
