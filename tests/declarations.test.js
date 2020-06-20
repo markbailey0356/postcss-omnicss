@@ -564,7 +564,7 @@ const tests = {
 for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
-			// if (selector !== "grid-template-areas-{a,b,b}-{a,c,d}") continue;
+			// if (selector !== "grid-gap-21px-82%") continue;
 			it(declaration, async () => {
 				let result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
 				expect(result.css).toEqual(expect.stringContaining(declaration));

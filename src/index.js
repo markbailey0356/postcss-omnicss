@@ -4,7 +4,7 @@ let _knownCssProperties = require("known-css-properties");
 let knownCssProperties = new Set(_knownCssProperties.all);
 const cssEscape = require("css.escape");
 const _ = require("lodash");
-const matchAll = require("string.prototype.matchall");
+// const matchAll = require("string.prototype.matchall");
 const path = require("path");
 
 const ignoredProperties = ["text-decoration-underline"];
@@ -103,7 +103,6 @@ const splitSelector = selector => {
 	selector = modifierSplits[modifierSplits.length - 1];
 
 	let prop, value;
-	let negated = false;
 
 	selector = selector.replace(/^\$/, "--");
 	if (selector.slice(0, 2) === "--") {
@@ -118,6 +117,7 @@ const splitSelector = selector => {
 			value = selector.slice(prop.length + 1);
 		}
 	} else {
+		let negated = false;
 		const leadingHyphen = selector[0] === "-";
 		let splitIndex;
 		for (let i = 1; i <= selector.length; i++) {
@@ -134,12 +134,12 @@ const splitSelector = selector => {
 		}
 		prop = splitIndex && selector.slice(negated ? 1 : 0, splitIndex);
 		value = splitIndex && selector.slice(splitIndex + 1);
+		if (negated) modifiers.push("negate");
 	}
 
 	return {
 		prop,
 		value,
-		negated,
 		modifiers,
 	};
 };
@@ -195,7 +195,11 @@ const propertyValues = prop => {
 	}
 };
 
-const tokenizeCompoundValue = (prop, value) => {
+const tokenizeValue = (prop, value) => {
+	if (!compoundProperties.has(prop)) {
+		return [value];
+	}
+
 	value = value.replace(/(^|-)\./g, "$10.");
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
@@ -250,37 +254,47 @@ const collectBracketTokens = matches => {
 	return tokens;
 };
 
-const processValueByRegex = (prop, value) => {
-	if (compoundProperties.has(prop)) {
-		const tokens = tokenizeCompoundValue(prop, value);
-		const transformedTokens = tokens.map(token => {
-			if (token.match(/^\[.*\]$/)) {
-				return token.replace(/,/g, " ");
-			}
-			if (token.match(/^\{.*\}$/)) {
-				return token.replace(/[{}]/g, '"').replace(/,/g, " ");
-			}
-			let match = token.match(/^([\w-]*)\((.*)\)/);
-			if (match) {
-				const [, functionName, args] = match;
-				return `${functionName}(${processValueByRegex(prop, args)})`;
-			}
-			return token;
-		});
-		// console.log({ prop, value, tokens, transformedTokens });
-		return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
-	} else {
-		if (value[0] === "(") {
-			value = "calc" + value;
+const processValueByRegex = (prop, modifiers, value) => {
+	const tokens = tokenizeValue(prop, value);
+	const transformedTokens = tokens.map(token => {
+		if (token.match(/^\[.*\]$/)) {
+			return token.replace(/,/g, " ");
 		}
-		if (value.match(/^\$[^(]/)) {
-			return `var(--${value.slice(1)})`;
+		if (token.match(/^\{.*\}$/)) {
+			return token.replace(/[{}]/g, '"').replace(/,/g, " ");
 		}
-		if (value.match(/^calc\(.*\)$/)) {
-			return value.replace(/([+/*-])/g, " $1 ");
+		if (modifiers.includes("negate")) {
+			const number = parseFloat(token);
+			if (!isNaN(number)) {
+				let unit = token.match(/[a-zA-Z%]+/);
+				unit = unit ? unit[0] : "";
+				return -1 * number + unit;
+			}
 		}
-		return value;
-	}
+		let match = token.match(/^([\w-]*)\((.*)\)/);
+		if (match) {
+			let [, functionName, args] = match;
+			functionName = functionName || "calc";
+			args =
+				functionName === "calc"
+					? processCalcArgs(args)
+					: processValueByRegex(
+							prop,
+							modifiers.filter(x => x !== "negate"),
+							args
+					  );
+			return `${functionName}(${args})`;
+		}
+		if (token.match(/^\$[^(]/)) {
+			return `var(--${token.slice(1)})`;
+		}
+		return token;
+	});
+	return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
+};
+
+const processCalcArgs = args => {
+	return args.replace(/([+/*-])/g, " $1 ");
 };
 
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
@@ -321,7 +335,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				.map(segment => abbreviations.get(segment) || segment)
 				.join("-");
 
-			let { prop, value, negated, modifiers } = splitSelector(subbedSelector);
+			let { prop, value, modifiers } = splitSelector(subbedSelector);
 
 			if (!(prop && value)) continue;
 
@@ -331,32 +345,22 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				numberOfSegments = 1;
 			}
 
-			value = processValueByRegex(prop, value);
+			value = processValueByRegex(prop, modifiers, value);
 
-			const defaultUnit = defaultUnits.get(prop);
-			if (negated || defaultUnit) {
-				let inserts = 0;
-				for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
-					// const lastIndex = index + match.length;
-					if (negated) {
-						if (value[index - 1 + inserts] === "-") {
-							value = value.slice(0, index - 1 + inserts) + value.slice(index + inserts);
-							inserts--;
-						} else {
-							value = value.slice(0, index + inserts) + "-" + value.slice(index + inserts);
-							inserts++;
-						}
-					}
-					// if (defaultUnit) {
-					// 	const lastChar = value[lastIndex + inserts];
-					// 	if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
-					// 		value =
-					// 			value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
-					// 		inserts += defaultUnit.length;
-					// 	}
-					// }
-				}
-			}
+			// const defaultUnit = defaultUnits.get(prop);
+			// if (negated || defaultUnit) {
+			// let inserts = 0;
+			// for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
+			// if (defaultUnit) {
+			// 	const lastChar = value[lastIndex + inserts];
+			// 	if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
+			// 		value =
+			// 			value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
+			// 		inserts += defaultUnit.length;
+			// 	}
+			// }
+			// }
+			// }
 
 			const container = modifiers.includes("desktop") ? "desktop" : "root";
 
