@@ -559,6 +559,32 @@ const tests = {
 		"grid-gap-16%-100%": "grid-gap: 16% 100%",
 		"grid-gap-21px-82%": "grid-gap: 21px 82%",
 	},
+	"grid-auto-columns": {
+		"grid-auto-columns-min-content": "grid-auto-columns: min-content",
+		"grid-auto-columns-max-content": "grid-auto-columns: max-content",
+		"grid-auto-columns-auto": "grid-auto-columns: auto",
+		"grid-auto-columns-100px": "grid-auto-columns: 100px",
+		"grid-auto-columns-20cm": "grid-auto-columns: 20cm",
+		"grid-auto-columns-50vmax": "grid-auto-columns: 50vmax",
+		"grid-auto-columns-10%": "grid-auto-columns: 10%",
+		"grid-auto-columns-33.3%": "grid-auto-columns: 33.3%",
+		"grid-auto-columns-0.5fr": "grid-auto-columns: 0.5fr",
+		"grid-auto-columns-3fr": "grid-auto-columns: 3fr",
+		"grid-auto-columns-minmax(100px,auto)": "grid-auto-columns: minmax(100px, auto)",
+		"grid-auto-columns-minmax(max-content, 2fr)": "grid-auto-columns: minmax(max-content, 2fr)",
+		"grid-auto-columns-minmax(20%, 80vmax)": "grid-auto-columns: minmax(20%, 80vmax)",
+		"grid-auto-columns-fit-content(400px)": "grid-auto-columns: fit-content(400px)",
+		"grid-auto-columns-fit-content(5cm)": "grid-auto-columns: fit-content(5cm)",
+		"grid-auto-columns-fit-content(20%)": "grid-auto-columns: fit-content(20%)",
+		"grid-auto-columns-min-content-max-content-auto": "grid-auto-columns: min-content max-content auto",
+		"grid-auto-columns-100px-150px-390px": "grid-auto-columns: 100px 150px 390px",
+		"grid-auto-columns-10%-33.3%": "grid-auto-columns: 10% 33.3%",
+		"grid-auto-columns-0.5fr-3fr-1fr": "grid-auto-columns: 0.5fr 3fr 1fr",
+		"grid-auto-columns-minmax(100px,auto)-minmax(max-content,2fr)-minmax(20%, 80vmax)":
+			"grid-auto-columns: minmax(100px, auto) minmax(max-content, 2fr) minmax(20%, 80vmax)",
+		"grid-auto-columns-100px-minmax(100px,auto)-10%-0.5fr-fit-content(400px)":
+			"grid-auto-columns: 100px minmax(100px, auto) 10% 0.5fr fit-content(400px)",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
