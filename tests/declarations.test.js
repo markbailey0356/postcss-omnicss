@@ -670,6 +670,48 @@ const tests = {
 		"padding-1em-2em-2em": "padding: 1em 2em 2em",
 		"padding-5px-1em-0-2em": "padding: 5px 1em 0 2em",
 	},
+	"margin-left": {
+		"margin-left-10px": "margin-left: 10px",
+		"margin-left-1em": "margin-left: 1em",
+		"margin-left-5%": "margin-left: 5%",
+		"margin-left-auto": "margin-left: auto",
+		"margin-left--5px": "margin-left: -5px",
+	},
+	"margin-right": {
+		"margin-right-10px": "margin-right: 10px",
+		"margin-right-1em": "margin-right: 1em",
+		"margin-right-5%": "margin-right: 5%",
+		"margin-right-auto": "margin-right: auto",
+		"margin-right--5px": "margin-right: -5px",
+	},
+	"margin-top": {
+		"margin-top-10px": "margin-top: 10px",
+		"margin-top-1em": "margin-top: 1em",
+		"margin-top-5%": "margin-top: 5%",
+		"margin-top-auto": "margin-top: auto",
+		"margin-top--5px": "margin-top: -5px",
+	},
+	"margin-bottom": {
+		"margin-bottom-10px": "margin-bottom: 10px",
+		"margin-bottom-1em": "margin-bottom: 1em",
+		"margin-bottom-5%": "margin-bottom: 5%",
+		"margin-bottom-auto": "margin-bottom: auto",
+		"margin-bottom--5px": "margin-bottom: -5px",
+	},
+	margin: {
+		"margin-1em": "margin: 1em",
+		"margin--3px": "margin: -3px",
+		"margin-5%-auto": "margin: 5% auto",
+		"margin-1em-auto-2em": "margin: 1em auto 2em",
+		"margin-2px-1em-0-auto": "margin: 2px 1em 0 auto",
+		"margin-5%": "margin: 5%",
+		"margin-10px": "margin: 10px",
+		"margin-1.6em-20px": "margin: 1.6em 20px",
+		"margin-10px-3%--1em": "margin: 10px 3% -1em",
+		"margin-10px-3px-30px-5px": "margin: 10px 3px 30px 5px",
+		"margin-2em-auto": "margin: 2em auto",
+		"margin-auto": "margin: auto",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
