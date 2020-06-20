@@ -128,8 +128,6 @@ const splitSelector = selector => {
 			} else if (leadingHyphen && knownCssProperties.has(selector.slice(1, i))) {
 				splitIndex = i;
 				negated = true;
-			} else if (splitIndex != undefined) {
-				break;
 			}
 		}
 		prop = splitIndex && selector.slice(negated ? 1 : 0, splitIndex);
