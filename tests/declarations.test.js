@@ -571,8 +571,8 @@ const tests = {
 		"grid-auto-columns-0.5fr": "grid-auto-columns: 0.5fr",
 		"grid-auto-columns-3fr": "grid-auto-columns: 3fr",
 		"grid-auto-columns-minmax(100px,auto)": "grid-auto-columns: minmax(100px, auto)",
-		"grid-auto-columns-minmax(max-content, 2fr)": "grid-auto-columns: minmax(max-content, 2fr)",
-		"grid-auto-columns-minmax(20%, 80vmax)": "grid-auto-columns: minmax(20%, 80vmax)",
+		"grid-auto-columns-minmax(max-content,2fr)": "grid-auto-columns: minmax(max-content, 2fr)",
+		"grid-auto-columns-minmax(20%,80vmax)": "grid-auto-columns: minmax(20%, 80vmax)",
 		"grid-auto-columns-fit-content(400px)": "grid-auto-columns: fit-content(400px)",
 		"grid-auto-columns-fit-content(5cm)": "grid-auto-columns: fit-content(5cm)",
 		"grid-auto-columns-fit-content(20%)": "grid-auto-columns: fit-content(20%)",
@@ -580,7 +580,7 @@ const tests = {
 		"grid-auto-columns-100px-150px-390px": "grid-auto-columns: 100px 150px 390px",
 		"grid-auto-columns-10%-33.3%": "grid-auto-columns: 10% 33.3%",
 		"grid-auto-columns-0.5fr-3fr-1fr": "grid-auto-columns: 0.5fr 3fr 1fr",
-		"grid-auto-columns-minmax(100px,auto)-minmax(max-content,2fr)-minmax(20%, 80vmax)":
+		"grid-auto-columns-minmax(100px,auto)-minmax(max-content,2fr)-minmax(20%,80vmax)":
 			"grid-auto-columns: minmax(100px, auto) minmax(max-content, 2fr) minmax(20%, 80vmax)",
 		"grid-auto-columns-100px-minmax(100px,auto)-10%-0.5fr-fit-content(400px)":
 			"grid-auto-columns: 100px minmax(100px, auto) 10% 0.5fr fit-content(400px)",

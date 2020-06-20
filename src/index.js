@@ -35,6 +35,9 @@ const compoundProperties = new Set([
 	"font",
 	"gap",
 	"grid",
+	"grid-auto-columns",
+	"grid-auto-rows",
+	"grid-auto-flow",
 	"grid-area",
 	"grid-gap",
 	"grid-column",
@@ -176,6 +179,9 @@ const propertyValues = prop => {
 		case "justify-content":
 		case "align-content":
 			return [...flexItems, "space-evenly", "space-around", "space-between"];
+		case "grid-auto-columns":
+		case "grid-auto-rows":
+			return ["min-content", "max-content", "fit-content", "minmax", "auto"];
 		case "grid-template-columns":
 		case "grid-template-rows":
 		case "grid-template":
