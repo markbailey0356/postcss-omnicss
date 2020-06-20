@@ -74,6 +74,11 @@ const abbreviations = new Map(
 		pb: "padding-bottom",
 		pl: "padding-left",
 		pr: "padding-right",
+		m: "margin",
+		mt: "margin-top",
+		mb: "margin-bottom",
+		ml: "margin-left",
+		mr: "margin-right",
 	})
 );
 
