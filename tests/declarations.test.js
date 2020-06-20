@@ -618,6 +618,28 @@ const tests = {
 		"grid-auto-flow-row-dense": "grid-auto-flow: row dense",
 		"grid-auto-flow-column-dense": "grid-auto-flow: column dense",
 	},
+	grid: {
+		"grid-none": "grid: none",
+		"grid-{a}-100px-{b}-1fr": 'grid: "a" 100px "b" 1fr',
+		"grid-[linename1]-{a}-100px-[linename2]": 'grid: [linename1] "a" 100px [linename2]',
+		"grid-{a}-200px-{b}-min-content": 'grid: "a" 200px "b" min-content',
+		"grid-{a}-minmax(100px,max-content)-{b}-20%": 'grid: "a" minmax(100px, max-content) "b" 20%',
+		"grid-100px/200px": "grid: 100px / 200px",
+		"grid-minmax(400px,min-content)/repeat(auto-fill,50px)":
+			"grid: minmax(400px, min-content) / repeat(auto-fill, 50px)",
+		"grid-200px/auto-flow": "grid: 200px / auto-flow",
+		"grid-30%/auto-flow-dense": "grid: 30% / auto-flow dense",
+		"grid-repeat(3,[line1,line2,line3]-200px)/auto-flow-300px":
+			"grid: repeat(3, [line1 line2 line3] 200px) / auto-flow 300px",
+		"grid-[line1]-minmax(20em,max-content)/auto-flow-dense-40%":
+			"grid: [line1] minmax(20em, max-content) / auto-flow dense 40%",
+		"grid-auto-flow/200px": "grid: auto-flow / 200px",
+		"grid-auto-flow-dense/30%": "grid: auto-flow dense / 30%",
+		"grid-auto-flow-300px/repeat(3,[line1,line2,line3]-200px)":
+			"grid: auto-flow 300px / repeat(3, [line1 line2 line3] 200px)",
+		"grid-auto-flow-dense-40%/[line1]-minmax(20em,max-content)":
+			"grid: auto-flow dense 40% / [line1] minmax(20em, max-content)",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
