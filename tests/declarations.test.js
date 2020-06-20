@@ -766,6 +766,22 @@ const tests = {
 		"max-height-fit-content(20em)": "max-height: fit-content(20em)",
 		"max-height-auto": "max-height: auto",
 	},
+	"font-family": {
+		"font-family-Times,{Times,New,Roman},Georgia,serif": 'font-family: Times, "Times New Roman", Georgia, serif',
+		"font-family-Verdana,Arial,Helvertica,sans-serif": "font-family: Verdana, Arial, Helvetica, sans-serif",
+		"font-family-{Lucide,Console},Courier,monospace": 'font-family: "Lucida Console", Courier, monospace',
+		"font-family-cursive": "font-family: cursive",
+		"font-family-fantasy": "font-family: fantasy",
+		"font-family-emoji": "font-family: emoji",
+		"font-family-math": "font-family: math",
+		"font-family-fangsong": "font-family: fangsong",
+		"font-family-system-ui,-apple-system,BlinkMacSystemFont,{Segoe,UI},Roboto,{Helvetica,Neue},Arial,{Noto,Sans},sans-serif,{Apple,Color,Emoji},{Segoe,UI,Emoji},{Segoe,UI,Symbol},{Noto,Color,Emoji}":
+			'font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+		"font-family-Georgia,Cambria,{Times,New,Roman},Times,serif":
+			'font-family: Georgia, Cambria, "Times New Roman", Times, serif',
+		"font-family-Menlo,Monaco,Consolas,{Liberation,Mono},{Courier,New},monospace":
+			'font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
