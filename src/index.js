@@ -186,6 +186,8 @@ const propertyValues = prop => {
 		case "grid-template-rows":
 		case "grid-template":
 			return ["min-content", "max-content", "fit-content", "auto-fit", "auto-fill"];
+		case "grid-auto-flow":
+			return ["row", "column", "dense"];
 		case "grid-row-start":
 		case "grid-row-end":
 		case "grid-column-start":

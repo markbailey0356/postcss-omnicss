@@ -611,6 +611,13 @@ const tests = {
 		"grid-auto-rows-100px-minmax(100px,auto)-10%-0.5fr-fit-content(400px)":
 			"grid-auto-rows: 100px minmax(100px, auto) 10% 0.5fr fit-content(400px)",
 	},
+	"grid-auto-flow": {
+		"grid-auto-flow-row": "grid-auto-flow: row",
+		"grid-auto-flow-column": "grid-auto-flow: column",
+		"grid-auto-flow-dense": "grid-auto-flow: dense",
+		"grid-auto-flow-row-dense": "grid-auto-flow: row dense",
+		"grid-auto-flow-column-dense": "grid-auto-flow: column dense",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
