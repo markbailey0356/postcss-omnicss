@@ -640,12 +640,41 @@ const tests = {
 		"grid-auto-flow-dense-40%/[line1]-minmax(20em,max-content)":
 			"grid: auto-flow dense 40% / [line1] minmax(20em, max-content)",
 	},
+	"padding-left": {
+		"padding-left-0.5em": "padding-left: 0.5em",
+		"padding-left-0": "padding-left: 0",
+		"padding-left-2cm": "padding-left: 2cm",
+		"padding-left-10%": "padding-left: 10%",
+	},
+	"padding-right": {
+		"padding-right-0.5em": "padding-right: 0.5em",
+		"padding-right-0": "padding-right: 0",
+		"padding-right-2cm": "padding-right: 2cm",
+		"padding-right-10%": "padding-right: 10%",
+	},
+	"padding-top": {
+		"padding-top-0.5em": "padding-top: 0.5em",
+		"padding-top-0": "padding-top: 0",
+		"padding-top-2cm": "padding-top: 2cm",
+		"padding-top-10%": "padding-top: 10%",
+	},
+	"padding-bottom": {
+		"padding-bottom-0.5em": "padding-bottom: 0.5em",
+		"padding-bottom-0": "padding-bottom: 0",
+		"padding-bottom-2cm": "padding-bottom: 2cm",
+		"padding-bottom-10%": "padding-bottom: 10%",
+	},
+	padding: {
+		"padding-1em": "padding: 1em",
+		"padding-5%-10%": "padding: 5% 10%",
+		"padding-1em-2em-2em": "padding: 1em 2em 2em",
+		"padding-5px-1em-0-2em": "padding: 5px 1em 0 2em",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
-			// if (selector !== "grid-gap-21px-82%") continue;
 			it(declaration, async () => {
 				let result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
 				expect(result.root.nodes).toHaveLength(1);

@@ -69,8 +69,11 @@ const compoundProperties = new Set([
 
 const abbreviations = new Map(
 	Object.entries({
-		pt: "padding-top",
 		p: "padding",
+		pt: "padding-top",
+		pb: "padding-bottom",
+		pl: "padding-left",
+		pr: "padding-right",
 	})
 );
 
@@ -289,7 +292,7 @@ const processValueByRegex = (prop, modifiers, value) => {
 		if (!isNaN(number)) {
 			let unit = token.match(/[a-zA-Z%]+/);
 			unit = unit ? unit[0] : "";
-			if (modifiers.includes("default-unit")) {
+			if (modifiers.includes("default-unit") && number !== 0) {
 				unit = unit || defaultUnits.get(prop) || "";
 			}
 			if (modifiers.includes("negate")) {
