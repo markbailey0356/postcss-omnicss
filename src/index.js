@@ -135,6 +135,10 @@ const splitSelector = selector => {
 		}
 		prop = splitIndex && selector.slice(negated ? 1 : 0, splitIndex);
 		value = splitIndex && selector.slice(splitIndex + 1);
+		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
+			prop = "grid";
+			value = "auto-flow-" + value;
+		}
 		if (negated) modifiers.push("negate");
 	}
 
@@ -188,6 +192,18 @@ const propertyValues = prop => {
 			return ["min-content", "max-content", "fit-content", "auto-fit", "auto-fill"];
 		case "grid-auto-flow":
 			return ["row", "column", "dense"];
+		case "grid":
+			return [
+				"dense",
+				"auto-flow",
+				"min-content",
+				"max-content",
+				"fit-content",
+				"minmax",
+				"auto",
+				"auto-fit",
+				"auto-fill",
+			];
 		case "grid-row-start":
 		case "grid-row-end":
 		case "grid-column-start":
