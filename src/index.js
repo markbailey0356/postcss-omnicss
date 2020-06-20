@@ -263,13 +263,17 @@ const processValueByRegex = (prop, modifiers, value) => {
 		if (token.match(/^\{.*\}$/)) {
 			return token.replace(/[{}]/g, '"').replace(/,/g, " ");
 		}
-		if (modifiers.includes("negate")) {
-			const number = parseFloat(token);
-			if (!isNaN(number)) {
-				let unit = token.match(/[a-zA-Z%]+/);
-				unit = unit ? unit[0] : "";
-				return -1 * number + unit;
+		let number = parseFloat(token);
+		if (!isNaN(number)) {
+			let unit = token.match(/[a-zA-Z%]+/);
+			unit = unit ? unit[0] : "";
+			if (modifiers.includes("default-unit")) {
+				unit = unit || defaultUnits.get(prop) || "";
 			}
+			if (modifiers.includes("negate")) {
+				number *= -1;
+			}
+			return number + unit;
 		}
 		let match = token.match(/^([\w-]*)\((.*)\)/);
 		if (match) {
@@ -344,6 +348,8 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (prop === "flex-flow") {
 				numberOfSegments = 1;
 			}
+
+			modifiers.push("default-unit");
 
 			value = processValueByRegex(prop, modifiers, value);
 
