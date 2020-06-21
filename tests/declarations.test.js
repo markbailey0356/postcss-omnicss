@@ -797,6 +797,16 @@ const tests = {
 		"font-size-0.8em": "font-size: 0.8em",
 		"font-size-80%": "font-size: 80%",
 	},
+	"-webkit-font-smoothing": {
+		"-webkit-font-smoothing-auto": "-webkit-font-smoothing: auto",
+		"-webkit-font-smoothing-none": "-webkit-font-smoothing: none",
+		"-webkit-font-smoothing-antialiased": "-webkit-font-smoothing: antialiased",
+		"-webkit-font-smoothing-subpixel-antialiased": "-webkit-font-smoothing: subpixel-antialiased",
+	},
+	"-moz-osx-font-smoothing": {
+		"-moz-osx-font-smoothing-auto": "-moz-osx-font-smoothing: auto",
+		"-moz-osx-font-smoothing-grayscale": "-moz-osx-font-smoothing: grayscale",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
