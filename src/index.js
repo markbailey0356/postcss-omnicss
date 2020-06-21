@@ -34,6 +34,7 @@ const compoundProperties = new Set([
 	"flex-flow",
 	"font",
 	"font-family",
+	"font-style",
 	"gap",
 	"grid",
 	"grid-auto-columns",

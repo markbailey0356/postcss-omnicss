@@ -807,6 +807,13 @@ const tests = {
 		"-moz-osx-font-smoothing-auto": "-moz-osx-font-smoothing: auto",
 		"-moz-osx-font-smoothing-grayscale": "-moz-osx-font-smoothing: grayscale",
 	},
+	"font-style": {
+		"font-style-normal": "font-style: normal",
+		"font-style-italic": "font-style: italic",
+		"font-style-oblique": "font-style: oblique",
+		"font-style-oblique-10deg": "font-style: oblique 10deg",
+		"font-style-oblique--45deg": "font-style: oblique -45deg",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
