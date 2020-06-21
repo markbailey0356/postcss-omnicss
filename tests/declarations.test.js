@@ -782,6 +782,21 @@ const tests = {
 		"font-family-Menlo,Monaco,Consolas,{Liberation,Mono},{Courier,New},monospace":
 			'font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
 	},
+	"font-size": {
+		"font-size-xx-small": "font-size: xx-small",
+		"font-size-x-small": "font-size: x-small",
+		"font-size-small": "font-size: small",
+		"font-size-medium": "font-size: medium",
+		"font-size-large": "font-size: large",
+		"font-size-x-large": "font-size: x-large",
+		"font-size-xx-large": "font-size: xx-large",
+		"font-size-xxx-large": "font-size: xxx-large",
+		"font-size-smaller": "font-size: smaller",
+		"font-size-larger": "font-size: larger",
+		"font-size-12px": "font-size: 12px",
+		"font-size-0.8em": "font-size: 0.8em",
+		"font-size-80%": "font-size: 80%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
