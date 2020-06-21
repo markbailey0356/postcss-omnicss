@@ -829,6 +829,12 @@ const tests = {
 		"font-weight-800": "font-weight: 800",
 		"font-weight-900": "font-weight: 900",
 	},
+	"letter-spacing": {
+		"letter-spacing-normal": "letter-spacing: normal",
+		"letter-spacing-0.3em": "letter-spacing: 0.3em",
+		"letter-spacing-3px": "letter-spacing: 3px",
+		"letter-spacing-.3px": "letter-spacing: 0.3px",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
