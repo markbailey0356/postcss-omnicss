@@ -768,8 +768,8 @@ const tests = {
 	},
 	"font-family": {
 		"font-family-Times,{Times,New,Roman},Georgia,serif": 'font-family: Times, "Times New Roman", Georgia, serif',
-		"font-family-Verdana,Arial,Helvertica,sans-serif": "font-family: Verdana, Arial, Helvetica, sans-serif",
-		"font-family-{Lucide,Console},Courier,monospace": 'font-family: "Lucida Console", Courier, monospace',
+		"font-family-Verdana,Arial,Helvetica,sans-serif": "font-family: Verdana, Arial, Helvetica, sans-serif",
+		"font-family-{Lucida,Console},Courier,monospace": 'font-family: "Lucida Console", Courier, monospace',
 		"font-family-cursive": "font-family: cursive",
 		"font-family-fantasy": "font-family: fantasy",
 		"font-family-emoji": "font-family: emoji",

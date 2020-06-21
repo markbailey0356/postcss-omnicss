@@ -231,7 +231,7 @@ const tokenizeValue = (prop, value) => {
 		return [value];
 	}
 
-	value = value.replace(/(^|-)\./g, "$10.");
+	value = value.replace(/(^|-)\./g, "$10.").replace(/,-+/g, ",--");
 	const possibleValues = propertyValues(prop);
 	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
@@ -239,14 +239,7 @@ const tokenizeValue = (prop, value) => {
 		"g"
 	);
 	let matches = value.split(regex);
-	matches = _.compact(
-		matches.map(x =>
-			x
-				.replace(/^-{1,2}(\d)/, "-$1")
-				.replace(/^-+(\D)/, "$1")
-				.replace(/-+$/, "")
-		)
-	);
+	matches = _.compact(matches.map(x => x.replace(/^-(\D)/, "$1").replace(/-+$/, "")));
 	return collectBracketTokens(matches);
 };
 
@@ -325,7 +318,8 @@ const processValueByRegex = (prop, modifiers, value) => {
 		}
 		return token;
 	});
-	return transformedTokens.join(" ").replace(/\s*,\s*/, ", ");
+	// console.log({tokens, transformedTokens, prop, value, result: transformedTokens.join(" ").replace(/\s*,\s*/g, ", ")})
+	return transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
 };
 
 const processCalcArgs = args => {
