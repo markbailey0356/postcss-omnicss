@@ -814,6 +814,21 @@ const tests = {
 		"font-style-oblique-10deg": "font-style: oblique 10deg",
 		"font-style-oblique--45deg": "font-style: oblique -45deg",
 	},
+	"font-weight": {
+		"font-weight-normal": "font-weight: normal",
+		"font-weight-bold": "font-weight: bold",
+		"font-weight-lighter": "font-weight: lighter",
+		"font-weight-bolder": "font-weight: bolder",
+		"font-weight-100": "font-weight: 100",
+		"font-weight-200": "font-weight: 200",
+		"font-weight-300": "font-weight: 300",
+		"font-weight-400": "font-weight: 400",
+		"font-weight-500": "font-weight: 500",
+		"font-weight-600": "font-weight: 600",
+		"font-weight-700": "font-weight: 700",
+		"font-weight-800": "font-weight: 800",
+		"font-weight-900": "font-weight: 900",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
