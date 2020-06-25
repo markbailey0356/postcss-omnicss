@@ -246,6 +246,20 @@ it("has a modifier to target desktop screen sizes", async () => {
 	);
 });
 
+it("has a modifier to target mobile screen sizes", async () => {
+	await run(
+		"",
+		`@media screen and (max-width: 767.98px) 
+		{.mobile\\:display-none {
+				display: none
+			}
+		}`,
+		{
+			source: '<div class="mobile:display-none"></div>',
+		}
+	);
+});
+
 it("can set the value of a custom property", async () => {
 	await run(
 		"",

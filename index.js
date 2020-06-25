@@ -358,6 +358,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const nodesByContainer = {
 			root: [],
 			desktop: [],
+			mobile: [],
 		};
 		for (let selector of selectors) {
 			const subbedSelector = selector
@@ -394,7 +395,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			// }
 			// }
 
-			const container = modifiers.includes("desktop") ? "desktop" : "root";
+			let container = "root";
+			if (modifiers.includes("desktop")) {
+				container = "desktop";
+			} else if (modifiers.includes("mobile")) {
+				container = "mobile";
+			}
 
 			let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
 			nodesByContainer[container][numberOfSegments] = nodesByContainer[container][numberOfSegments] || [];
@@ -410,6 +416,15 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				nodes: nodes.desktop,
 			});
 			root.prepend(desktopContainer);
+		}
+
+		if (nodes.mobile.length) {
+			const mobileContainer = postcss.atRule({
+				name: "media",
+				params: "screen and (max-width: 767.98px)",
+				nodes: nodes.mobile,
+			});
+			root.prepend(mobileContainer);
 		}
 
 		root.prepend(nodes.root);
