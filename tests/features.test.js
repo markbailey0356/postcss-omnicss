@@ -260,6 +260,34 @@ it("has a modifier to target mobile screen sizes", async () => {
 	);
 });
 
+it("provides a shorthand for desktop modifier", async () => {
+	await run(
+		"",
+		`@media screen and (min-width: 768px) 
+		{.d\\:color-black {
+				color: black
+			}
+		}`,
+		{
+			source: '<div class="d:color-black"></div>',
+		}
+	);
+});
+
+it("provides a shorthand for mobile modifier", async () => {
+	await run(
+		"",
+		`@media screen and (max-width: 767.98px) 
+		{.m\\:color-black {
+				color: black
+			}
+		}`,
+		{
+			source: '<div class="m:color-black"></div>',
+		}
+	);
+});
+
 it("can set the value of a custom property", async () => {
 	await run(
 		"",

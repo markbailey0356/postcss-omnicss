@@ -69,7 +69,7 @@ const compoundProperties = new Set([
 	"transition",
 ]);
 
-const abbreviations = new Map(
+const propertyAbbreviations = new Map(
 	Object.entries({
 		p: "padding",
 		pt: "padding-top",
@@ -81,6 +81,13 @@ const abbreviations = new Map(
 		mb: "margin-bottom",
 		ml: "margin-left",
 		mr: "margin-right",
+	})
+);
+
+const modifierAbbreviations = new Map(
+	Object.entries({
+		d: "desktop",
+		m: "mobile",
 	})
 );
 
@@ -363,10 +370,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		for (let selector of selectors) {
 			const subbedSelector = selector
 				.split("-")
-				.map(segment => abbreviations.get(segment) || segment)
+				.map(segment => propertyAbbreviations.get(segment) || segment)
 				.join("-");
 
 			let { prop, value, modifiers } = splitSelector(subbedSelector);
+
+			modifiers = modifiers.map(x => modifierAbbreviations.get(x) || x);
 
 			if (!(prop && value)) continue;
 
