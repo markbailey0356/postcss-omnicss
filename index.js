@@ -141,7 +141,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			});
 
 			const { undetermined } = await new PurgeCSS().extractSelectorsFromFiles(files, [
-				{ extensions: ["html"], extractor },
+				{ extensions: ["html", "vue", "js"], extractor },
 			]);
 			selectors = undetermined;
 		}
