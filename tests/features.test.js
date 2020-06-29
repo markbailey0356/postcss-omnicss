@@ -425,3 +425,15 @@ it("handles modifiers used in combination with property abbreviations", async ()
 		}
 	);
 });
+
+it("provides a modifier to style children of a container", async () => {
+	await run(
+		"",
+		`.child\\:display-flex > * {
+			display: flex
+		}`,
+		{
+			source: '<div class="child:display-flex"></div>',
+		}
+	);
+});

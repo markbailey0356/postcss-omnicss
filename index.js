@@ -84,6 +84,7 @@ const propertyAbbreviations = new Map(
 		mr: "margin-right",
 		w: "width",
 		h: "height",
+		bg: "background",
 	})
 );
 
@@ -418,6 +419,9 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let realSelector = "." + cssEscape(selector);
 
+			if (modifiers.includes("child")) {
+				realSelector += " > *";
+			}
 			if (modifiers.includes("hover")) {
 				realSelector += ":hover";
 			}
