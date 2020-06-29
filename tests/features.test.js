@@ -413,3 +413,15 @@ it("provides a modifier to make property value important", async () => {
 		}
 	);
 });
+
+it("handles modifiers used in combination with property abbreviations", async () => {
+	await run(
+		"",
+		`.important\\:h-auto {
+			height: auto !important
+		}`,
+		{
+			source: '<div class="important:h-auto"></div>',
+		}
+	);
+});

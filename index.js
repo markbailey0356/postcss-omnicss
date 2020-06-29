@@ -122,8 +122,15 @@ const extractor = content => content.match(/[^"'=<>\s]+/g) || [];
 
 const splitSelector = selector => {
 	const modifierSplits = selector.split(":");
-	const modifiers = modifierSplits.slice(0, -1);
+	let modifiers = modifierSplits.slice(0, -1);
 	selector = modifierSplits[modifierSplits.length - 1];
+
+	selector = selector
+		.split("-")
+		.map(segment => propertyAbbreviations.get(segment) || segment)
+		.join("-");
+
+	modifiers = modifiers.map(x => modifierAbbreviations.get(x) || x);
 
 	let prop, value;
 
@@ -373,14 +380,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			mobile: [],
 		};
 		for (const selector of selectors) {
-			const subbedSelector = selector
-				.split("-")
-				.map(segment => propertyAbbreviations.get(segment) || segment)
-				.join("-");
-
-			let { prop, value, modifiers } = splitSelector(subbedSelector);
-
-			modifiers = modifiers.map(x => modifierAbbreviations.get(x) || x);
+			let { prop, value, modifiers } = splitSelector(selector);
 
 			if (!(prop && value)) continue;
 
