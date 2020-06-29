@@ -425,6 +425,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				realSelector += ":focus";
 			}
 
+			if (modifiers.includes("important")) {
+				value += " !important";
+			}
+
 			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
 			nodesByContainer[container][numberOfSegments] = nodesByContainer[container][numberOfSegments] || [];
 			nodesByContainer[container][numberOfSegments].push(node);

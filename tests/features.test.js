@@ -401,3 +401,15 @@ it("provides a modifier to apply the class on focus", async () => {
 		}
 	);
 });
+
+it("provides a modifier to make property value important", async () => {
+	await run(
+		"",
+		`.important\\:color-black {
+			color: black !important
+		}`,
+		{
+			source: '<div class="important:color-black"></div>',
+		}
+	);
+});
