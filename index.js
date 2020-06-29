@@ -81,6 +81,8 @@ const propertyAbbreviations = new Map(
 		mb: "margin-bottom",
 		ml: "margin-left",
 		mr: "margin-right",
+		w: "width",
+		h: "height",
 	})
 );
 
