@@ -437,3 +437,27 @@ it("provides a modifier to style children of a container", async () => {
 		}
 	);
 });
+
+it("provides a modifier to style before elements", async () => {
+	await run(
+		"",
+		`.before\\:content-\\{\\}::before {
+			content: ""
+		}`,
+		{
+			source: '<div class="before:content-{}"></div>',
+		}
+	);
+});
+
+it("provides a modifier to style after elements", async () => {
+	await run(
+		"",
+		`.after\\:content-\\{\\}::after {
+			content: ""
+		}`,
+		{
+			source: '<div class="after:content-{}"></div>',
+		}
+	);
+});

@@ -422,6 +422,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (modifiers.includes("child")) {
 				realSelector += " > *";
 			}
+			if (modifiers.includes("after")) {
+				realSelector += "::after";
+			}
+			if (modifiers.includes("before")) {
+				realSelector += "::before";
+			}
 			if (modifiers.includes("hover")) {
 				realSelector += ":hover";
 			}
