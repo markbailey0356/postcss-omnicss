@@ -66,6 +66,7 @@ const compoundProperties = new Set([
 	"place-items",
 	"place-self",
 	"text-decoration",
+	"transform-origin",
 	"transition",
 ]);
 
@@ -231,6 +232,8 @@ const propertyValues = prop => {
 		case "grid-column":
 		case "grid-area":
 			return ["span", "auto"];
+		case "transform-origin":
+			return ["left", "bottom", "top", "right", "center"];
 		default:
 			return [];
 	}
