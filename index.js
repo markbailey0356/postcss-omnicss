@@ -428,6 +428,9 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (modifiers.includes("before")) {
 				realSelector += "::before";
 			}
+			if (modifiers.includes("placeholder")) {
+				realSelector += "::placeholder";
+			}
 			if (modifiers.includes("hover")) {
 				realSelector += ":hover";
 			}

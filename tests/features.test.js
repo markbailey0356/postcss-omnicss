@@ -461,3 +461,15 @@ it("provides a modifier to style after elements", async () => {
 		}
 	);
 });
+
+it("provides a modifier to style placeholders", async () => {
+	await run(
+		"",
+		`.placeholder\\:color-grey::placeholder {
+			color: grey
+		}`,
+		{
+			source: '<div class="placeholder:color-grey"></div>',
+		}
+	);
+});
