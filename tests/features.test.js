@@ -1,9 +1,9 @@
-let postcss = require("postcss");
+const postcss = require("postcss");
 
-let plugin = require("..");
+const plugin = require("..");
 
 async function run(input, output, opts) {
-	let result = await postcss([plugin(opts)]).process(input, { from: undefined });
+	const result = await postcss([plugin(opts)]).process(input, { from: undefined });
 	expect(result.css.replace(/\s+/g, " ")).toEqual(output.replace(/\s+/g, " "));
 	expect(result.warnings()).toHaveLength(0);
 }
@@ -374,6 +374,30 @@ it("allows nesting brackets within calc()", async () => {
 		}`,
 		{
 			source: '<div class="margin-top-calc((1rem+1%)/3)"></div>',
+		}
+	);
+});
+
+it("provides a modifier to apply the class on hover", async () => {
+	await run(
+		"",
+		`.hover\\:color-black:hover {
+			color: black
+		}`,
+		{
+			source: '<div class="hover:color-black"></div>',
+		}
+	);
+});
+
+it("provides a modifier to apply the class on focus", async () => {
+	await run(
+		"",
+		`.focus\\:color-black:focus {
+			color: black
+		}`,
+		{
+			source: '<div class="focus:color-black"></div>',
 		}
 	);
 });

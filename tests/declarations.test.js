@@ -1,6 +1,6 @@
-let postcss = require("postcss");
+const postcss = require("postcss");
 
-let plugin = require("..");
+const plugin = require("..");
 
 const tests = {
 	"box-sizing": {
@@ -841,7 +841,7 @@ for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
 			it(declaration, async () => {
-				let result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
+				const result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
 				expect(result.root.nodes).toHaveLength(1);
 				expect(result.root.nodes[0].nodes).toHaveLength(1);
 				expect(result.root.nodes[0].nodes[0].toString()).toEqual(declaration);

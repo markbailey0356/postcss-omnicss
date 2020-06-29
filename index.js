@@ -1,7 +1,7 @@
-let postcss = require("postcss");
-let { PurgeCSS } = require("purgecss");
-let _knownCssProperties = require("known-css-properties");
-let knownCssProperties = new Set(_knownCssProperties.all);
+const postcss = require("postcss");
+const { PurgeCSS } = require("purgecss");
+const _knownCssProperties = require("known-css-properties");
+const knownCssProperties = new Set(_knownCssProperties.all);
 const cssEscape = require("css.escape");
 const _ = require("lodash");
 // const matchAll = require("string.prototype.matchall");
@@ -111,8 +111,8 @@ const _defaultUnits = {
 };
 
 const defaultUnits = new Map();
-for (let [unit, properties] of Object.entries(_defaultUnits)) {
-	for (let property of properties) {
+for (const [unit, properties] of Object.entries(_defaultUnits)) {
+	for (const property of properties) {
 		defaultUnits.set(property, unit);
 	}
 }
@@ -259,7 +259,7 @@ const collectBracketTokens = matches => {
 	let curlyBrackets = 0;
 	let currentToken = [];
 	const tokens = [];
-	for (let match of matches) {
+	for (const match of matches) {
 		// console.log({ match, tokens, curlyBrackets });
 		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0 && match === "-") continue;
 
@@ -309,7 +309,7 @@ const processValueByRegex = (prop, modifiers, value) => {
 			}
 			return number + unit;
 		}
-		let match = token.match(/^([\w-]*)\((.*)\)/);
+		const match = token.match(/^([\w-]*)\((.*)\)/);
 		if (match) {
 			let [, functionName, args] = match;
 			functionName = functionName || "calc";
@@ -369,7 +369,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			desktop: [],
 			mobile: [],
 		};
-		for (let selector of selectors) {
+		for (const selector of selectors) {
 			const subbedSelector = selector
 				.split("-")
 				.map(segment => propertyAbbreviations.get(segment) || segment)
@@ -413,7 +413,16 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				container = "mobile";
 			}
 
-			let node = postcss.rule({ selector: "." + cssEscape(selector) }).append(postcss.decl({ prop, value }));
+			let realSelector = "." + cssEscape(selector);
+
+			if (modifiers.includes("hover")) {
+				realSelector += ":hover";
+			}
+			if (modifiers.includes("focus")) {
+				realSelector += ":focus";
+			}
+
+			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
 			nodesByContainer[container][numberOfSegments] = nodesByContainer[container][numberOfSegments] || [];
 			nodesByContainer[container][numberOfSegments].push(node);
 		}
