@@ -449,24 +449,25 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 		const nodes = _.mapValues(nodesByContainer, _.flow(_.compact, _.flatten));
 
-		if (nodes.desktop.length) {
-			const desktopContainer = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 768px)",
-				nodes: nodes.desktop,
-			});
-			root.prepend(desktopContainer);
-		}
-
+		root.append(nodes.root);
+		
 		if (nodes.mobile.length) {
 			const mobileContainer = postcss.atRule({
 				name: "media",
 				params: "screen and (max-width: 767.98px)",
 				nodes: nodes.mobile,
 			});
-			root.prepend(mobileContainer);
+			root.append(mobileContainer);
 		}
 
-		root.prepend(nodes.root);
+		if (nodes.desktop.length) {
+			const desktopContainer = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 768px)",
+				nodes: nodes.desktop,
+			});
+			root.append(desktopContainer);
+		}
+
 	};
 });
