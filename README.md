@@ -37,3 +37,12 @@ If you do not use PostCSS, add it according to [official docs]
 and set this plugin in settings.
 
 [official docs]: https://github.com/postcss/postcss#usage
+
+## Cases to handle
+
+* color-rgba(255,255,255,0.5)
+* content-container
+* flex-start;
+* page-inner
+* background-#000
+* border-2px-solid-white
