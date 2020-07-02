@@ -378,7 +378,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const nodesByContainer = {
 			root: [],
 			desktop: [],
-			mobile: [],
+			mobile: []
 		};
 		for (const selector of selectors) {
 			let { prop, value, modifiers } = splitSelector(selector);
@@ -417,10 +417,13 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				container = "mobile";
 			}
 
+			let subContainer = 1;
+
 			let realSelector = "." + cssEscape(selector);
 
 			if (modifiers.includes("child")) {
 				realSelector += " > *";
+				subContainer = 0;
 			}
 			if (modifiers.includes("after")) {
 				realSelector += "::after";
@@ -441,13 +444,16 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (modifiers.includes("important")) {
 				value += " !important";
 			}
-
+			
 			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
-			nodesByContainer[container][numberOfSegments] = nodesByContainer[container][numberOfSegments] || [];
-			nodesByContainer[container][numberOfSegments].push(node);
+			nodesByContainer[container] = nodesByContainer[container] || [];
+			nodesByContainer[container][subContainer] = nodesByContainer[container][subContainer] || []
+			nodesByContainer[container][subContainer][numberOfSegments] = nodesByContainer[container][subContainer][numberOfSegments] || [];
+			nodesByContainer[container][subContainer][numberOfSegments].push(node);
 		}
 
-		const nodes = _.mapValues(nodesByContainer, _.flow(_.compact, _.flatten));
+
+		const nodes = _.mapValues(nodesByContainer, _.flow( _.flattenDeep, _.compact));
 
 		root.append(nodes.root);
 		

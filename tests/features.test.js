@@ -438,6 +438,26 @@ it("provides a modifier to style children of a container", async () => {
 	);
 });
 
+it("outputs child selectors before normal utility classes", async () => {
+	await run(
+		"",
+		`.child\\:display-flex > * {
+			display: flex
+		}
+		.display-flex {
+			display: flex
+		}
+		.color-white {
+			color: white
+		}`,
+		{
+			source: `<div class="display-flex child:display-flex">
+				<div class="color-white"></div>
+			</div>`,
+		}
+	);
+})
+
 it("provides a modifier to style before elements", async () => {
 	await run(
 		"",
