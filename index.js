@@ -391,6 +391,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				numberOfSegments = 1;
 			}
 
+			if (prop === "all") {
+				numberOfSegments = 0;
+			}
+
 			modifiers.push("default-unit");
 
 			value = processValueByRegex(prop, modifiers, value);
