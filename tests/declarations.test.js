@@ -969,6 +969,14 @@ const tests = {
 		"vertical-align-4px": "vertical-align: 4px",
 		"vertical-align-20%": "vertical-align: 20%",
 	},
+	"white-space": {
+		"white-space-normal": "white-space: normal",
+		"white-space-nowrap": "white-space: nowrap",
+		"white-space-pre": "white-space: pre",
+		"white-space-pre-wrap": "white-space: pre-wrap",
+		"white-space-pre-line": "white-space: pre-line",
+		"white-space-break-spaces": "white-space: break-spaces",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
