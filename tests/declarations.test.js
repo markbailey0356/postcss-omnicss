@@ -917,6 +917,13 @@ const tests = {
 		"text-decoration-line-underline-overline": "text-decoration-line: underline overline",
 		"text-decoration-line-overline-underline-line-through": "text-decoration-line: overline underline line-through",
 	},
+	"text-decoration-color": {
+		"text-decoration-color-currentcolor": "text-decoration-color: currentcolor",
+		"text-decoration-color-red": "text-decoration-color: red",
+		"text-decoration-color-#00ff00": "text-decoration-color: #00ff00",
+		"text-decoration-color-rgba(255,128,128,0.5)": "text-decoration-color: rgba(255, 128, 128, 0.5)",
+		"text-decoration-color-transparent": "text-decoration-color: transparent",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
