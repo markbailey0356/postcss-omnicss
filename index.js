@@ -13,63 +13,6 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
-const compoundProperties = new Set([
-	"animation",
-	"align-items",
-	"align-content",
-	"align-self",
-	"background",
-	"border",
-	"border-bottom",
-	"border-color",
-	"border-left",
-	"border-radius",
-	"border-right",
-	"border-style",
-	"border-top",
-	"border-width",
-	"column-rule",
-	"columns",
-	"flex",
-	"flex-flow",
-	"font",
-	"font-family",
-	"font-style",
-	"gap",
-	"grid",
-	"grid-auto-columns",
-	"grid-auto-rows",
-	"grid-auto-flow",
-	"grid-area",
-	"grid-gap",
-	"grid-column",
-	"grid-column-end",
-	"grid-column-start",
-	"grid-row",
-	"grid-row-end",
-	"grid-row-start",
-	"grid-template",
-	"grid-template-areas",
-	"grid-template-columns",
-	"grid-template-rows",
-	"justify-content",
-	"justify-items",
-	"justify-self",
-	"list-style",
-	"margin",
-	"object-position",
-	"offset",
-	"outline",
-	"overflow",
-	"padding",
-	"place-content",
-	"place-items",
-	"place-self",
-	"text-decoration",
-	"transform-origin",
-	"transition",
-]);
-
 const propertyAbbreviations = new Map(
 	Object.entries({
 		p: "padding",
@@ -247,21 +190,21 @@ const propertyValues = prop => {
 	}
 };
 
-const tokenizeValue = (prop, value) => {
-	if (!compoundProperties.has(prop)) {
-		return [value];
-	}
-
+const tokenizeValue = (keywords, value) => {
 	value = value.replace(/(^|-)\./g, "$10.").replace(/,-+/g, ",--");
-	const possibleValues = propertyValues(prop);
-	const possibleValuesSorted = possibleValues.sort((x, y) => y.split("-").length - x.split("-").length);
+	const keywordsSorted = keywords.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
-		"(" + possibleValuesSorted.concat(["(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"]).join("|") + ")",
+		"(" +
+			keywordsSorted.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"]).join("|") +
+			")",
 		"g"
 	);
 	let matches = value.split(regex);
+	matches = _.compact(matches);
+	matches = collectBracketTokens(matches);
 	matches = _.compact(matches.map(x => x.replace(/^-(\D)/, "$1").replace(/-+$/, "")));
-	return collectBracketTokens(matches);
+	// console.log({value, matches})
+	return matches;
 };
 
 const collectBracketTokens = matches => {
@@ -300,7 +243,8 @@ const collectBracketTokens = matches => {
 };
 
 const processValueByRegex = (prop, modifiers, value) => {
-	const tokens = tokenizeValue(prop, value);
+	const keywords = propertyValues(prop);
+	const tokens = tokenizeValue(keywords, value);
 	const transformedTokens = tokens.map(token => {
 		if (token.match(/^\[.*\]$/)) {
 			return token.replace(/,/g, " ");
@@ -324,14 +268,7 @@ const processValueByRegex = (prop, modifiers, value) => {
 		if (match) {
 			let [, functionName, args] = match;
 			functionName = functionName || "calc";
-			args =
-				functionName === "calc"
-					? processCalcArgs(args)
-					: processValueByRegex(
-							prop,
-							modifiers.filter(x => x !== "negate"),
-							args
-					  );
+			args = processFunctionArgs(functionName, args, prop, modifiers);
 			return `${functionName}(${args})`;
 		}
 		if (token.match(/^\$[^(]/)) {
@@ -343,8 +280,19 @@ const processValueByRegex = (prop, modifiers, value) => {
 	return transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
 };
 
-const processCalcArgs = args => {
-	return args.replace(/([+/*-])/g, " $1 ");
+const processFunctionArgs = (functionName, args, prop, modifiers) => {
+	switch (functionName) {
+		case "calc":
+			return args.replace(/([+/*-])/g, " $1 ");
+		case "var":
+			return args;
+		default:
+			return processValueByRegex(
+				prop,
+				modifiers.filter(x => x !== "negate"),
+				args
+			);
+	}
 };
 
 module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {

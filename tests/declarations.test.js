@@ -841,6 +841,19 @@ const tests = {
 		"line-height-3em": "line-height: 3em",
 		"line-height-34%": "line-height: 34%",
 	},
+	"list-style-type": {
+		"list-style-type-disc": "list-style-type: disc",
+		"list-style-type-circle": "list-style-type: circle",
+		"list-style-type-square": "list-style-type: square",
+		"list-style-type-decimal": "list-style-type: decimal",
+		"list-style-type-georgian": "list-style-type: georgian",
+		"list-style-type-trad-chinese-informal": "list-style-type: trad-chinese-informal",
+		"list-style-type-kannada": "list-style-type: kannada",
+		"list-style-type-{-}": 'list-style-type: "-"',
+		"list-style-type-custom-counter-style": "list-style-type: custom-counter-style",
+		"list-style-type-none": "list-style-type: none",
+		"list-style-type-symbols(cyclic-{*}-{†}-{‡})": 'list-style-type: symbols(cyclic "*" "†" "‡")',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
