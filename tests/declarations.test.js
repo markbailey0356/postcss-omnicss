@@ -858,6 +858,10 @@ const tests = {
 		"list-style-position-inside": "list-style-position: inside",
 		"list-style-position-outside": "list-style-position: outside",
 	},
+	"list-style-image": {
+		"list-style-image-none": "list-style-image: none",
+		"list-style-image-url({starsolid.gif})": 'list-style-image: url("starsolid.gif")',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
