@@ -456,7 +456,7 @@ it("outputs child selectors before normal utility classes", async () => {
 			</div>`,
 		}
 	);
-})
+});
 
 it("provides a modifier to style before elements", async () => {
 	await run(

@@ -378,7 +378,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const nodesByContainer = {
 			root: [],
 			desktop: [],
-			mobile: []
+			mobile: [],
 		};
 		for (const selector of selectors) {
 			let { prop, value, modifiers } = splitSelector(selector);
@@ -448,19 +448,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			if (modifiers.includes("important")) {
 				value += " !important";
 			}
-			
+
 			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
 			nodesByContainer[container] = nodesByContainer[container] || [];
-			nodesByContainer[container][subContainer] = nodesByContainer[container][subContainer] || []
-			nodesByContainer[container][subContainer][numberOfSegments] = nodesByContainer[container][subContainer][numberOfSegments] || [];
+			nodesByContainer[container][subContainer] = nodesByContainer[container][subContainer] || [];
+			nodesByContainer[container][subContainer][numberOfSegments] =
+				nodesByContainer[container][subContainer][numberOfSegments] || [];
 			nodesByContainer[container][subContainer][numberOfSegments].push(node);
 		}
 
-
-		const nodes = _.mapValues(nodesByContainer, _.flow( _.flattenDeep, _.compact));
+		const nodes = _.mapValues(nodesByContainer, _.flow(_.flattenDeep, _.compact));
 
 		root.append(nodes.root);
-		
+
 		if (nodes.mobile.length) {
 			const mobileContainer = postcss.atRule({
 				name: "media",
@@ -478,6 +478,5 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			});
 			root.append(desktopContainer);
 		}
-
 	};
 });

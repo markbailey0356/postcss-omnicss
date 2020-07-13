@@ -835,6 +835,12 @@ const tests = {
 		"letter-spacing-3px": "letter-spacing: 3px",
 		"letter-spacing-.3px": "letter-spacing: 0.3px",
 	},
+	"line-height": {
+		"line-height-normal": "line-height: normal",
+		"line-height-3.5": "line-height: 3.5",
+		"line-height-3em": "line-height: 3em",
+		"line-height-34%": "line-height: 34%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
