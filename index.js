@@ -193,7 +193,10 @@ const propertyValues = prop => {
 };
 
 const tokenizeValue = (keywords, value) => {
-	value = value.replace(/(^|-)\./g, "$10.").replace(/,-+/g, ",--");
+	value = value
+		.replace(/(^|-)\./g, "$10.")
+		.replace(/,-+/g, ",--")
+		.replace(/^-/, "--");
 	const keywordsSorted = keywords.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
 		"(" +
