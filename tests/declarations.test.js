@@ -948,6 +948,14 @@ const tests = {
 		"text-decoration-solid-underline-purple-4px": "text-decoration: solid underline purple 4px",
 		"text-decoration-blink": "text-decoration: blink",
 	},
+	"text-transform": {
+		"text-transform-none": "text-transform: none",
+		"text-transform-capitalize": "text-transform: capitalize",
+		"text-transform-uppercase": "text-transform: uppercase",
+		"text-transform-lowercase": "text-transform: lowercase",
+		"text-transform-full-width": "text-transform: full-width",
+		"text-transform-full-size-kana": "text-transform: full-size-kana",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
