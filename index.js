@@ -185,6 +185,8 @@ const propertyValues = prop => {
 			return ["span", "auto"];
 		case "transform-origin":
 			return ["left", "bottom", "top", "right", "center"];
+		case "list-style":
+			return ["inside", "outside", "url"];
 		default:
 			return [];
 	}

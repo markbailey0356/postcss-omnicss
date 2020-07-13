@@ -862,6 +862,15 @@ const tests = {
 		"list-style-image-none": "list-style-image: none",
 		"list-style-image-url({starsolid.gif})": 'list-style-image: url("starsolid.gif")',
 	},
+	"list-style": {
+		"list-style-square": "list-style: square",
+		"list-style-url({../img/shape.png})": 'list-style: url("../img/shape.png")',
+		"list-style-inside": "list-style: inside",
+		"list-style-georgian-inside": "list-style: georgian inside",
+		"list-style-lower-roman-url({../img/shape.png})-outside":
+			'list-style: lower-roman url("../img/shape.png") outside',
+		"list-style-none": "list-style: none",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
