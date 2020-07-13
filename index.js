@@ -7,7 +7,13 @@ const _ = require("lodash");
 // const matchAll = require("string.prototype.matchall");
 const path = require("path");
 
-const ignoredProperties = ["text-decoration-underline"];
+const ignoredProperties = [
+	"text-decoration-none",
+	"text-decoration-underline",
+	"text-decoration-overline",
+	"text-decoration-line-through",
+	"text-decoration-blink",
+];
 
 ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
@@ -79,7 +85,10 @@ const splitSelector = selector => {
 	let prop, value;
 
 	selector = selector.replace(/^\$/, "--");
-	if (selector.slice(0, 2) === "--") {
+	if (selector.match(/^-?text-decoration-line-through/)) {
+		prop = "text-decoration";
+		value = selector.replace(/^-?text-decoration-/, "");
+	} else if (selector.slice(0, 2) === "--") {
 		const segments = selector.slice(2).split("-");
 		let i;
 		for (i = 0; i < segments.length - 1; i++) {
@@ -138,6 +147,17 @@ const propertyValues = prop => {
 		"stretch",
 		"legacy",
 	];
+
+	const textDecorationLine = [
+		"none",
+		"underline",
+		"overline",
+		"line-through",
+		"blink",
+		"spelling-error",
+		"grammar-error",
+	];
+
 	switch (prop) {
 		case "overflow":
 			return ["visible", "hidden", "clip", "scroll", "auto"];
@@ -188,7 +208,20 @@ const propertyValues = prop => {
 		case "list-style":
 			return ["inside", "outside", "url"];
 		case "text-decoration-line":
-			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
+			return textDecorationLine;
+		case "text-decoration":
+			return [
+				...textDecorationLine,
+				"auto",
+				"from-font",
+				"solid",
+				"double",
+				"dotted",
+				"dashed",
+				"wavy",
+				"-moz-none",
+				"currentcolor",
+			];
 		default:
 			return [];
 	}

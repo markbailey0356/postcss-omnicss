@@ -939,6 +939,15 @@ const tests = {
 		"text-decoration-thickness-3px": "text-decoration-thickness: 3px",
 		"text-decoration-thickness-10%": "text-decoration-thickness: 10%",
 	},
+	"text-decoration": {
+		"text-decoration-underline-red": "text-decoration: underline red",
+		"text-decoration-wavy-overline-lime": "text-decoration: wavy overline lime",
+		"text-decoration-line-through": "text-decoration: line-through",
+		"text-decoration-none": "text-decoration: none",
+		"text-decoration-dashed-underline-overline": "text-decoration: dashed underline overline",
+		"text-decoration-solid-underline-purple-4px": "text-decoration: solid underline purple 4px",
+		"text-decoration-blink": "text-decoration: blink",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
