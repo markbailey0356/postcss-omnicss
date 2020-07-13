@@ -1000,6 +1000,13 @@ const tests = {
 		"text-overflow-fade-clip": "text-overflow: fade clip",
 		"text-overflow-fade(10%)-{[..]}": 'text-overflow: fade(10%) "[..]"',
 	},
+	"background-attachment": {
+		"background-attachment-scroll": "background-attachment: scroll",
+		"background-attachment-fixed": "background-attachment: fixed",
+		"background-attachment-local": "background-attachment: local",
+		"background-attachment-scroll,local": "background-attachment: scroll, local",
+		"background-attachment-fixed,scroll": "background-attachment: fixed, scroll",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
