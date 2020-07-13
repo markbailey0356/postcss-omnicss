@@ -1007,6 +1007,22 @@ const tests = {
 		"background-attachment-scroll,local": "background-attachment: scroll, local",
 		"background-attachment-fixed,scroll": "background-attachment: fixed, scroll",
 	},
+	"background-color": {
+		"background-color-red": "background-color: red",
+		"background-color-indigo": "background-color: indigo",
+		"background-color-#bbff00": "background-color: #bbff00",
+		"background-color-#bf0": "background-color: #bf0",
+		"background-color-#11ffee00": "background-color: #11ffee00",
+		"background-color-#1fe0": "background-color: #1fe0",
+		"background-color-#11ffeeff": "background-color: #11ffeeff",
+		"background-color-#1fef": "background-color: #1fef",
+		"background-color-rgb(255,255,128)": "background-color: rgb(255, 255, 128)",
+		"background-color-rgba(117,190,218,0.5)": "background-color: rgba(117, 190, 218, 0.5)",
+		"background-color-hsl(50,33%,25%)": "background-color: hsl(50, 33%, 25%)",
+		"background-color-hsla(50,33%,25%,0.75)": "background-color: hsla(50, 33%, 25%, 0.75)",
+		"background-color-currentcolor": "background-color: currentcolor",
+		"background-color-transparent": "background-color: transparent",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
