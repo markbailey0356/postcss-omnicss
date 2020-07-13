@@ -977,6 +977,29 @@ const tests = {
 		"white-space-pre-line": "white-space: pre-line",
 		"white-space-break-spaces": "white-space: break-spaces",
 	},
+	"word-break": {
+		"word-break-normal": "word-break: normal",
+		"word-break-break-all": "word-break: break-all",
+		"word-break-keep-all": "word-break: keep-all",
+		"word-break-break-word": "word-break: break-word",
+	},
+	"overflow-wrap": {
+		"overflow-wrap-normal": "overflow-wrap: normal",
+		"overflow-wrap-break-word": "overflow-wrap: break-word",
+		"overflow-wrap-anywhere": "overflow-wrap: anywhere",
+	},
+	"text-overflow": {
+		"text-overflow-clip": "text-overflow: clip",
+		"text-overflow-ellipsis": "text-overflow: ellipsis",
+		"text-overflow-fade": "text-overflow: fade",
+		"text-overflow-fade(1.2rem)": "text-overflow: fade(1.2rem)",
+		"text-overflow-fade(50%)": "text-overflow: fade(50%)",
+		"text-overflow-{-}": 'text-overflow: "-"',
+		"text-overflow-{}": 'text-overflow: ""',
+		"text-overflow-clip-ellipsis": "text-overflow: clip ellipsis",
+		"text-overflow-fade-clip": "text-overflow: fade clip",
+		"text-overflow-fade(10%)-{[..]}": 'text-overflow: fade(10%) "[..]"',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

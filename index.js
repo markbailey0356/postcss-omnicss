@@ -222,6 +222,8 @@ const propertyValues = prop => {
 				"-moz-none",
 				"currentcolor",
 			];
+		case "text-overflow":
+			return ["clip", "ellipsis", "fade"];
 		default:
 			return [];
 	}
