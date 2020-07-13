@@ -908,6 +908,15 @@ const tests = {
 		"color-hsl(30.0-100%-50%/60%)": "color: hsl(30 100% 50% / 60%)",
 		"color-hsla(30.2-100%-50%/60%)": "color: hsla(30.2 100% 50% / 60%)",
 	},
+	"text-decoration-line": {
+		"text-decoration-line-none": "text-decoration-line: none",
+		"text-decoration-line-underline": "text-decoration-line: underline",
+		"text-decoration-line-overline": "text-decoration-line: overline",
+		"text-decoration-line-line-through": "text-decoration-line: line-through",
+		"text-decoration-line-blink": "text-decoration-line: blink",
+		"text-decoration-line-underline-overline": "text-decoration-line: underline overline",
+		"text-decoration-line-overline-underline-line-through": "text-decoration-line: overline underline line-through",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

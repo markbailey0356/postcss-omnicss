@@ -187,6 +187,8 @@ const propertyValues = prop => {
 			return ["left", "bottom", "top", "right", "center"];
 		case "list-style":
 			return ["inside", "outside", "url"];
+		case "text-decoration-line":
+			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
 		default:
 			return [];
 	}
