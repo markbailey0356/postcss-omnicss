@@ -956,6 +956,19 @@ const tests = {
 		"text-transform-full-width": "text-transform: full-width",
 		"text-transform-full-size-kana": "text-transform: full-size-kana",
 	},
+	"vertical-align": {
+		"vertical-align-baseline": "vertical-align: baseline",
+		"vertical-align-sub": "vertical-align: sub",
+		"vertical-align-super": "vertical-align: super",
+		"vertical-align-text-top": "vertical-align: text-top",
+		"vertical-align-text-bottom": "vertical-align: text-bottom",
+		"vertical-align-middle": "vertical-align: middle",
+		"vertical-align-top": "vertical-align: top",
+		"vertical-align-bottom": "vertical-align: bottom",
+		"vertical-align-10em": "vertical-align: 10em",
+		"vertical-align-4px": "vertical-align: 4px",
+		"vertical-align-20%": "vertical-align: 20%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
