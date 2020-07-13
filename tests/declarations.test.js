@@ -854,6 +854,10 @@ const tests = {
 		"list-style-type-none": "list-style-type: none",
 		"list-style-type-symbols(cyclic-{*}-{†}-{‡})": 'list-style-type: symbols(cyclic "*" "†" "‡")',
 	},
+	"list-style-position": {
+		"list-style-position-inside": "list-style-position: inside",
+		"list-style-position-outside": "list-style-position: outside",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
