@@ -932,6 +932,13 @@ const tests = {
 		"text-decoration-style-wavy": "text-decoration-style: wavy",
 		"text-decoration-style--moz-none": "text-decoration-style: -moz-none",
 	},
+	"text-decoration-thickness": {
+		"text-decoration-thickness-auto": "text-decoration-thickness: auto",
+		"text-decoration-thickness-from-font": "text-decoration-thickness: from-font",
+		"text-decoration-thickness-0.1em": "text-decoration-thickness: 0.1em",
+		"text-decoration-thickness-3px": "text-decoration-thickness: 3px",
+		"text-decoration-thickness-10%": "text-decoration-thickness: 10%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
