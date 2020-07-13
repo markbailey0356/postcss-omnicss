@@ -924,6 +924,14 @@ const tests = {
 		"text-decoration-color-rgba(255,128,128,0.5)": "text-decoration-color: rgba(255, 128, 128, 0.5)",
 		"text-decoration-color-transparent": "text-decoration-color: transparent",
 	},
+	"text-decoration-style": {
+		"text-decoration-style-solid": "text-decoration-style: solid",
+		"text-decoration-style-double": "text-decoration-style: double",
+		"text-decoration-style-dotted": "text-decoration-style: dotted",
+		"text-decoration-style-dashed": "text-decoration-style: dashed",
+		"text-decoration-style-wavy": "text-decoration-style: wavy",
+		"text-decoration-style--moz-none": "text-decoration-style: -moz-none",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
