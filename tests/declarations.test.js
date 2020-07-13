@@ -871,6 +871,20 @@ const tests = {
 			'list-style: lower-roman url("../img/shape.png") outside',
 		"list-style-none": "list-style: none",
 	},
+	"text-align": {
+		"text-align-left": "text-align: left",
+		"text-align-right": "text-align: right",
+		"text-align-center": "text-align: center",
+		"text-align-justify": "text-align: justify",
+		"text-align-justify-all": "text-align: justify-all",
+		"text-align-start": "text-align: start",
+		"text-align-end": "text-align: end",
+		"text-align-match-parent": "text-align: match-parent",
+		"text-align-{.}": 'text-align: "."',
+		"text-align-{.}-center": 'text-align: "." center',
+		"text-align--moz-center": "text-align: -moz-center",
+		"text-align--webkit-center": "text-align: -webkit-center",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
