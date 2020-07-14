@@ -75,11 +75,6 @@ const splitSelector = selector => {
 	let modifiers = modifierSplits.slice(0, -1);
 	selector = modifierSplits[modifierSplits.length - 1];
 
-	selector = selector
-		.split("-")
-		.map(segment => propertyAbbreviations.get(segment) || segment)
-		.join("-");
-
 	modifiers = modifiers.map(x => modifierAbbreviations.get(x) || x);
 
 	let prop, value;
@@ -106,14 +101,21 @@ const splitSelector = selector => {
 		for (let i = 1; i <= selector.length; i++) {
 			if (selector[i] !== "-" && i !== selector.length) continue;
 
-			if (knownCssProperties.has(selector.slice(0, i))) {
+			let potentialProp = selector
+				.slice(0, i)
+				.split("-")
+				.map(segment => propertyAbbreviations.get(segment) || segment)
+				.join("-");
+
+			if (knownCssProperties.has(potentialProp)) {
+				prop = potentialProp;
 				splitIndex = i;
-			} else if (leadingHyphen && knownCssProperties.has(selector.slice(1, i))) {
+			} else if (leadingHyphen && knownCssProperties.has(potentialProp.slice(1))) {
+				prop = potentialProp.slice(1);
 				splitIndex = i;
 				negated = true;
 			}
 		}
-		prop = splitIndex && selector.slice(negated ? 1 : 0, splitIndex);
 		value = splitIndex && selector.slice(splitIndex + 1);
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
