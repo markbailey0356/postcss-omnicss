@@ -1053,6 +1053,21 @@ const tests = {
 		"background-repeat-no-repeat,repeat": "background-repeat: no-repeat, repeat",
 		"background-repeat-no-repeat-round,repeat-space": "background-repeat: no-repeat round, repeat space",
 	},
+	"background-size": {
+		"background-size-cover": "background-size: cover",
+		"background-size-contain": "background-size: contain",
+		"background-size-50%": "background-size: 50%",
+		"background-size-3.2em": "background-size: 3.2em",
+		"background-size-12px": "background-size: 12px",
+		"background-size-auto": "background-size: auto",
+		"background-size-50%-auto": "background-size: 50% auto",
+		"background-size-3em-25%": "background-size: 3em 25%",
+		"background-size-auto-6px": "background-size: auto 6px",
+		"background-size-auto-auto": "background-size: auto auto",
+		"background-size-auto,auto": "background-size: auto, auto",
+		"background-size-50%,25%,25%": "background-size: 50%, 25%, 25%",
+		"background-size-6px,auto,contain": "background-size: 6px, auto, contain",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

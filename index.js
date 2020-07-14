@@ -227,6 +227,8 @@ const propertyValues = prop => {
 			return ["clip", "ellipsis", "fade"];
 		case "background-repeat":
 			return ["repeat-x", "repeat-y", "repeat", "space", "round", "no-repeat"];
+		case "background-size":
+			return ["cover", "contain", "auto"];
 		default:
 			return [];
 	}
