@@ -1083,6 +1083,40 @@ const tests = {
 		"background-center/contain-no-repeat-url({../../media/examples/firefox-logo.svg}),#eee-35%-url({../../media/examples/lizard.png})":
 			'background: center / contain no-repeat url("../../media/examples/firefox-logo.svg"), #eee 35% url("../../media/examples/lizard.png")',
 	},
+	"border-top-left-radius": {
+		"border-top-left-radius-80px-80px": "border-top-left-radius: 80px 80px",
+		"border-top-left-radius-250px-100px": "border-top-left-radius: 250px 100px",
+		"border-top-left-radius-50%": "border-top-left-radius: 50%",
+		"border-top-left-radius-50%-25%": "border-top-left-radius: 50% 25%",
+	},
+	"border-top-right-radius": {
+		"border-top-right-radius-80px-80px": "border-top-right-radius: 80px 80px",
+		"border-top-right-radius-250px-100px": "border-top-right-radius: 250px 100px",
+		"border-top-right-radius-50%": "border-top-right-radius: 50%",
+		"border-top-right-radius-50%-25%": "border-top-right-radius: 50% 25%",
+	},
+	"border-bottom-left-radius": {
+		"border-bottom-left-radius-80px-80px": "border-bottom-left-radius: 80px 80px",
+		"border-bottom-left-radius-250px-100px": "border-bottom-left-radius: 250px 100px",
+		"border-bottom-left-radius-50%": "border-bottom-left-radius: 50%",
+		"border-bottom-left-radius-50%-25%": "border-bottom-left-radius: 50% 25%",
+	},
+	"border-bottom-right-radius": {
+		"border-bottom-right-radius-80px-80px": "border-bottom-right-radius: 80px 80px",
+		"border-bottom-right-radius-250px-100px": "border-bottom-right-radius: 250px 100px",
+		"border-bottom-right-radius-50%": "border-bottom-right-radius: 50%",
+		"border-bottom-right-radius-50%-25%": "border-bottom-right-radius: 50% 25%",
+	},
+	"border-radius": {
+		"border-radius-10px": "border-radius: 10px",
+		"border-radius-10px-5%": "border-radius: 10px 5%",
+		"border-radius-2px-4px-2px": "border-radius: 2px 4px 2px",
+		"border-radius-1px-0-3px-4px": "border-radius: 1px 0 3px 4px",
+		"border-radius-10px/20px": "border-radius: 10px / 20px",
+		"border-radius-10px-5%/20px-30px": "border-radius: 10px 5% / 20px 30px",
+		"border-radius-10px-5px-2em/20px-25px-30%": "border-radius: 10px 5px 2em / 20px 25px 30%",
+		"border-radius-10px-5%/20px-25em-30px-35em": "border-radius: 10px 5% / 20px 25em 30px 35em",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
