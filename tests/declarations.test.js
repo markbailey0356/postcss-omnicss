@@ -1068,6 +1068,21 @@ const tests = {
 		"background-size-50%,25%,25%": "background-size: 50%, 25%, 25%",
 		"background-size-6px,auto,contain": "background-size: 6px, auto, contain",
 	},
+	background: {
+		"background-green": "background: green",
+		"background-url({test.jpg})-repeat-y": 'background: url("test.jpg") repeat-y',
+		"background-border-box-red": "background: border-box red",
+		"background-no-repeat-center/80%-url({../img/image.png})":
+			'background: no-repeat center / 80% url("../img/image.png")',
+		"background-content-box-radial-gradient(crimson,skyblue)":
+			"background: content-box radial-gradient(crimson, skyblue)",
+		"background-no-repeat-url({../../media/examples/lizard.png})":
+			'background: no-repeat url("../../media/examples/lizard.png")',
+		"background-left-5%/15%-60%-repeat-x-url({../../media/examples/star.png})":
+			'background: left 5% / 15% 60% repeat-x url("../../media/examples/star.png")',
+		"background-center/contain-no-repeat-url({../../media/examples/firefox-logo.svg}),#eee-35%-url({../../media/examples/lizard.png})":
+			'background: center / contain no-repeat url("../../media/examples/firefox-logo.svg"), #eee 35% url("../../media/examples/lizard.png")',
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

@@ -130,34 +130,6 @@ const splitSelector = selector => {
 };
 
 const propertyValues = prop => {
-	const flexItems = [
-		"normal",
-		"unsafe",
-		"safe",
-		"start",
-		"end",
-		"center",
-		"first",
-		"last",
-		"baseline",
-		"flex-start",
-		"flex-end",
-		"self-start",
-		"self-end",
-		"stretch",
-		"legacy",
-	];
-
-	const textDecorationLine = [
-		"none",
-		"underline",
-		"overline",
-		"line-through",
-		"blink",
-		"spelling-error",
-		"grammar-error",
-	];
-
 	switch (prop) {
 		case "overflow":
 			return ["visible", "hidden", "clip", "scroll", "auto"];
@@ -170,10 +142,26 @@ const propertyValues = prop => {
 		case "align-self":
 		case "justify-items":
 		case "justify-self":
-			return flexItems;
+			return [
+				"normal",
+				"unsafe",
+				"safe",
+				"start",
+				"end",
+				"center",
+				"first",
+				"last",
+				"baseline",
+				"flex-start",
+				"flex-end",
+				"self-start",
+				"self-end",
+				"stretch",
+				"legacy",
+			];
 		case "justify-content":
 		case "align-content":
-			return [...flexItems, "space-evenly", "space-around", "space-between"];
+			return [...propertyValues("align-items"), "space-evenly", "space-around", "space-between"];
 		case "grid-auto-columns":
 		case "grid-auto-rows":
 			return ["min-content", "max-content", "fit-content", "minmax", "auto"];
@@ -209,10 +197,10 @@ const propertyValues = prop => {
 		case "list-style":
 			return ["inside", "outside", "url"];
 		case "text-decoration-line":
-			return textDecorationLine;
+			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
 		case "text-decoration":
 			return [
-				...textDecorationLine,
+				...propertyValues("text-decoration-line"),
 				"auto",
 				"from-font",
 				"solid",
@@ -229,6 +217,40 @@ const propertyValues = prop => {
 			return ["repeat-x", "repeat-y", "repeat", "space", "round", "no-repeat"];
 		case "background-size":
 			return ["cover", "contain", "auto"];
+		case "background-clip":
+			return ["border-box", "padding-box", "content-box", "text"];
+		case "background-color":
+			return ["rgb", "rgba", "hsl", "hsla"];
+		case "background-image":
+			return [
+				...propertyValues("background-color"),
+				"url",
+				"image",
+				"image-set",
+				"element",
+				"paint-set",
+				"cross-fade",
+				"linear-gradient",
+				"repeating-linear-gradient",
+				"radial-gradient",
+				"repeating-radial-gradient",
+				"conic-gradient",
+			];
+		case "background-origin":
+			return ["content-box", "padding-box", "border-box"];
+		case "background-attachment":
+			return ["scroll", "fixed", "local"];
+		case "background":
+			return [
+				...propertyValues("background-clip"),
+				...propertyValues("background-color"),
+				...propertyValues("background-image"),
+				...propertyValues("background-origin"),
+				...propertyValues("background-position"),
+				...propertyValues("background-repeat"),
+				...propertyValues("background-size"),
+				...propertyValues("background-attachment"),
+			];
 		default:
 			return [];
 	}
@@ -239,7 +261,9 @@ const tokenizeValue = (keywords, value) => {
 		.replace(/(^|-)\./g, "$10.")
 		.replace(/,-+/g, ",--")
 		.replace(/^-/, "--");
-	const keywordsSorted = keywords.sort((x, y) => y.split("-").length - x.split("-").length);
+	const keywordsSorted = keywords
+		.sort((x, y) => y.length - x.length)
+		.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
 		"(" +
 			keywordsSorted.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"]).join("|") +
@@ -323,8 +347,9 @@ const processValueByRegex = (prop, modifiers, value) => {
 		}
 		return token;
 	});
-	// console.log({tokens, transformedTokens, prop, value, result: transformedTokens.join(" ").replace(/\s*,\s*/g, ", ")})
-	return transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
+	const result = transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
+	// console.log({ tokens, transformedTokens, prop, value, result });
+	return result;
 };
 
 const processFunctionArgs = (functionName, args, prop, modifiers) => {
@@ -393,21 +418,6 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			modifiers.push("default-unit");
 
 			value = processValueByRegex(prop, modifiers, value);
-
-			// const defaultUnit = defaultUnits.get(prop);
-			// if (negated || defaultUnit) {
-			// let inserts = 0;
-			// for (let { 0: match, index } of matchAll(value, /[0-9.]+/g)) {
-			// if (defaultUnit) {
-			// 	const lastChar = value[lastIndex + inserts];
-			// 	if (!lastChar || !lastChar.match(/[a-zA-Z%]/)) {
-			// 		value =
-			// 			value.slice(0, lastIndex + inserts) + defaultUnit + value.slice(lastIndex + inserts);
-			// 		inserts += defaultUnit.length;
-			// 	}
-			// }
-			// }
-			// }
 
 			let container = "root";
 			if (modifiers.includes("desktop")) {
