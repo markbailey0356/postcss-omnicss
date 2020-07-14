@@ -1023,6 +1023,22 @@ const tests = {
 		"background-color-currentcolor": "background-color: currentcolor",
 		"background-color-transparent": "background-color: transparent",
 	},
+	"background-position": {
+		"background-position-top": "background-position: top",
+		"background-position-bottom": "background-position: bottom",
+		"background-position-left": "background-position: left",
+		"background-position-right": "background-position: right",
+		"background-position-center": "background-position: center",
+		"background-position-25%-75%": "background-position: 25% 75%",
+		"background-position-0-0": "background-position: 0 0",
+		"background-position-1cm-2cm": "background-position: 1cm 2cm",
+		"background-position-10ch-8em": "background-position: 10ch 8em",
+		"background-position-0-0,center": "background-position: 0 0, center",
+		"background-position-bottom-10px-right-20px": "background-position: bottom 10px right 20px",
+		"background-position-right-3em-bottom-10px": "background-position: right 3em bottom 10px",
+		"background-position-bottom-10px-right": "background-position: bottom 10px right",
+		"background-position-top-right-10px": "background-position: top right 10px",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

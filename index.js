@@ -204,6 +204,7 @@ const propertyValues = prop => {
 		case "grid-area":
 			return ["span", "auto"];
 		case "transform-origin":
+		case "background-position":
 			return ["left", "bottom", "top", "right", "center"];
 		case "list-style":
 			return ["inside", "outside", "url"];
