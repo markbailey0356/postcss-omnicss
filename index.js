@@ -251,6 +251,8 @@ const propertyValues = prop => {
 				...propertyValues("background-size"),
 				...propertyValues("background-attachment"),
 			];
+		case "border-width":
+			return ["thin", "medium", "thick"];
 		default:
 			return [];
 	}
