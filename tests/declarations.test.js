@@ -1548,6 +1548,14 @@ const tests = {
 		"pointer-events-stroke": "pointer-events: stroke",
 		"pointer-events-all": "pointer-events: all",
 	},
+	resize: {
+		"resize-none": "resize: none",
+		"resize-both": "resize: both",
+		"resize-horizontal": "resize: horizontal",
+		"resize-vertical": "resize: vertical",
+		"resize-block": "resize: block",
+		"resize-inline": "resize: inline",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
