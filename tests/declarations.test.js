@@ -1350,6 +1350,56 @@ const tests = {
 		"opacity-25%": "opacity: 25%",
 		"opacity-100%": "opacity: 100%",
 	},
+	"transition-property": {
+		"transition-property-none": "transition-property: none",
+		"transition-property-all": "transition-property: all",
+		"transition-property-test_05": "transition-property: test_05",
+		"transition-property--specific": "transition-property: -specific",
+		"transition-property-sliding-vertically": "transition-property: sliding-vertically",
+		"transition-property-test1,animation4": "transition-property: test1, animation4",
+		"transition-property-all,height,color": "transition-property: all, height, color",
+		"transition-property-all,-moz-specific,sliding": "transition-property: all, -moz-specific, sliding",
+	},
+	"transition-duration": {
+		"transition-duration-6s": "transition-duration: 6s",
+		"transition-duration-120ms": "transition-duration: 120ms",
+		"transition-duration-1s,15s": "transition-duration: 1s, 15s",
+		"transition-duration-10s,30s,230ms": "transition-duration: 10s, 30s, 230ms",
+	},
+	"transition-timing-function": {
+		"transition-timing-function-ease": "transition-timing-function: ease",
+		"transition-timing-function-ease-in": "transition-timing-function: ease-in",
+		"transition-timing-function-ease-out": "transition-timing-function: ease-out",
+		"transition-timing-function-ease-in-out": "transition-timing-function: ease-in-out",
+		"transition-timing-function-linear": "transition-timing-function: linear",
+		"transition-timing-function-step-start": "transition-timing-function: step-start",
+		"transition-timing-function-step-end": "transition-timing-function: step-end",
+		"transition-timing-function-steps(4,jump-end)": "transition-timing-function: steps(4, jump-end)",
+		"transition-timing-function-cubic-bezier(0.1,0.7,1.0,.1)":
+			"transition-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1)",
+		"transition-timing-function-steps(4,jump-start)": "transition-timing-function: steps(4, jump-start)",
+		"transition-timing-function-steps(10,jump-end)": "transition-timing-function: steps(10, jump-end)",
+		"transition-timing-function-steps(20,jump-none)": "transition-timing-function: steps(20, jump-none)",
+		"transition-timing-function-steps(5,jump-both)": "transition-timing-function: steps(5, jump-both)",
+		"transition-timing-function-steps(6,start)": "transition-timing-function: steps(6, start)",
+		"transition-timing-function-steps(8,end)": "transition-timing-function: steps(8, end)",
+		"transition-timing-function-ease,step-start,cubic-bezier(.1,0.7,1,0.1)":
+			"transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1, 0.1)",
+	},
+	"transition-delay": {
+		"transition-delay-6s": "transition-delay: 6s",
+		"transition-delay-120ms": "transition-delay: 120ms",
+		"transition-delay-1s,15s": "transition-delay: 1s, 15s",
+		"transition-delay-10s,30s,230ms": "transition-delay: 10s, 30s, 230ms",
+	},
+	transition: {
+		"transition-margin-right-4s": "transition: margin-right 4s",
+		"transition-margin-right-4s-1s": "transition: margin-right 4s 1s",
+		"transition-margin-right-4s-ease-in-out": "transition: margin-right 4s ease-in-out",
+		"transition-margin-right-4s-ease-in-out-1s": "transition: margin-right 4s ease-in-out 1s",
+		"transition-margin-right-4s,color-1s": "transition: margin-right 4s, color 1s",
+		"transition-all-0.5s-ease-out": "transition: all 0.5s ease-out",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

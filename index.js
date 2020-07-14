@@ -257,6 +257,28 @@ const propertyValues = prop => {
 			return ["[a-z]+"];
 		case "border-style":
 			return ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
+		case "transition-property":
+			return [...knownCssProperties, "none", "all"];
+		case "transition-timing-function":
+			return [
+				"ease",
+				"ease-in",
+				"ease-out",
+				"ease-in-out",
+				"linear",
+				"step-start",
+				"step-end",
+				"steps",
+				"cubic-bezier",
+				"jump-end",
+				"jump-start",
+				"jump-none",
+				"jump-both",
+				"start",
+				"end",
+			];
+		case "transition":
+			return [...propertyValues("transition-property"), ...propertyValues("transition-timing-function")];
 		default:
 			return [];
 	}
@@ -271,9 +293,10 @@ const tokenizeValue = (keywords, value) => {
 		.sort((x, y) => y.length - x.length)
 		.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
-		"(" +
-			keywordsSorted.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"]).join("|") +
-			")",
+		`(${keywordsSorted
+			.map(x => `\\b${x}\\b`)
+			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"])
+			.join("|")})`,
 		"g"
 	);
 	let matches = value.split(regex);
