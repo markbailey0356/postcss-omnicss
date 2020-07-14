@@ -225,6 +225,8 @@ const propertyValues = prop => {
 			];
 		case "text-overflow":
 			return ["clip", "ellipsis", "fade"];
+		case "background-repeat":
+			return ["repeat-x", "repeat-y", "repeat", "space", "round", "no-repeat"];
 		default:
 			return [];
 	}

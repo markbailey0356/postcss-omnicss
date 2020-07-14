@@ -1039,6 +1039,20 @@ const tests = {
 		"background-position-bottom-10px-right": "background-position: bottom 10px right",
 		"background-position-top-right-10px": "background-position: top right 10px",
 	},
+	"background-repeat": {
+		"background-repeat-repeat-x": "background-repeat: repeat-x",
+		"background-repeat-repeat-y": "background-repeat: repeat-y",
+		"background-repeat-repeat": "background-repeat: repeat",
+		"background-repeat-space": "background-repeat: space",
+		"background-repeat-round": "background-repeat: round",
+		"background-repeat-no-repeat": "background-repeat: no-repeat",
+		"background-repeat-repeat-space": "background-repeat: repeat space",
+		"background-repeat-repeat-repeat": "background-repeat: repeat repeat",
+		"background-repeat-round-space": "background-repeat: round space",
+		"background-repeat-no-repeat-round": "background-repeat: no-repeat round",
+		"background-repeat-no-repeat,repeat": "background-repeat: no-repeat, repeat",
+		"background-repeat-no-repeat-round,repeat-space": "background-repeat: no-repeat round, repeat space",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
