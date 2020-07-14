@@ -1429,6 +1429,18 @@ const tests = {
 		"transform-perspective(500px)-translate(10px,0,20px)-rotateY(3deg)":
 			"transform: perspective(500px) translate(10px, 0, 20px) rotateY(3deg)",
 	},
+	"transform-origin": {
+		"transform-origin-2px": "transform-origin: 2px",
+		"transform-origin-bottom": "transform-origin: bottom",
+		"transform-origin-3cm-2px": "transform-origin: 3cm 2px",
+		"transform-origin-left-2px": "transform-origin: left 2px",
+		"transform-origin-right-top": "transform-origin: right top",
+		"transform-origin-top-right": "transform-origin: top right",
+		"transform-origin-2px-30%-10px": "transform-origin: 2px 30% 10px",
+		"transform-origin-left-5px--3px": "transform-origin: left 5px -3px",
+		"transform-origin-right-bottom-2cm": "transform-origin: right bottom 2cm",
+		"transform-origin-bottom-right-2cm": "transform-origin: bottom right 2cm",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
