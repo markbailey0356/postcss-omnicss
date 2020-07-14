@@ -1505,6 +1505,37 @@ const tests = {
 		"cursor-zoom-in": "cursor: zoom-in",
 		"cursor-zoom-out": "cursor: zoom-out",
 	},
+	"outline-style": {
+		"outline-style-auto": "outline-style: auto",
+		"outline-style-none": "outline-style: none",
+		"outline-style-dotted": "outline-style: dotted",
+		"outline-style-dashed": "outline-style: dashed",
+		"outline-style-solid": "outline-style: solid",
+		"outline-style-double": "outline-style: double",
+		"outline-style-groove": "outline-style: groove",
+		"outline-style-ridge": "outline-style: ridge",
+		"outline-style-inset": "outline-style: inset",
+		"outline-style-outset": "outline-style: outset",
+	},
+	"outline-width": {
+		"outline-width-thin": "outline-width: thin",
+		"outline-width-medium": "outline-width: medium",
+		"outline-width-thick": "outline-width: thick",
+		"outline-width-4px": "outline-width: 4px",
+		"outline-width-1.2rem": "outline-width: 1.2rem",
+	},
+	"outline-color": {
+		"outline-color-#f92525": "outline-color: #f92525",
+		"outline-color-rgb(30,222,121)": "outline-color: rgb(30, 222, 121)",
+		"outline-color-blue": "outline-color: blue",
+		"outline-color-invert": "outline-color: invert",
+	},
+	outline: {
+		"outline-solid": "outline: solid",
+		"outline-#f66-dashed": "outline: #f66 dashed",
+		"outline-inset-thick": "outline: inset thick",
+		"outline-green-solid-3px": "outline: green solid 3px",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

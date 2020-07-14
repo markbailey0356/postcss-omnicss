@@ -254,6 +254,7 @@ const propertyValues = prop => {
 				...propertyValues("background-attachment"),
 			];
 		case "border-width":
+		case "outline-width":
 			return ["thin", "medium", "thick"];
 		case "border-color":
 			return ["[a-z]+"];
@@ -281,6 +282,16 @@ const propertyValues = prop => {
 			];
 		case "transition":
 			return [...propertyValues("transition-property"), ...propertyValues("transition-timing-function")];
+		case "outline-style":
+			return ["none", "auto", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
+		case "outline-color":
+			return ["[a-z]+", "invert"];
+		case "outline":
+			return [
+				...propertyValues("outline-width"),
+				...propertyValues("outline-style"),
+				...propertyValues("outline-color"),
+			];
 		default:
 			return [];
 	}
