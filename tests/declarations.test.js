@@ -1341,6 +1341,15 @@ const tests = {
 		"box-shadow-inset-5em-1em-gold": "box-shadow: inset 5em 1em gold",
 		"box-shadow-3px-3px-red,-1em-0-0.4em-olive": "box-shadow: 3px 3px red, -1em 0 0.4em olive",
 	},
+	opacity: {
+		"opacity-0.2": "opacity: 0.2",
+		"opacity-.5": "opacity: 0.5",
+		"opacity-0": "opacity: 0",
+		"opacity-1": "opacity: 1",
+		"opacity-0%": "opacity: 0%",
+		"opacity-25%": "opacity: 25%",
+		"opacity-100%": "opacity: 100%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
