@@ -1556,6 +1556,13 @@ const tests = {
 		"resize-block": "resize: block",
 		"resize-inline": "resize: inline",
 	},
+	"user-select": {
+		"user-select-none": "user-select: none",
+		"user-select-auto": "user-select: auto",
+		"user-select-text": "user-select: text",
+		"user-select-contain": "user-select: contain",
+		"user-select-all": "user-select: all",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
