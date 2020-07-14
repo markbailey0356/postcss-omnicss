@@ -255,6 +255,8 @@ const propertyValues = prop => {
 			return ["thin", "medium", "thick"];
 		case "border-color":
 			return ["[a-z]+"];
+		case "border-style":
+			return ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 		default:
 			return [];
 	}
