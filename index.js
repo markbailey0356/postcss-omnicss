@@ -253,6 +253,8 @@ const propertyValues = prop => {
 			];
 		case "border-width":
 			return ["thin", "medium", "thick"];
+		case "border-color":
+			return ["[a-z]+"];
 		default:
 			return [];
 	}
@@ -260,7 +262,7 @@ const propertyValues = prop => {
 
 const tokenizeValue = (keywords, value) => {
 	value = value
-		.replace(/(^|-)\./g, "$10.")
+		.replace(/(^|[-,/])\.(\d)/g, "$10.$2")
 		.replace(/,-+/g, ",--")
 		.replace(/^-/, "--");
 	const keywordsSorted = keywords
