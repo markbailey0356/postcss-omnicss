@@ -1325,6 +1325,14 @@ const tests = {
 		"border-style-hidden-double-dashed": "border-style: hidden double dashed",
 		"border-style-none-solid-dotted-dashed": "border-style: none solid dotted dashed",
 	},
+	"border-collapse": {
+		"border-collapse-collapse": "border-collapse: collapse",
+		"border-collapse-separate": "border-collapse: separate",
+	},
+	"table-layout": {
+		"table-layout-auto": "table-layout: auto",
+		"table-layout-fixed": "table-layout: fixed",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
