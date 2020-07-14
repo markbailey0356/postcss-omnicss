@@ -1333,6 +1333,14 @@ const tests = {
 		"table-layout-auto": "table-layout: auto",
 		"table-layout-fixed": "table-layout: fixed",
 	},
+	"box-shadow": {
+		"box-shadow-none": "box-shadow: none",
+		"box-shadow-60px--16px-teal": "box-shadow: 60px -16px teal",
+		"box-shadow-10px-5px-5px-black": "box-shadow: 10px 5px 5px black",
+		"box-shadow-2px-2px-2px-1px-rgba(0,0,0,0.2)": "box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)",
+		"box-shadow-inset-5em-1em-gold": "box-shadow: inset 5em 1em gold",
+		"box-shadow-3px-3px-red,-1em-0-0.4em-olive": "box-shadow: 3px 3px red, -1em 0 0.4em olive",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
