@@ -1536,6 +1536,18 @@ const tests = {
 		"outline-inset-thick": "outline: inset thick",
 		"outline-green-solid-3px": "outline: green solid 3px",
 	},
+	"pointer-events": {
+		"pointer-events-auto": "pointer-events: auto",
+		"pointer-events-none": "pointer-events: none",
+		"pointer-events-visiblePainted": "pointer-events: visiblePainted",
+		"pointer-events-visibleFill": "pointer-events: visibleFill",
+		"pointer-events-visibleStroke": "pointer-events: visibleStroke",
+		"pointer-events-visible": "pointer-events: visible",
+		"pointer-events-painted": "pointer-events: painted",
+		"pointer-events-fill": "pointer-events: fill",
+		"pointer-events-stroke": "pointer-events: stroke",
+		"pointer-events-all": "pointer-events: all",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
