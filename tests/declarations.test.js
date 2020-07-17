@@ -67,6 +67,89 @@ const tests = {
 		"align-self-unsafe-self-end": "align-self: unsafe self-end",
 		"align-self-unsafe-flex-end": "align-self: unsafe flex-end",
 	},
+	animation: {
+		"animation-3s-ease-in-1s-2-reverse-both-paused-slidein":
+			"animation: 3s ease-in 1s 2 reverse both paused slidein",
+		"animation-3s-linear-1s-slidein": "animation: 3s linear 1s slidein",
+		"animation-slidein-3s": "animation: slidein 3s",
+		"animation-3s-ease-in-1s-infinite-reverse-both-running-slidein":
+			"animation: 3s ease-in 1s infinite reverse both running slidein",
+		"animation-3s-linear-1s-infinite-running-slidein": "animation: 3s linear 1s infinite running slidein",
+		"animation-3s-linear-1s-infinite-alternate-slidein": "animation: 3s linear 1s infinite alternate slidein",
+		"animation-.5s-linear-1s-infinite-alternate-slidein": "animation: 0.5s linear 1s infinite alternate slidein",
+		"animation-crazy-4s-ease-in-out-0.5s-12-backwards": "animation: crazy 4s ease-in-out 0.5s 12 backwards",
+		"animation-mymove-5s-infinite": "animation: mymove 5s infinite",
+		"animation-pulse-out-5s-infinite": "animation: pulse-out 5s infinite",
+		"animation-pulse-3s-ease-infinite-alternate,nudge-5s-linear-infinite-alternate":
+			"animation: pulse 3s ease infinite alternate, nudge 5s linear infinite alternate",
+	},
+	"animation-delay": {
+		"animation-delay-3s": "animation-delay: 3s",
+		"animation-delay-0": "animation-delay: 0",
+		"animation-delay-1500ms": "animation-delay: 1500ms",
+		"animation-delay-2.1s,480ms": "animation-delay: 2.1s, 480ms",
+	},
+	"animation-direction": {
+		"animation-direction-normal": "animation-direction: normal",
+		"animation-direction-reverse": "animation-direction: reverse",
+		"animation-direction-alternate": "animation-direction: alternate",
+		"animation-direction-alternate-reverse": "animation-direction: alternate-reverse",
+		"animation-direction-normal,reverse": "animation-direction: normal, reverse",
+		"animation-direction-alternate,reverse,normal": "animation-direction: alternate, reverse, normal",
+	},
+	"animation-duration": {
+		"animation-duration-6s": "animation-duration: 6s",
+		"animation-duration-120ms": "animation-duration: 120ms",
+		"animation-duration-1.64s,15.22s": "animation-duration: 1.64s, 15.22s",
+		"animation-duration-10s,35s,230ms": "animation-duration: 10s, 35s, 230ms",
+	},
+	"animation-fill-mode": {
+		"animation-fill-mode-none": "animation-fill-mode: none",
+		"animation-fill-mode-forwards": "animation-fill-mode: forwards",
+		"animation-fill-mode-backwards": "animation-fill-mode: backwards",
+		"animation-fill-mode-both": "animation-fill-mode: both",
+		"animation-fill-mode-none,backwards": "animation-fill-mode: none, backwards",
+		"animation-fill-mode-both,forwards,none": "animation-fill-mode: both, forwards, none",
+	},
+	"animation-iteration-count": {
+		"animation-iteration-count-infinite": "animation-iteration-count: infinite",
+		"animation-iteration-count-3": "animation-iteration-count: 3",
+		"animation-iteration-count-2.4": "animation-iteration-count: 2.4",
+		"animation-iteration-count-2,0,infinite": "animation-iteration-count: 2, 0, infinite",
+	},
+	"animation-name": {
+		"animation-name-none": "animation-name: none",
+		"animation-name-test_05": "animation-name: test_05",
+		"animation-name--specific": "animation-name: -specific",
+		"animation-name-sliding-vertically": "animation-name: sliding-vertically",
+		"animation-name-test1,animation4": "animation-name: test1, animation4",
+		"animation-name-none,-moz-specific,sliding": "animation-name: none, -moz-specific, sliding",
+	},
+	"animation-play-state": {
+		"animation-play-state-running": "animation-play-state: running",
+		"animation-play-state-paused": "animation-play-state: paused",
+		"animation-play-state-paused,running,running": "animation-play-state: paused, running, running",
+	},
+	"animation-timing-function": {
+		"animation-timing-function-ease": "animation-timing-function: ease",
+		"animation-timing-function-ease-in": "animation-timing-function: ease-in",
+		"animation-timing-function-ease-out": "animation-timing-function: ease-out",
+		"animation-timing-function-ease-in-out": "animation-timing-function: ease-in-out",
+		"animation-timing-function-linear": "animation-timing-function: linear",
+		"animation-timing-function-step-start": "animation-timing-function: step-start",
+		"animation-timing-function-step-end": "animation-timing-function: step-end",
+		"animation-timing-function-cubic-bezier(0.1,.7,1.0,.1)":
+			"animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1)",
+		"animation-timing-function-steps(4,end)": "animation-timing-function: steps(4, end)",
+		"animation-timing-function-steps(4,jump-start)": "animation-timing-function: steps(4, jump-start)",
+		"animation-timing-function-steps(10,jump-end)": "animation-timing-function: steps(10, jump-end)",
+		"animation-timing-function-steps(20,jump-none)": "animation-timing-function: steps(20, jump-none)",
+		"animation-timing-function-steps(5,jump-both)": "animation-timing-function: steps(5, jump-both)",
+		"animation-timing-function-steps(6,start)": "animation-timing-function: steps(6, start)",
+		"animation-timing-function-steps(8,end)": "animation-timing-function: steps(8, end)",
+		"animation-timing-function-ease,step-start,cubic-bezier(.1,.7,1,.1)":
+			"animation-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1, 0.1)",
+	},
 	appearance: {
 		"appearance-none": "appearance: none",
 		"appearance-auto": "appearance: auto",
@@ -196,7 +279,7 @@ const tests = {
 		"border-block-start-color-hsla(100%,50%,25%,0.75)": "border-block-start-color: hsla(100%, 50%, 25%, 0.75)",
 		"border-block-start-color-currentcolor": "border-block-start-color: currentcolor",
 		"border-block-start-color-transparent": "border-block-start-color: transparent",
-	},	
+	},
 	"border-block-start-width": {
 		"border-block-start-width-thin": "border-block-start-width: thin",
 		"border-block-start-width-medium": "border-block-start-width: medium",
@@ -623,7 +706,7 @@ const tests = {
 		"font-size-0.8em": "font-size: 0.8em",
 		"font-size-80%": "font-size: 80%",
 	},
-	
+
 	"font-style": {
 		"font-style-normal": "font-style: normal",
 		"font-style-italic": "font-style: italic",

@@ -133,6 +133,21 @@ const splitSelector = selector => {
 
 const propertyValues = prop => {
 	switch (prop) {
+		case "animation-direction":
+			return ["normal", "revese", "alternate", "alternate-reverse"];
+		case "animation-fill-mode":
+			return ["none", "forwards", "backwards", "both"];
+		case "animation-iteration-count":
+			return ["infinite"];
+		case "animation-play-state":
+			return ["paused", "running"];
+		case "animation":
+			return [
+				...propertyValues("animation-direction"),
+				...propertyValues("animation-fill-mode"),
+				...propertyValues("animation-iteration-count"),
+				...propertyValues("animation-play-state"),
+			];
 		case "overflow":
 			return ["visible", "hidden", "clip", "scroll", "auto"];
 		case "object-position":
@@ -263,6 +278,7 @@ const propertyValues = prop => {
 		case "transition-property":
 			return [...knownCssProperties, "none", "all"];
 		case "transition-timing-function":
+		case "animation-timing-function":
 			return [
 				"ease",
 				"ease-in",
