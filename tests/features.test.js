@@ -12,11 +12,6 @@ it("creates a utility class for a single property", async () => {
 	await run("@omnicss", ".color-white { color: white }", { source: '<div class="color-white"></div>' });
 });
 
-it("displays a warning if @omnicss is not found in the source file", async () => {
-	const result = await postcss([plugin({ source: "" })]).process("", { from: undefined });
-	expect(result.warnings()).toHaveLength(1);
-});
-
 it("creates multiple utility classes for single properties", async () => {
 	await run(
 		"@omnicss",
