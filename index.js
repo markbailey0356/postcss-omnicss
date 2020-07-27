@@ -430,7 +430,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	const { source = "", files = [] } = opts;
 
 	return async (root, result) => {
-		let selectors;
+		let selectors = [];
 
 		if (source.length) {
 			const { undetermined } = await new PurgeCSS().extractSelectorsFromString(
@@ -522,7 +522,8 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 		const nodes = _.mapValues(nodesByContainer, _.flow(_.flattenDeep, _.compact));
 
-		root.append(nodes.root);
+		const container = postcss.root();
+		container.append(nodes.root);
 
 		if (nodes.mobile.length) {
 			const mobileContainer = postcss.atRule({
@@ -530,7 +531,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				params: "screen and (max-width: 767.98px)",
 				nodes: nodes.mobile,
 			});
-			root.append(mobileContainer);
+			container.append(mobileContainer);
 		}
 
 		if (nodes.desktop.length) {
@@ -539,7 +540,18 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				params: "screen and (min-width: 768px)",
 				nodes: nodes.desktop,
 			});
-			root.append(desktopContainer);
+			container.append(desktopContainer);
+		}
+
+		let foundAtRule = false;
+
+		root.walkAtRules("omnicss", rule => {
+			foundAtRule = true;
+			rule.replaceWith(container);
+		});
+
+		if (!foundAtRule) {
+			result.warn(`No utility classes were created as @omnicss rule was not found in the source file`);
 		}
 	};
 });

@@ -9,36 +9,45 @@ async function run(input, output, opts) {
 }
 
 it("creates a utility class for a single property", async () => {
-	await run("", ".color-white { color: white }", { source: '<div class="color-white"></div>' });
+	await run("@omnicss", ".color-white { color: white }", { source: '<div class="color-white"></div>' });
+});
+
+it("displays a warning if @omnicss is not found in the source file", async () => {
+	const result = await postcss([plugin({ source: "" })]).process("", { from: undefined });
+	expect(result.warnings()).toHaveLength(1);
 });
 
 it("creates multiple utility classes for single properties", async () => {
-	await run("", ".position-absolute { position: absolute } .background-color-black { background-color: black }", {
-		source: '<div class="background-color-black position-absolute"></div>"',
-	});
+	await run(
+		"@omnicss",
+		".position-absolute { position: absolute } .background-color-black { background-color: black }",
+		{
+			source: '<div class="background-color-black position-absolute"></div>"',
+		}
+	);
 });
 
 it("handles hash color values in class names", async () => {
-	await run("", ".background-color-\\#123456 { background-color: #123456 }", {
+	await run("@omnicss", ".background-color-\\#123456 { background-color: #123456 }", {
 		source: '<div class="background-color-#123456"></div>',
 	});
 });
 
 it("outputs more specific classes after less specific ones", async () => {
-	await run("", ".padding-2rem { padding: 2rem } .padding-right-3rem { padding-right: 3rem }", {
+	await run("@omnicss", ".padding-2rem { padding: 2rem } .padding-right-3rem { padding-right: 3rem }", {
 		source: '<div class="padding-right-3rem padding-2rem"></div>',
 	});
 });
 
 it("handles flex-flow's compound values", async () => {
-	await run("", ".flex-flow-row-reverse-nowrap { flex-flow: row-reverse nowrap }", {
+	await run("@omnicss", ".flex-flow-row-reverse-nowrap { flex-flow: row-reverse nowrap }", {
 		source: '<div class="flex-flow-row-reverse-nowrap"></div>',
 	});
 });
 
 it("handles compound values without any hyphenated segments", async () => {
 	await run(
-		"",
+		"@omnicss",
 		".padding-1rem-10px { padding: 1rem 10px } .flex-1-1-0 { flex: 1 1 0 } .font-italic-25px-serif { font: italic 25px serif }",
 		{
 			source: '<div class="padding-1rem-10px flex-1-1-0 font-italic-25px-serif"></div>',
@@ -48,7 +57,7 @@ it("handles compound values without any hyphenated segments", async () => {
 
 it("outputs flex-flow's child classes after it", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.flex-flow-row-reverse-wrap {
 			flex-flow: row-reverse wrap
 		} 
@@ -66,7 +75,7 @@ it("outputs flex-flow's child classes after it", async () => {
 
 it("expands abbreviations for single properties", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.pt-2rem {
 			padding-top: 2rem
 		}`,
@@ -78,7 +87,7 @@ it("expands abbreviations for single properties", async () => {
 
 it("expands abbreviations for compound properties", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.p-2rem-4rem {
 			padding: 2rem 4rem
 		}`,
@@ -90,7 +99,7 @@ it("expands abbreviations for compound properties", async () => {
 
 it("handles floating point values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.padding-0\\.5rem {
 			padding: 0.5rem
 		}`,
@@ -102,7 +111,7 @@ it("handles floating point values", async () => {
 
 it("handles omitting leading zero in floating point values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.padding-\\.5rem {
 			padding: 0.5rem
 		}`,
@@ -114,7 +123,7 @@ it("handles omitting leading zero in floating point values", async () => {
 
 it("handles percentage values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.padding-10\\% {
 			padding: 10%
 		}`,
@@ -126,7 +135,7 @@ it("handles percentage values", async () => {
 
 it("handles a negative value in non-compound property", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.margin-top--1rem {
 			margin-top: -1rem
 		}`,
@@ -138,7 +147,7 @@ it("handles a negative value in non-compound property", async () => {
 
 it("handles single negative value in compound property", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.margin--1rem {
 			margin: -1rem
 		}`,
@@ -150,7 +159,7 @@ it("handles single negative value in compound property", async () => {
 
 it("handles multiple negative values in compound property", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.margin--1rem--2rem {
 			margin: -1rem -2rem
 		}`,
@@ -162,7 +171,7 @@ it("handles multiple negative values in compound property", async () => {
 
 it("provides a more-readable syntax for negating single values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.-margin-top-1rem {
 			margin-top: -1rem
 		}`,
@@ -174,7 +183,7 @@ it("provides a more-readable syntax for negating single values", async () => {
 
 it("handles negating compound values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.-margin-1rem-2rem-3rem-4rem {
 			margin: -1rem -2rem -3rem -4rem
 		}`,
@@ -186,7 +195,7 @@ it("handles negating compound values", async () => {
 
 it("handles negating mixed-sign compound values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.-margin-1rem--2rem-3rem--4rem {
 			margin: -1rem 2rem -3rem 4rem
 		}`,
@@ -198,7 +207,7 @@ it("handles negating mixed-sign compound values", async () => {
 
 it("handles negating abbreviated single properties", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.-pt-1rem {
 			padding-top: -1rem
 		}`,
@@ -210,7 +219,7 @@ it("handles negating abbreviated single properties", async () => {
 
 it("appends sensible default units for values if omitted", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.padding-top-1 {
 			padding-top: 1rem
 		}`,
@@ -222,7 +231,7 @@ it("appends sensible default units for values if omitted", async () => {
 
 it("appends defaults for compound properties", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.padding-1-1 {
 			padding: 1rem 1rem
 		}`,
@@ -234,7 +243,7 @@ it("appends defaults for compound properties", async () => {
 
 it("has a modifier to target desktop screen sizes", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`@media screen and (min-width: 768px) 
 		{.desktop\\:display-none {
 				display: none
@@ -248,7 +257,7 @@ it("has a modifier to target desktop screen sizes", async () => {
 
 it("has a modifier to target mobile screen sizes", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`@media screen and (max-width: 767.98px) 
 		{.mobile\\:display-none {
 				display: none
@@ -262,7 +271,7 @@ it("has a modifier to target mobile screen sizes", async () => {
 
 it("provides a shorthand for desktop modifier", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`@media screen and (min-width: 768px) 
 		{.d\\:color-black {
 				color: black
@@ -276,7 +285,7 @@ it("provides a shorthand for desktop modifier", async () => {
 
 it("provides a shorthand for mobile modifier", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`@media screen and (max-width: 767.98px) 
 		{.m\\:color-black {
 				color: black
@@ -290,7 +299,7 @@ it("provides a shorthand for mobile modifier", async () => {
 
 it("can set the value of a custom property", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.--color-green-\\#00ff00 {
 			--color-green: #00ff00
 		}`,
@@ -302,7 +311,7 @@ it("can set the value of a custom property", async () => {
 
 it("provides a shorthand for setting a custom property", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.\\$primary-color-white {
 			--primary-color: white
 		}`,
@@ -314,7 +323,7 @@ it("provides a shorthand for setting a custom property", async () => {
 
 it("allows the use of the var() function to set values by custom properties", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.--font-large-10rem {
 			--font-large: 10rem
 		}
@@ -329,7 +338,7 @@ it("allows the use of the var() function to set values by custom properties", as
 
 it("provides a shorthand for the var() function", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.\\$dark-red-\\#880000 {
 			--dark-red: #880000
 		}
@@ -344,7 +353,7 @@ it("provides a shorthand for the var() function", async () => {
 
 it("allows the use of the calc() function in property values", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.width-calc\\(100vh-5rem\\) {
 			width: calc(100vh - 5rem)
 		}`,
@@ -356,7 +365,7 @@ it("allows the use of the calc() function in property values", async () => {
 
 it("provides a shorthand for the calc() function", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.height-\\(10vh\\+1rem\\) {
 			height: calc(10vh + 1rem)
 		}`,
@@ -368,7 +377,7 @@ it("provides a shorthand for the calc() function", async () => {
 
 it("allows nesting brackets within calc()", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.margin-top-calc\\(\\(1rem\\+1\\%\\)\\/3\\) {
 			margin-top: calc((1rem + 1%) / 3)
 		}`,
@@ -380,7 +389,7 @@ it("allows nesting brackets within calc()", async () => {
 
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.hover\\:color-black:hover {
 			color: black
 		}`,
@@ -392,7 +401,7 @@ it("provides a modifier to apply the class on hover", async () => {
 
 it("provides a modifier to apply the class on focus", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.focus\\:color-black:focus {
 			color: black
 		}`,
@@ -404,7 +413,7 @@ it("provides a modifier to apply the class on focus", async () => {
 
 it("provides a modifier to make property value important", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.important\\:color-black {
 			color: black !important
 		}`,
@@ -416,7 +425,7 @@ it("provides a modifier to make property value important", async () => {
 
 it("handles modifiers used in combination with property abbreviations", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.important\\:h-auto {
 			height: auto !important
 		}`,
@@ -428,7 +437,7 @@ it("handles modifiers used in combination with property abbreviations", async ()
 
 it("provides a modifier to style children of a container", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.child\\:display-flex > * {
 			display: flex
 		}`,
@@ -440,7 +449,7 @@ it("provides a modifier to style children of a container", async () => {
 
 it("outputs child selectors before normal utility classes", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.child\\:display-flex > * {
 			display: flex
 		}
@@ -460,7 +469,7 @@ it("outputs child selectors before normal utility classes", async () => {
 
 it("provides a modifier to style before elements", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.before\\:content-\\{\\}::before {
 			content: ""
 		}`,
@@ -472,7 +481,7 @@ it("provides a modifier to style before elements", async () => {
 
 it("provides a modifier to style after elements", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.after\\:content-\\{\\}::after {
 			content: ""
 		}`,
@@ -484,7 +493,7 @@ it("provides a modifier to style after elements", async () => {
 
 it("provides a modifier to style placeholders", async () => {
 	await run(
-		"",
+		"@omnicss",
 		`.placeholder\\:color-grey::placeholder {
 			color: grey
 		}`,

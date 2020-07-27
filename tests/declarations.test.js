@@ -1653,11 +1653,11 @@ for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
 			it(declaration, async () => {
-				const result = await postcss([plugin({ source: selector })]).process("", { from: undefined });
+				const result = await postcss([plugin({ source: selector })]).process("@omnicss", { from: undefined });
+				expect(result.warnings()).toHaveLength(0);
 				expect(result.root.nodes).toHaveLength(1);
 				expect(result.root.nodes[0].nodes).toHaveLength(1);
 				expect(result.root.nodes[0].nodes[0].toString()).toEqual(declaration);
-				expect(result.warnings()).toHaveLength(0);
 			});
 		}
 	});
