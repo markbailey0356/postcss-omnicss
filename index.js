@@ -429,6 +429,9 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
 	const { source = "", files = [] } = opts;
 
+	let foundAtRule = false;
+	let shownAtRuleWarning = false;
+
 	return async (root, result) => {
 		let selectors = [];
 
@@ -543,14 +546,13 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			container.append(desktopContainer);
 		}
 
-		let foundAtRule = false;
-
 		root.walkAtRules("omnicss", rule => {
 			foundAtRule = true;
 			rule.replaceWith(container);
 		});
 
-		if (!foundAtRule) {
+		if (!foundAtRule && !shownAtRuleWarning) {
+			shownAtRuleWarning = false;
 			result.warn(`No utility classes were created as @omnicss rule was not found in the source file`);
 		}
 	};
