@@ -418,6 +418,27 @@ it("allows var and calc shorthands to be nested", async () => {
 	);
 });
 
+it("handles multi-part custom property names in nested calcs", async () => {
+	await run(
+		"@omnicss",
+		`.\\$width-1rem {
+			--width: 1rem
+		}
+		.width-\\$width {
+			width: var(--width)
+		}
+		.height-\\(\\$aspect-ratio\\*\\$width\\) {
+			height: calc(var(--aspect-ratio) * var(--width))
+		}
+		.\\$aspect-ratio-\\(9\\/16\\) {
+			--aspect-ratio: calc(9 / 16)
+		}`,
+		{
+			source: '<div class="$aspect-ratio-(9/16) $width-1rem width-$width height-($aspect-ratio*$width)"></div>',
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",
