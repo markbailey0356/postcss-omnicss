@@ -400,6 +400,24 @@ it("allows nesting var() within calc()", async () => {
 	);
 });
 
+it("allows var and calc shorthands to be nested", async () => {
+	await run(
+		"@omnicss",
+		`.\\$width-1rem {
+			--width: 1rem
+		}
+		.width-\\$width {
+			width: var(--width)
+		}
+		.height-\\(9\\/16\\*\\$width\\) {
+			height: calc(9 / 16 * var(--width))
+		}`,
+		{
+			source: '<div class="$width-1rem width-$width height-(9/16*$width)"></div>',
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",

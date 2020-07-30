@@ -325,7 +325,7 @@ const tokenizeValue = (keywords, options, value) => {
 	const regex = new RegExp(
 		`(${keywordsSorted
 			.map(x => `\\b${x}\\b`)
-			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/]"])
+			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/+*]"])
 			.join("|")})`,
 		"g"
 	);
@@ -431,7 +431,7 @@ const processValue = (keywords, options, value) => {
 const processFunctionArgs = (functionName, keywords, options, args) => {
 	switch (functionName) {
 		case "calc":
-			return processValue(["\\+", "\\*"], { keepHyphens: true }, args);
+			return processValue([], { keepHyphens: true }, args);
 		case "var":
 			return args;
 		default:
