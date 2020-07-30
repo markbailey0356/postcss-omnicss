@@ -131,7 +131,7 @@ const splitSelector = selector => {
 	};
 };
 
-const propertyValues = prop => {
+const propertyKeywords = prop => {
 	switch (prop) {
 		case "animation-direction":
 			return ["normal", "revese", "alternate", "alternate-reverse"];
@@ -143,10 +143,10 @@ const propertyValues = prop => {
 			return ["paused", "running"];
 		case "animation":
 			return [
-				...propertyValues("animation-direction"),
-				...propertyValues("animation-fill-mode"),
-				...propertyValues("animation-iteration-count"),
-				...propertyValues("animation-play-state"),
+				...propertyKeywords("animation-direction"),
+				...propertyKeywords("animation-fill-mode"),
+				...propertyKeywords("animation-iteration-count"),
+				...propertyKeywords("animation-play-state"),
 			];
 		case "overflow":
 			return ["visible", "hidden", "clip", "scroll", "auto"];
@@ -178,7 +178,7 @@ const propertyValues = prop => {
 			];
 		case "justify-content":
 		case "align-content":
-			return [...propertyValues("align-items"), "space-evenly", "space-around", "space-between"];
+			return [...propertyKeywords("align-items"), "space-evenly", "space-around", "space-between"];
 		case "grid-auto-columns":
 		case "grid-auto-rows":
 			return ["min-content", "max-content", "fit-content", "minmax", "auto"];
@@ -217,7 +217,7 @@ const propertyValues = prop => {
 			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
 		case "text-decoration":
 			return [
-				...propertyValues("text-decoration-line"),
+				...propertyKeywords("text-decoration-line"),
 				"auto",
 				"from-font",
 				"solid",
@@ -240,7 +240,7 @@ const propertyValues = prop => {
 			return ["rgb", "rgba", "hsl", "hsla"];
 		case "background-image":
 			return [
-				...propertyValues("background-color"),
+				...propertyKeywords("background-color"),
 				"url",
 				"image",
 				"image-set",
@@ -259,14 +259,14 @@ const propertyValues = prop => {
 			return ["scroll", "fixed", "local"];
 		case "background":
 			return [
-				...propertyValues("background-clip"),
-				...propertyValues("background-color"),
-				...propertyValues("background-image"),
-				...propertyValues("background-origin"),
-				...propertyValues("background-position"),
-				...propertyValues("background-repeat"),
-				...propertyValues("background-size"),
-				...propertyValues("background-attachment"),
+				...propertyKeywords("background-clip"),
+				...propertyKeywords("background-color"),
+				...propertyKeywords("background-image"),
+				...propertyKeywords("background-origin"),
+				...propertyKeywords("background-position"),
+				...propertyKeywords("background-repeat"),
+				...propertyKeywords("background-size"),
+				...propertyKeywords("background-attachment"),
 			];
 		case "border-width":
 		case "outline-width":
@@ -297,23 +297,24 @@ const propertyValues = prop => {
 				"end",
 			];
 		case "transition":
-			return [...propertyValues("transition-property"), ...propertyValues("transition-timing-function")];
+			return [...propertyKeywords("transition-property"), ...propertyKeywords("transition-timing-function")];
 		case "outline-style":
 			return ["none", "auto", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 		case "outline-color":
 			return ["[a-z]+", "invert"];
 		case "outline":
 			return [
-				...propertyValues("outline-width"),
-				...propertyValues("outline-style"),
-				...propertyValues("outline-color"),
+				...propertyKeywords("outline-width"),
+				...propertyKeywords("outline-style"),
+				...propertyKeywords("outline-color"),
 			];
 		default:
 			return [];
 	}
 };
 
-const tokenizeValue = (keywords, value) => {
+const tokenizeValue = (keywords, options, value) => {
+	const { keepHyphens = false } = options;
 	value = value
 		.replace(/(^|[-,/])\.(\d)/g, "$10.$2")
 		.replace(/,-+/g, ",--")
@@ -331,8 +332,16 @@ const tokenizeValue = (keywords, value) => {
 	let matches = value.split(regex);
 	matches = _.compact(matches);
 	matches = collectBracketTokens(matches);
-	matches = _.compact(matches.map(x => x.replace(/^-(\D)/, "$1").replace(/-+$/, "")));
-	// console.log({value, matches})
+	matches = _.compact(
+		matches.map(match => {
+			match = match.replace(/^-(\D)/, "$1");
+			if (!keepHyphens) {
+				match = match.replace(/-+$/, "");
+			}
+			return match;
+		})
+	);
+	// console.log({ value, matches });
 	return matches;
 };
 
@@ -343,9 +352,6 @@ const collectBracketTokens = matches => {
 	let currentToken = [];
 	const tokens = [];
 	for (const match of matches) {
-		// console.log({ match, tokens, curlyBrackets });
-		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0 && match === "-") continue;
-
 		currentToken.push(match);
 
 		if (match === "[") {
@@ -371,9 +377,20 @@ const collectBracketTokens = matches => {
 	return tokens;
 };
 
-const processValueByRegex = (prop, modifiers, value) => {
-	const keywords = propertyValues(prop);
-	const tokens = tokenizeValue(keywords, value);
+const processPropertyValue = (prop, modifiers, value) => {
+	const keywords = propertyKeywords(prop);
+	const options = {
+		defaultUnit: defaultUnits.get(prop),
+		negate: modifiers.includes("negate"),
+		calcShorthand: true,
+	};
+	const result = processValue(keywords, options, value);
+	return result;
+};
+
+const processValue = (keywords, options, value) => {
+	const { defaultUnit = "", negate = false, calcShorthand = false } = options;
+	const tokens = tokenizeValue(keywords, options, value);
 	const transformedTokens = tokens.map(token => {
 		if (token.match(/^\[.*\]$/)) {
 			return token.replace(/,/g, " ");
@@ -385,10 +402,10 @@ const processValueByRegex = (prop, modifiers, value) => {
 		if (!isNaN(number)) {
 			let unit = token.match(/[a-zA-Z%]+/);
 			unit = unit ? unit[0] : "";
-			if (modifiers.includes("default-unit") && number !== 0) {
-				unit = unit || defaultUnits.get(prop) || "";
+			if (defaultUnit && number !== 0) {
+				unit = unit || defaultUnit;
 			}
-			if (modifiers.includes("negate")) {
+			if (negate) {
 				number *= -1;
 			}
 			return number + unit;
@@ -396,8 +413,10 @@ const processValueByRegex = (prop, modifiers, value) => {
 		const match = token.match(/^([\w-]*)\((.*)\)/);
 		if (match) {
 			let [, functionName, args] = match;
-			functionName = functionName || "calc";
-			args = processFunctionArgs(functionName, args, prop, modifiers);
+			if (calcShorthand) {
+				functionName = functionName || "calc";
+			}
+			args = processFunctionArgs(functionName, keywords, options, args);
 			return `${functionName}(${args})`;
 		}
 		if (token.match(/^\$[^(]/)) {
@@ -406,20 +425,22 @@ const processValueByRegex = (prop, modifiers, value) => {
 		return token;
 	});
 	const result = transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
-	// console.log({ tokens, transformedTokens, prop, value, result });
 	return result;
 };
 
-const processFunctionArgs = (functionName, args, prop, modifiers) => {
+const processFunctionArgs = (functionName, keywords, options, args) => {
 	switch (functionName) {
 		case "calc":
-			return args.replace(/([+/*-])/g, " $1 ");
+			return processValue(["\\+", "\\*"], { keepHyphens: true }, args);
 		case "var":
 			return args;
 		default:
-			return processValueByRegex(
-				prop,
-				modifiers.filter(x => x !== "negate"),
+			return processValue(
+				keywords,
+				{
+					...options,
+					negate: false,
+				},
 				args
 			);
 	}
@@ -473,9 +494,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				numberOfSegments = 0;
 			}
 
-			modifiers.push("default-unit");
-
-			value = processValueByRegex(prop, modifiers, value);
+			value = processPropertyValue(prop, modifiers, value);
 
 			let container = "root";
 			if (modifiers.includes("desktop")) {

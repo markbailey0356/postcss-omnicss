@@ -382,6 +382,24 @@ it("allows nesting brackets within calc()", async () => {
 	);
 });
 
+it("allows nesting var() within calc()", async () => {
+	await run(
+		"@omnicss",
+		`.--width-1rem {
+			--width: 1rem
+		}
+		.width-var\\(--width\\) {
+			width: var(--width)
+		}
+		.height-calc\\(9\\/16\\*var\\(--width\\)\\) {
+			height: calc(9 / 16 * var(--width))
+		}`,
+		{
+			source: '<div class="--width-1rem width-var(--width) height-calc(9/16*var(--width))"></div>',
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",
