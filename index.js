@@ -325,7 +325,7 @@ const tokenizeValue = (keywords, options, value) => {
 	const regex = new RegExp(
 		`(${keywordsSorted
 			.map(x => `\\b${x}\\b`)
-			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/+*]"])
+			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/+*]", "-(?=\\$)"])
 			.join("|")})`,
 		"g"
 	);

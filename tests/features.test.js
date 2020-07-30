@@ -439,6 +439,28 @@ it("handles multi-part custom property names in nested calcs", async () => {
 	);
 });
 
+it("handles multi-part custom property names in compound properties", async () => {
+	await run(
+		"@omnicss",
+		`.transform-\\$some-other-transform-\\$center-transform {
+			transform: var(--some-other-transform) var(--center-transform)
+		}
+		.\\$center-transform-translate\\(-50\\%\\,-50\\%\\) {
+			--center-transform: translate(-50%, -50%)
+		}
+		.\\$some-other-transform-rotate\\(15deg\\)-skew\\(15deg\\) {
+			--some-other-transform: rotate(15deg) skew(15deg)
+		}`,
+		{
+			source: `<div class="
+				$center-transform-translate(-50%,-50%)
+				$some-other-transform-rotate(15deg)-skew(15deg)
+				transform-$some-other-transform-$center-transform
+			"></div>`,
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",
