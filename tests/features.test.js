@@ -461,6 +461,24 @@ it("handles multi-part custom property names in compound properties", async () =
 	);
 });
 
+it("allows brackets around shorthand variables for when variable contains a keyword", async () => {
+	await run(
+		"@omnicss",
+		`.background-\\$\\(some-prop-auto\\) {
+			background: var(--some-prop-auto)
+		}
+		.\\$some-prop-auto-value {
+			--some-prop-auto: value
+		}`,
+		{
+			source: `<div class="
+				$some-prop-auto-value
+				background-$(some-prop-auto)
+			"></div>`,
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",

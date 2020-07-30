@@ -410,11 +410,15 @@ const processValue = (keywords, options, value) => {
 			}
 			return number + unit;
 		}
-		const match = token.match(/^([\w-]*)\((.*)\)/);
+		const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
 		if (match) {
 			let [, functionName, args] = match;
 			if (calcShorthand) {
 				functionName = functionName || "calc";
+			}
+			if (functionName === "$") {
+				functionName = "var";
+				args = args.replace(/^-*/, "--");
 			}
 			args = processFunctionArgs(functionName, keywords, options, args);
 			return `${functionName}(${args})`;
