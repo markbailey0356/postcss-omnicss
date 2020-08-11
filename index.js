@@ -308,6 +308,13 @@ const propertyKeywords = prop => {
 				...propertyKeywords("outline-style"),
 				...propertyKeywords("outline-color"),
 			];
+		case "width":
+		case "min-width":
+		case "max-width":
+		case "height":
+		case "min-height":
+		case "max-height":
+			return ["max-content", "min-content", "fit-content", "auto"];
 		default:
 			return [];
 	}
@@ -325,7 +332,13 @@ const tokenizeValue = (keywords, options, value) => {
 	const regex = new RegExp(
 		`(${keywordsSorted
 			.map(x => `\\b${x}\\b`)
-			.concat(["#[a-zA-Z0-9]+", "(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", "[[\\](){},/+*]", "-(?=\\$)"])
+			.concat([
+				"\\w+\\(", // single-word functions
+				"#\\w+", // color hash literals
+				"(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", // negated?, floating-point numbers, unit?
+				"[[\\](){},/+*]", // standalone delimiters
+				"-(?=\\$)", // split between hyphens and $ shorthands
+			])
 			.join("|")})`,
 		"g"
 	);
@@ -341,7 +354,6 @@ const tokenizeValue = (keywords, options, value) => {
 			return match;
 		})
 	);
-	// console.log({ value, matches });
 	return matches;
 };
 
@@ -361,6 +373,8 @@ const collectBracketTokens = matches => {
 		} else if (match === "(") {
 			roundBrackets++;
 			currentToken.unshift(tokens.pop());
+		} else if (match.includes("(")) {
+			roundBrackets++;
 		} else if (match === ")") {
 			roundBrackets--;
 		} else if (match === "{") {

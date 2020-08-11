@@ -479,6 +479,34 @@ it("allows brackets around shorthand variables for when variable contains a keyw
 	);
 });
 
+it("allows for fallback values when using var()", async () => {
+	await run(
+		"@omnicss",
+		`.pb-\\(50vw\\+var\\(--pb\\,0px\\)\\) {
+			padding-bottom: calc(50vw + var(--pb, 0px))
+		}`,
+		{
+			source: `<div class="
+				pb-(50vw+var(--pb,0px))
+			"></div>`,
+		}
+	);
+});
+
+it("allows for fallback values when using var shorthand", async () => {
+	await run(
+		"@omnicss",
+		`.pb-\\(50vw\\+\\$\\(pb\\,0px\\)\\) {
+			padding-bottom: calc(50vw + var(--pb, 0px))
+		}`,
+		{
+			source: `<div class="
+				pb-(50vw+$(pb,0px))
+			"></div>`,
+		}
+	);
+});
+
 it("provides a modifier to apply the class on hover", async () => {
 	await run(
 		"@omnicss",
