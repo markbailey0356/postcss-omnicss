@@ -15,6 +15,13 @@ const tests = {
 		"border-color-$(dark-orange)": "border-color: var(--dark-orange)",
 		"border-color-$orange-red": "border-color: var(--orange) red",
 	},
+	fonts: {
+		"font-family-$font-sans-serif": "font-family: var(--font-sans-serif)",
+		"font-family-$(font-sans-serif,{Open,Sans},Roboto,sans-serif)":
+			'font-family: var(--font-sans-serif, "Open Sans", Roboto, sans-serif)',
+		"font-family-$custom-fonts,$fallback-fonts": "font-family: var(--custom-fonts), var(--fallback-fonts)",
+		"font-family-{Noto,Sans,TC},$fonts-fallback": 'font-family: "Noto Sans TC", var(--fonts-fallback)',
+	},
 };
 
 for (const [useCase, caseTests] of Object.entries(tests)) {

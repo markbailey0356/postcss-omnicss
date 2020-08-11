@@ -457,7 +457,14 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 		case "calc":
 			return processValue([], { keepHyphens: true }, args);
 		case "var":
-			return args;
+			const firstCommaIndex = args.indexOf(",");
+			if (firstCommaIndex > -1) {
+				const variableName = args.slice(0, firstCommaIndex);
+				const remainingArgs = args.slice(firstCommaIndex + 1);
+				return variableName + "," + processValue(keywords, options, remainingArgs);
+			} else {
+				return args;
+			}
 		default:
 			return processValue(
 				keywords,
