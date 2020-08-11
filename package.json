@@ -16,6 +16,7 @@
 	"license": "MIT",
 	"repository": "markbailey0356/postcss-omnicss",
 	"dependencies": {
+		"colors.json": "^2.0.0",
 		"css.escape": "^1.5.1",
 		"known-css-properties": "^0.19.0",
 		"lodash": "^4.17.15",

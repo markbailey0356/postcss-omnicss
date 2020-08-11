@@ -337,11 +337,11 @@ it("provides a shorthand for the var() function", async () => {
 		`.\\$dark-red-\\#880000 {
 			--dark-red: #880000
 		}
-		.background-color-\\$dark-red {
+		.background-color-\\$\\(dark-red\\) {
 			background-color: var(--dark-red)
 		}`,
 		{
-			source: '<div class="$dark-red-#880000 background-color-$dark-red"></div>',
+			source: '<div class="$dark-red-#880000 background-color-$(dark-red)"></div>',
 		}
 	);
 });

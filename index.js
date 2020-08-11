@@ -6,6 +6,8 @@ const cssEscape = require("css.escape");
 const _ = require("lodash");
 // const matchAll = require("string.prototype.matchall");
 const path = require("path");
+const _cssColors = require("colors.json");
+const cssColors = Object.keys(_cssColors);
 
 const ignoredProperties = [
 	"text-decoration-none",
@@ -236,8 +238,8 @@ const propertyKeywords = prop => {
 			return ["cover", "contain", "auto"];
 		case "background-clip":
 			return ["border-box", "padding-box", "content-box", "text"];
-		case "background-color":
-			return ["rgb", "rgba", "hsl", "hsla"];
+		// case "background-color":
+		// return ["rgb", "rgba", "hsl", "hsla"];
 		case "background-image":
 			return [
 				...propertyKeywords("background-color"),
@@ -271,8 +273,6 @@ const propertyKeywords = prop => {
 		case "border-width":
 		case "outline-width":
 			return ["thin", "medium", "thick"];
-		case "border-color":
-			return ["[a-z]+"];
 		case "border-style":
 			return ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 		case "transition-property":
@@ -300,8 +300,6 @@ const propertyKeywords = prop => {
 			return [...propertyKeywords("transition-property"), ...propertyKeywords("transition-timing-function")];
 		case "outline-style":
 			return ["none", "auto", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
-		case "outline-color":
-			return ["[a-z]+", "invert"];
 		case "outline":
 			return [
 				...propertyKeywords("outline-width"),
@@ -315,6 +313,14 @@ const propertyKeywords = prop => {
 		case "min-height":
 		case "max-height":
 			return ["max-content", "min-content", "fit-content", "auto"];
+		case "color":
+		case "border-color":
+		case "background-color":
+			return [...cssColors, "currentcolor"];
+		case "outline-color":
+			return [...propertyKeywords("color"), "invert"];
+		case "box-shadow":
+			return [...propertyKeywords("color"), "inset"];
 		default:
 			return [];
 	}
@@ -331,11 +337,11 @@ const tokenizeValue = (keywords, options, value) => {
 		.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
 		`(${keywordsSorted
-			.map(x => `\\b${x}\\b`)
+			.map(x => `\\b(?<!\\$)${x}\\b`) // any keywords not preceded by a $
 			.concat([
 				"\\w+\\(", // single-word functions
 				"#\\w+", // color hash literals
-				"(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", // negated?, floating-point numbers, unit?
+				"(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", // negated?, floating-point numbers, with unit?
 				"[[\\](){},/+*]", // standalone delimiters
 				"-(?=\\$)", // split between hyphens and $ shorthands
 			])
