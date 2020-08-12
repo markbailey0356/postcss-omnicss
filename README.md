@@ -85,6 +85,8 @@ and set this plugin in settings.
 
       * `first-child:` (or simply `first:`) will style just the first direct child of the element, whereas `last-child:` (or simply `last:`) will only style the last child.
       * `not-first-child:` (or `not-first:` or `!first:`) will style all children but the first, this is useful for adding spacing between elements, e.g. `not-first-child:margin-bottom-1rem` (or `!first:mb-1`). Similarly, `not-last-child` (or `not-last:` or `!last:`) will style all children but the last.
+    * Important values
+      * `important:` or `!:` makes the property value important. e.g. `!:color-black` becomes `color: black !important`
     * Combining modifiers
       * Multiple modifiers can be used to combine their effects, e.g. `mobile:hover:color-black`.
       * Their order does sometimes matter.
@@ -141,9 +143,10 @@ and set this plugin in settings.
           * `filter-$drop-shadow-blur(5px)`
       * Setting one property based on another
         * Sometimes our properties are related to one another and it's nice to be able to express that explicitly.
-        * For example, the following OmniCSS classes would make a square element with a width and height of `10rem`: `$width-10rem width-$width height-$w`
-        * This declares a variable `w` equal to `10rem` and then sets the width and height to that value.
+        * For example, the following OmniCSS classes would make a square element with a width and height of `10rem`: `$width-10rem width-$width height-$width`
+        * This declares a variable `$width` equal to `10rem` and then sets the width and height to that value.
         * The advantage of this is that we can change the width later without remembering to also change the height to match.
+        * For example, we can change the width and height of the element to `5rem` by adding the following class: `m:$width-5rem`
         * With shorthands, this becomes: `$w-10rem w-$w h-$w`
         * This can be used in combination with calc() to create different aspect ratios.
         * For example, changing the previous example to a 16:9 box would be as simple as follows: `$width-10rem width-$width height-calc(9/16*$w)`
@@ -176,6 +179,11 @@ and set this plugin in settings.
 * Reference
   * Responsiveness and breakpoints
   * CSS Variables
+  * calc()
+    * calc() functions can be used in OmniCSS classes, i.e. `left-calc(50%-3rem)`
+    * As a shorthand, the calc keyword can actually be omitted, simply leaving the round brackets, i.e. `left-(50%-3rem)`
+    * Nested brackets in calc() function as expected: `width-((100%-2rem)/3)`
+    * CSS variables can be used in conjunction with calc(): `left-(50%-$left-offset)` becomes `left: calc(50% - var(--left-offset))`
   * Shorthand properties
     * You can use any of CSS's shorthand properties, such as `margin`, `padding`, `background`, `border`, `transition`, `animation`, and even `grid`.
     * Some examples
@@ -198,3 +206,14 @@ and set this plugin in settings.
     * Therefore, order that they appear in the CSS file matters
     * More specific properties are output after less-specific ones, e.g. `border` classes will appear before `border-left`, which will appear before `border-left-color`
     * This is so you can use shorthand properties, then override them with more specific cases, e.g. `margin-1rem margin-bottom-2rem`
+    * Classes with responsive modifiers are output in their media query after their non-responsive counterparts.
+    * Child selectors versions of classes are output before their normal versions. This is so that you can override inherited child styles on the element directly:
+
+      ```html
+      <div class="display-flex child:flex-basis-20%">
+        <div></div>
+        <div class="flex-basis-40%"></div>
+        <div></div>
+        <div></div>
+      </div>
+      ```
