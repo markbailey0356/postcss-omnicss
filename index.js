@@ -41,21 +41,49 @@ const propertyAbbreviations = new Map(
 
 const modifierAbbreviations = new Map(
 	Object.entries({
-		d: "desktop",
 		mobile: "not-desktop",
+		d: "desktop",
 		m: "not-desktop",
 		sm: "small",
 		md: "medium",
 		lg: "large",
 		xl: "extra-large",
+		"not-mobile": "desktop",
+		"not-d": "not-desktop",
+		"not-m": "desktop",
 		"not-sm": "not-small",
 		"not-md": "not-medium",
 		"not-lg": "not-large",
 		"not-xl": "not-extra-large",
+		"!mobile": "desktop",
+		"!d": "not-desktop",
+		"!m": "desktop",
 		"!sm": "not-small",
 		"!md": "not-medium",
 		"!lg": "not-large",
 		"!xl": "not-extra-large",
+		"at-desktop": "desktop",
+		"at-mobile": "not-desktop",
+		"at-extra-small": "not-small",
+		"at-extra-large": "extra-large",
+		"at-d": "desktop",
+		"at-m": "not-desktop",
+		"at-xs": "not-small",
+		"at-xl": "extra-large",
+		"@desktop": "desktop",
+		"@mobile": "not-desktop",
+		"@extra-small": "not-small",
+		"@small": "at-small",
+		"@medium": "at-medium",
+		"@large": "at-large",
+		"@extra-large": "extra-large",
+		"@d": "desktop",
+		"@m": "not-desktop",
+		"@xs": "not-small",
+		"@sm": "at-small",
+		"@md": "at-medium",
+		"@lg": "at-large",
+		"@xl": "extra-large",
 	})
 );
 
@@ -547,6 +575,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 
 			let container = "root";
 			{
+				const nextBreakpointName = breakpoint => {
+					switch (breakpoint) {
+						case 'small':
+							return 'medium';
+						case 'medium':
+							return 'large';
+						case 'large':
+							return 'extra-large';
+						default:
+							return;
+					}
+				}
+
 				let minWidth = null,
 					maxWidth = null;
 				for (const [breakpoint, value] of Object.entries(breakpoints)) {
@@ -555,6 +596,14 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					}
 					if (modifiers.includes("not-" + breakpoint)) {
 						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);	
+					}
+					if (modifiers.includes("at-" + breakpoint)) {
+						minWidth = minWidth == null ? value : Math.min(minWidth, value);
+						const nextBreakpoint = nextBreakpointName(breakpoint);
+						if (nextBreakpoint) {
+							const nextValue = breakpoints[nextBreakpoint];
+							maxWidth = maxWidth == null ? nextValue : Math.max(maxWidth, nextValue);
+						}
 					}
 				}
 				if (minWidth != null || maxWidth != null) {

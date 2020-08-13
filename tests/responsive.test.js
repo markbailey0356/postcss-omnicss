@@ -42,6 +42,8 @@ const tests = {
 				color: black
 			}
 		}`,
+
+		// not breakpoints
 		"!sm:color-black": `@media screen and (max-width: 639.98px) {
 			.\\!sm\\:color-black {
 				color: black
@@ -62,6 +64,8 @@ const tests = {
 				color: black
 			}
 		}`,
+
+		// breakpoint ranges
 		"sm:!md:color-black": `@media screen and (min-width: 640px) and (max-width: 767.98px) {
 			.sm\\:\\!md\\:color-black {
 				color: black
@@ -97,6 +101,33 @@ const tests = {
 				color: black
 			}
 		}`,	
+
+		// at breakpoints
+		"@xs:color-black": `@media screen and (max-width: 639.98px) {
+			.\\@xs\\:color-black {
+				color: black
+			}
+		}`,
+		"@sm:color-black": `@media screen and (min-width: 640px) and (max-width: 767.98px) {
+			.\\@sm\\:color-black {
+				color: black
+			}
+		}`,	
+		"@md:color-black": `@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+			.\\@md\\:color-black {
+				color: black
+			}
+		}`,
+		"@lg:color-black": `@media screen and (min-width: 1024px) and (max-width: 1279.98px) {
+			.\\@lg\\:color-black {
+				color: black
+			}
+		}`,
+		"@xl:color-black": `@media screen and (min-width: 1280px) {
+			.\\@xl\\:color-black {
+				color: black
+			}
+		}`,
 	},
 };
 
