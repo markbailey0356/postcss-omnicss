@@ -496,16 +496,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	const { source = "", files = [] } = opts;
 
 	const breakpoints = {
-		desktop: "screen and (min-width: 768px)",
-		small: "screen and (min-width: 640px)",
-		medium: "screen and (min-width: 768px)",
-		large: "screen and (min-width: 1024px)",
-		"extra-large": "screen and (min-width: 1280px)",
-		"not-desktop": "screen and (max-width: 767.98px)",
-		"not-small": "screen and (max-width: 639.98px)",
-		"not-medium": "screen and (max-width: 767.98px)",
-		"not-large": "screen and (max-width: 1023.98px)",
-		"not-extra-large": "screen and (max-width: 1279.98px)",
+		desktop: 768,
+		small: 640,
+		medium: 768,
+		large: 1024,
+		"extra-large": 1280,
 	};
 
 	return async (root, result) => {
@@ -551,10 +546,25 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			value = processPropertyValue(prop, modifiers, value);
 
 			let container = "root";
-			for (const modifier of Object.keys(breakpoints)) {
-				if (modifiers.includes(modifier)) {
-					container = modifier;
-					break;
+			{
+				let minWidth = null,
+					maxWidth = null;
+				for (const [breakpoint, value] of Object.entries(breakpoints)) {
+					if (modifiers.includes(breakpoint)) {
+						minWidth = minWidth == null ? value : Math.min(minWidth, value);
+					}
+					if (modifiers.includes("not-" + breakpoint)) {
+						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);	
+					}
+				}
+				if (minWidth != null || maxWidth != null) {
+					container = 'screen'
+					if (minWidth != null) {
+						container += ` and (min-width: ${minWidth}px)`;
+					}
+					if (maxWidth != null) {
+						container += ` and (max-width: ${(maxWidth - 0.02)}px)`;
+					}
 				}
 			}
 
@@ -600,12 +610,14 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const container = postcss.root();
 		nodes.root && container.append(nodes.root);
 
-		for (const [modifier, params] of Object.entries(breakpoints)) {
-			if (nodes[modifier] && nodes[modifier].length) {
+		delete nodes.root;
+
+		for (const [params, childNodes] of Object.entries(nodes)) {
+			if (childNodes && childNodes.length) {
 				const mediaQuery = postcss.atRule({
 					name: "media",
 					params,
-					nodes: nodes[modifier],
+					nodes: childNodes,
 				});
 				container.append(mediaQuery);
 			}

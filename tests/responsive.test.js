@@ -62,6 +62,41 @@ const tests = {
 				color: black
 			}
 		}`,
+		"sm:!md:color-black": `@media screen and (min-width: 640px) and (max-width: 767.98px) {
+			.sm\\:\\!md\\:color-black {
+				color: black
+			}
+		}`,	
+		"sm:!lg:color-black": `@media screen and (min-width: 640px) and (max-width: 1023.98px) {
+			.sm\\:\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"sm:!xl:color-black": `@media screen and (min-width: 640px) and (max-width: 1279.98px) {
+			.sm\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"md:!lg:color-black": `@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+			.md\\:\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"md:!xl:color-black": `@media screen and (min-width: 768px) and (max-width: 1279.98px) {
+			.md\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"lg:!xl:color-black": `@media screen and (min-width: 1024px) and (max-width: 1279.98px) {
+			.lg\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"!md:sm:color-black": `@media screen and (min-width: 640px) and (max-width: 767.98px) {
+			.\\!md\\:sm\\:color-black {
+				color: black
+			}
+		}`,	
 	},
 };
 
