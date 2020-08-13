@@ -580,10 +580,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			}
 
 			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
-			nodesByContainer[container] = nodesByContainer[container] || [];
-			nodesByContainer[container][subContainer] = nodesByContainer[container][subContainer] || [];
-			nodesByContainer[container][subContainer][numberOfSegments] =
-				nodesByContainer[container][subContainer][numberOfSegments] || [];
+			_.set(
+				nodesByContainer,
+				[container, subContainer, numberOfSegments],
+				_.get(nodesByContainer, [container, subContainer, numberOfSegments], [])
+			);
 			nodesByContainer[container][subContainer][numberOfSegments].push(node);
 		}
 
