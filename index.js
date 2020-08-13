@@ -43,6 +43,10 @@ const modifierAbbreviations = new Map(
 	Object.entries({
 		d: "desktop",
 		m: "mobile",
+		sm: "small",
+		md: "medium",
+		lg: "large",
+		xl: "extra-large",
 	})
 );
 
@@ -456,7 +460,7 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 	switch (functionName) {
 		case "calc":
 			return processValue([], { keepHyphens: true }, args);
-		case "var":
+		case "var": {
 			const firstCommaIndex = args.indexOf(",");
 			if (firstCommaIndex > -1) {
 				const variableName = args.slice(0, firstCommaIndex);
@@ -465,6 +469,7 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 			} else {
 				return args;
 			}
+		}
 		default:
 			return processValue(
 				keywords,
@@ -509,6 +514,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			root: [],
 			desktop: [],
 			mobile: [],
+			small: [],
+			medium: [],
+			large: [],
+			"extra-large": [],
 		};
 		for (const selector of selectors) {
 			let { prop, value, modifiers } = splitSelector(selector);
@@ -532,6 +541,14 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				container = "desktop";
 			} else if (modifiers.includes("mobile")) {
 				container = "mobile";
+			} else if (modifiers.includes("small")) {
+				container = "small";
+			} else if (modifiers.includes("medium")) {
+				container = "medium";
+			} else if (modifiers.includes("large")) {
+				container = "large";
+			} else if (modifiers.includes("extra-large")) {
+				container = "extra-large";
 			}
 
 			let subContainer = 1;
@@ -591,6 +608,39 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 				nodes: nodes.desktop,
 			});
 			container.append(desktopContainer);
+		}
+
+		if (nodes.small.length) {
+			const mediaQuery = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 640px)",
+				nodes: nodes.small,
+			});
+			container.append(mediaQuery);
+		}
+		if (nodes.medium.length) {
+			const mediaQuery = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 768px)",
+				nodes: nodes.medium,
+			});
+			container.append(mediaQuery);
+		}
+		if (nodes.large.length) {
+			const mediaQuery = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 1024px)",
+				nodes: nodes.large,
+			});
+			container.append(mediaQuery);
+		}
+		if (nodes["extra-large"].length) {
+			const mediaQuery = postcss.atRule({
+				name: "media",
+				params: "screen and (min-width: 1280px)",
+				nodes: nodes["extra-large"],
+			});
+			container.append(mediaQuery);
 		}
 
 		root.walkAtRules("omnicss", rule => rule.replaceWith(container));

@@ -63,10 +63,12 @@ and set this plugin in settings.
   * Modifiers
     * The main benefit that OmniCSS has over using inline style attributes.
     * You can take any OmniCSS class and add modifiers to it.
+    * Modifiers precede the class, each ending with a colon (`:`)
     * Responsiveness
       * For example, if you only want `display-flex` to be applied on mobile screen sizes, simply add `mobile:` to it, becoming `mobile:display-flex`. Or using an abbreviation, `m:display-flex`.
       * By default, mobile screen sizes corresponds to a max screen width of 768px, but this can be configured.
       * Similarly, classes can be applied only on desktop by prepending `desktop:` (or simply `d:`) e.g. `desktop:flex-direction-column`.
+      * Modifiers for other breakpoints are available, or you can add your own.
     * Pseudo-selectors
       * Some CSS pseudo-selectors are also OmniCSS modifiers.
       * These should be pretty intuitive:
