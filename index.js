@@ -42,11 +42,20 @@ const propertyAbbreviations = new Map(
 const modifierAbbreviations = new Map(
 	Object.entries({
 		d: "desktop",
-		m: "mobile",
+		mobile: "not-desktop",
+		m: "not-desktop",
 		sm: "small",
 		md: "medium",
 		lg: "large",
 		xl: "extra-large",
+		"not-sm": "not-small",
+		"not-md": "not-medium",
+		"not-lg": "not-large",
+		"not-xl": "not-extra-large",
+		"!sm": "not-small",
+		"!md": "not-medium",
+		"!lg": "not-large",
+		"!xl": "not-extra-large",
 	})
 );
 
@@ -486,6 +495,19 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 	// Work with options here
 	const { source = "", files = [] } = opts;
 
+	const breakpoints = {
+		desktop: "screen and (min-width: 768px)",
+		small: "screen and (min-width: 640px)",
+		medium: "screen and (min-width: 768px)",
+		large: "screen and (min-width: 1024px)",
+		"extra-large": "screen and (min-width: 1280px)",
+		"not-desktop": "screen and (max-width: 767.98px)",
+		"not-small": "screen and (max-width: 639.98px)",
+		"not-medium": "screen and (max-width: 767.98px)",
+		"not-large": "screen and (max-width: 1023.98px)",
+		"not-extra-large": "screen and (max-width: 1279.98px)",
+	};
+
 	return async (root, result) => {
 		let selectors = [];
 
@@ -510,15 +532,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			selectors = undetermined;
 		}
 
-		const nodesByContainer = {
-			root: [],
-			desktop: [],
-			mobile: [],
-			small: [],
-			medium: [],
-			large: [],
-			"extra-large": [],
-		};
+		const nodesByContainer = {};
 		for (const selector of selectors) {
 			let { prop, value, modifiers } = splitSelector(selector);
 
@@ -537,18 +551,11 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			value = processPropertyValue(prop, modifiers, value);
 
 			let container = "root";
-			if (modifiers.includes("desktop")) {
-				container = "desktop";
-			} else if (modifiers.includes("mobile")) {
-				container = "mobile";
-			} else if (modifiers.includes("small")) {
-				container = "small";
-			} else if (modifiers.includes("medium")) {
-				container = "medium";
-			} else if (modifiers.includes("large")) {
-				container = "large";
-			} else if (modifiers.includes("extra-large")) {
-				container = "extra-large";
+			for (const modifier of Object.keys(breakpoints)) {
+				if (modifiers.includes(modifier)) {
+					container = modifier;
+					break;
+				}
 			}
 
 			let subContainer = 1;
@@ -591,19 +598,10 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const nodes = _.mapValues(nodesByContainer, _.flow(_.flattenDeep, _.compact));
 
 		const container = postcss.root();
-		container.append(nodes.root);
-
-		const breakpoints = {
-			mobile: "screen and (max-width: 767.98px)",
-			desktop: "screen and (min-width: 768px)",
-			small: "screen and (min-width: 640px)",
-			medium: "screen and (min-width: 768px)",
-			large: "screen and (min-width: 1024px)",
-			"extra-large": "screen and (min-width: 1280px)",
-		};
+		nodes.root && container.append(nodes.root);
 
 		for (const [modifier, params] of Object.entries(breakpoints)) {
-			if (nodes[modifier].length) {
+			if (nodes[modifier] && nodes[modifier].length) {
 				const mediaQuery = postcss.atRule({
 					name: "media",
 					params,

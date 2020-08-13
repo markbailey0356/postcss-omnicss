@@ -42,6 +42,26 @@ const tests = {
 				color: black
 			}
 		}`,
+		"!sm:color-black": `@media screen and (max-width: 639.98px) {
+			.\\!sm\\:color-black {
+				color: black
+			}
+		}`,
+		"!md:color-black": `@media screen and (max-width: 767.98px) {
+			.\\!md\\:color-black {
+				color: black
+			}
+		}`,
+		"!lg:color-black": `@media screen and (max-width: 1023.98px) {
+			.\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"!xl:color-black": `@media screen and (max-width: 1279.98px) {
+			.\\!xl\\:color-black {
+				color: black
+			}
+		}`,
 	},
 };
 
