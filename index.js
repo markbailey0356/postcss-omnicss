@@ -592,55 +592,24 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 		const container = postcss.root();
 		container.append(nodes.root);
 
-		if (nodes.mobile.length) {
-			const mobileContainer = postcss.atRule({
-				name: "media",
-				params: "screen and (max-width: 767.98px)",
-				nodes: nodes.mobile,
-			});
-			container.append(mobileContainer);
-		}
+		const breakpoints = {
+			mobile: "screen and (max-width: 767.98px)",
+			desktop: "screen and (min-width: 768px)",
+			small: "screen and (min-width: 640px)",
+			medium: "screen and (min-width: 768px)",
+			large: "screen and (min-width: 1024px)",
+			"extra-large": "screen and (min-width: 1280px)",
+		};
 
-		if (nodes.desktop.length) {
-			const desktopContainer = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 768px)",
-				nodes: nodes.desktop,
-			});
-			container.append(desktopContainer);
-		}
-
-		if (nodes.small.length) {
-			const mediaQuery = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 640px)",
-				nodes: nodes.small,
-			});
-			container.append(mediaQuery);
-		}
-		if (nodes.medium.length) {
-			const mediaQuery = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 768px)",
-				nodes: nodes.medium,
-			});
-			container.append(mediaQuery);
-		}
-		if (nodes.large.length) {
-			const mediaQuery = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 1024px)",
-				nodes: nodes.large,
-			});
-			container.append(mediaQuery);
-		}
-		if (nodes["extra-large"].length) {
-			const mediaQuery = postcss.atRule({
-				name: "media",
-				params: "screen and (min-width: 1280px)",
-				nodes: nodes["extra-large"],
-			});
-			container.append(mediaQuery);
+		for (const [modifier, params] of Object.entries(breakpoints)) {
+			if (nodes[modifier].length) {
+				const mediaQuery = postcss.atRule({
+					name: "media",
+					params,
+					nodes: nodes[modifier],
+				});
+				container.append(mediaQuery);
+			}
 		}
 
 		root.walkAtRules("omnicss", rule => rule.replaceWith(container));
