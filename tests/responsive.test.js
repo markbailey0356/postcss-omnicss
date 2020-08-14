@@ -259,6 +259,62 @@ const tests = {
 			}
 		}`,
 	},
+	custom: {
+		"tb:color-black": `@media screen and (min-width: 768px) {
+			.tb\\:color-black {
+				color: black
+			}
+		}`,
+		"lp:color-black": `@media screen and (min-width: 1280px) {
+			.lp\\:color-black {
+				color: black
+			}
+		}`,
+		"dk:color-black": `@media screen and (min-width: 1920px) {
+			.dk\\:color-black {
+				color: black
+			}
+		}`,
+
+		// not breakpoints
+		"!tb:color-black": `@media screen and (max-width: 767.98px) {
+			.\\!tb\\:color-black {
+				color: black
+			}
+		}`,
+		"!lp:color-black": `@media screen and (max-width: 1279.98px) {
+			.\\!lp\\:color-black {
+				color: black
+			}
+		}`,
+		"!dk:color-black": `@media screen and (max-width: 1919.98px) {
+			.\\!dk\\:color-black {
+				color: black
+			}
+		}`,
+
+		// breakpoint ranges
+		"tb:!lp:color-black": `@media screen and (min-width: 768px) and (max-width: 1279.98px) {
+			.tb\\:\\!lp\\:color-black {
+				color: black
+			}
+		}`,
+		"tb:!dk:color-black": `@media screen and (min-width: 768px) and (max-width: 1919.98px) {
+			.tb\\:\\!dk\\:color-black {
+				color: black
+			}
+		}`,
+		"lp:!dk:color-black": `@media screen and (min-width: 1280px) and (max-width: 1919.98px) {
+			.lp\\:\\!dk\\:color-black {
+				color: black
+			}
+		}`,
+		"!lp:tb:color-black": `@media screen and (min-width: 768px) and (max-width: 1279.98px) {
+			.\\!lp\\:tb\\:color-black {
+				color: black
+			}
+		}`,
+	},
 };
 
 const postcss = require("postcss");
@@ -291,4 +347,20 @@ describe("Custom Mobile / Desktop breakpoints", () => {
 
 describe("Custom Tailwind breakpoints", () => {
 	runTests(tests["customTailwind"], { breakpoints: { small: 400, medium: 800, large: 1200, "extra-large": 1600 } });
+});
+
+describe("Custom Mobile / Desktop breakpoints with abbrevations", () => {
+	runTests(tests["customDesktop"], { breakpoints: { d: 1024 } });
+});
+
+describe("Custom Mobile / Desktop breakpoints using mobile", () => {
+	runTests(tests["customDesktop"], { breakpoints: { m: 1024 } });
+});
+
+describe("Custom Tailwind breakpoints with abbreviations", () => {
+	runTests(tests["customTailwind"], { breakpoints: { sm: 400, md: 800, lg: 1200, xl: 1600 } });
+});
+
+describe("Custom breakpoints", () => {
+	runTests(tests["custom"], { breakpoints: { tb: 768, lp: 1280, dk: 1920 } });
 });

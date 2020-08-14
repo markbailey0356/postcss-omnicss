@@ -87,6 +87,8 @@ const modifierAbbreviations = new Map(
 	})
 );
 
+const expandModifierAbbreviations = x => modifierAbbreviations.get(x) || x;
+
 const _defaultUnits = {
 	rem: [
 		"padding",
@@ -118,7 +120,7 @@ const splitSelector = selector => {
 	let modifiers = modifierSplits.slice(0, -1);
 	selector = modifierSplits[modifierSplits.length - 1];
 
-	modifiers = modifiers.map(x => modifierAbbreviations.get(x) || x);
+	modifiers = modifiers.map(expandModifierAbbreviations);
 
 	let prop, value;
 
@@ -529,6 +531,7 @@ const breakpointDefaults = {
 
 const extractBreakpointsFromOptions = _.flow(
 	x => (_.isObject(x.breakpoints) ? x.breakpoints : {}),
+	x => _.mapKeys(x, (value, key) => expandModifierAbbreviations(key).replace(/^(not|at)-/g, "")),
 	x => _.toPairs(x),
 	x => _.filter(x, ([name, value]) => _.isString(name) && _.isNumber(value)),
 	x => _.fromPairs(x),
@@ -604,10 +607,10 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					if (modifiers.includes(breakpoint)) {
 						minWidth = minWidth == null ? value : Math.min(minWidth, value);
 					}
-					if (modifiers.includes("not-" + breakpoint)) {
+					if (modifiers.includes("not-" + breakpoint) || modifiers.includes("!" + breakpoint)) {
 						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);
 					}
-					if (modifiers.includes("at-" + breakpoint)) {
+					if (modifiers.includes("at-" + breakpoint || modifiers.includes("@" + breakpoint))) {
 						minWidth = minWidth == null ? value : Math.min(minWidth, value);
 						const nextBreakpoint = nextBreakpointName(breakpoint);
 						if (nextBreakpoint) {
