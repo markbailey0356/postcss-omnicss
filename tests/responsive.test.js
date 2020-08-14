@@ -1,5 +1,5 @@
 const tests = {
-	"mobile/desktop": {
+	desktop: {
 		"mobile:color-black": `@media screen and (max-width: 767.98px) {
 			.mobile\\:color-black {
 				color: black
@@ -16,6 +16,28 @@ const tests = {
 			}
 		}`,
 		"d:color-black": `@media screen and (min-width: 768px) {
+			.d\\:color-black {
+				color: black
+			}
+		}`,
+	},
+	customDesktop: {
+		"mobile:color-black": `@media screen and (max-width: 1023.98px) {
+			.mobile\\:color-black {
+				color: black
+			}
+		}`,
+		"desktop:color-black": `@media screen and (min-width: 1024px) {
+			.desktop\\:color-black {
+				color: black
+			}
+		}`,
+		"m:color-black": `@media screen and (max-width: 1023.98px) {
+			.m\\:color-black {
+				color: black
+			}
+		}`,
+		"d:color-black": `@media screen and (min-width: 1024px) {
 			.d\\:color-black {
 				color: black
 			}
@@ -70,7 +92,7 @@ const tests = {
 			.sm\\:\\!md\\:color-black {
 				color: black
 			}
-		}`,	
+		}`,
 		"sm:!lg:color-black": `@media screen and (min-width: 640px) and (max-width: 1023.98px) {
 			.sm\\:\\!lg\\:color-black {
 				color: black
@@ -100,7 +122,7 @@ const tests = {
 			.\\!md\\:sm\\:color-black {
 				color: black
 			}
-		}`,	
+		}`,
 
 		// at breakpoints
 		"@xs:color-black": `@media screen and (max-width: 639.98px) {
@@ -112,7 +134,7 @@ const tests = {
 			.\\@sm\\:color-black {
 				color: black
 			}
-		}`,	
+		}`,
 		"@md:color-black": `@media screen and (min-width: 768px) and (max-width: 1023.98px) {
 			.\\@md\\:color-black {
 				color: black
@@ -124,6 +146,114 @@ const tests = {
 			}
 		}`,
 		"@xl:color-black": `@media screen and (min-width: 1280px) {
+			.\\@xl\\:color-black {
+				color: black
+			}
+		}`,
+	},
+	customTailwind: {
+		"sm:color-black": `@media screen and (min-width: 400px) {
+			.sm\\:color-black {
+				color: black
+			}
+		}`,
+		"md:color-black": `@media screen and (min-width: 800px) {
+			.md\\:color-black {
+				color: black
+			}
+		}`,
+		"lg:color-black": `@media screen and (min-width: 1200px) {
+			.lg\\:color-black {
+				color: black
+			}
+		}`,
+		"xl:color-black": `@media screen and (min-width: 1600px) {
+			.xl\\:color-black {
+				color: black
+			}
+		}`,
+
+		// not breakpoints
+		"!sm:color-black": `@media screen and (max-width: 399.98px) {
+			.\\!sm\\:color-black {
+				color: black
+			}
+		}`,
+		"!md:color-black": `@media screen and (max-width: 799.98px) {
+			.\\!md\\:color-black {
+				color: black
+			}
+		}`,
+		"!lg:color-black": `@media screen and (max-width: 1199.98px) {
+			.\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"!xl:color-black": `@media screen and (max-width: 1599.98px) {
+			.\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+
+		// breakpoint ranges
+		"sm:!md:color-black": `@media screen and (min-width: 400px) and (max-width: 799.98px) {
+			.sm\\:\\!md\\:color-black {
+				color: black
+			}
+		}`,
+		"sm:!lg:color-black": `@media screen and (min-width: 400px) and (max-width: 1199.98px) {
+			.sm\\:\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"sm:!xl:color-black": `@media screen and (min-width: 400px) and (max-width: 1599.98px) {
+			.sm\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"md:!lg:color-black": `@media screen and (min-width: 800px) and (max-width: 1199.98px) {
+			.md\\:\\!lg\\:color-black {
+				color: black
+			}
+		}`,
+		"md:!xl:color-black": `@media screen and (min-width: 800px) and (max-width: 1599.98px) {
+			.md\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"lg:!xl:color-black": `@media screen and (min-width: 1200px) and (max-width: 1599.98px) {
+			.lg\\:\\!xl\\:color-black {
+				color: black
+			}
+		}`,
+		"!md:sm:color-black": `@media screen and (min-width: 400px) and (max-width: 799.98px) {
+			.\\!md\\:sm\\:color-black {
+				color: black
+			}
+		}`,
+
+		// at breakpoints
+		"@xs:color-black": `@media screen and (max-width: 399.98px) {
+			.\\@xs\\:color-black {
+				color: black
+			}
+		}`,
+		"@sm:color-black": `@media screen and (min-width: 400px) and (max-width: 799.98px) {
+			.\\@sm\\:color-black {
+				color: black
+			}
+		}`,
+		"@md:color-black": `@media screen and (min-width: 800px) and (max-width: 1199.98px) {
+			.\\@md\\:color-black {
+				color: black
+			}
+		}`,
+		"@lg:color-black": `@media screen and (min-width: 1200px) and (max-width: 1599.98px) {
+			.\\@lg\\:color-black {
+				color: black
+			}
+		}`,
+		"@xl:color-black": `@media screen and (min-width: 1600px) {
 			.\\@xl\\:color-black {
 				color: black
 			}
@@ -147,10 +277,18 @@ const runTests = (tests, options = {}) => {
 	}
 };
 
-describe("mobile/desktop", () => {
-	runTests(tests["mobile/desktop"]);
+describe("Mobile / Desktop breakpoints", () => {
+	runTests(tests["desktop"]);
 });
 
-describe("tailwind", () => {
+describe("Tailwind breakpoints", () => {
 	runTests(tests["tailwind"]);
+});
+
+describe("Custom Mobile / Desktop breakpoints", () => {
+	runTests(tests["customDesktop"], { breakpoints: { desktop: 1024 } });
+});
+
+describe("Custom Tailwind breakpoints", () => {
+	runTests(tests["customTailwind"], { breakpoints: { small: 400, medium: 800, large: 1200, "extra-large": 1600 } });
 });

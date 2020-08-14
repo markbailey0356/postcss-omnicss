@@ -519,17 +519,27 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 	}
 };
 
-module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
-	// Work with options here
-	const { source = "", files = [] } = opts;
+const breakpointDefaults = {
+	desktop: 768,
+	small: 640,
+	medium: 768,
+	large: 1024,
+	"extra-large": 1280,
+};
 
-	const breakpoints = {
-		desktop: 768,
-		small: 640,
-		medium: 768,
-		large: 1024,
-		"extra-large": 1280,
-	};
+const extractBreakpointsFromOptions = _.flow(
+	x => (_.isObject(x.breakpoints) ? x.breakpoints : {}),
+	x => _.toPairs(x),
+	x => _.filter(x, ([name, value]) => _.isString(name) && _.isNumber(value)),
+	x => _.fromPairs(x),
+	x => _.defaults(x, breakpointDefaults)
+);
+
+module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
+	// Work with options here
+	const { source = "", files = [] } = options;
+
+	const breakpoints = extractBreakpointsFromOptions(options);
 
 	return async (root, result) => {
 		let selectors = [];
@@ -577,16 +587,16 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 			{
 				const nextBreakpointName = breakpoint => {
 					switch (breakpoint) {
-						case 'small':
-							return 'medium';
-						case 'medium':
-							return 'large';
-						case 'large':
-							return 'extra-large';
+						case "small":
+							return "medium";
+						case "medium":
+							return "large";
+						case "large":
+							return "extra-large";
 						default:
 							return;
 					}
-				}
+				};
 
 				let minWidth = null,
 					maxWidth = null;
@@ -595,7 +605,7 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 						minWidth = minWidth == null ? value : Math.min(minWidth, value);
 					}
 					if (modifiers.includes("not-" + breakpoint)) {
-						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);	
+						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);
 					}
 					if (modifiers.includes("at-" + breakpoint)) {
 						minWidth = minWidth == null ? value : Math.min(minWidth, value);
@@ -607,12 +617,12 @@ module.exports = postcss.plugin("postcss-omnicss", (opts = {}) => {
 					}
 				}
 				if (minWidth != null || maxWidth != null) {
-					container = 'screen'
+					container = "screen";
 					if (minWidth != null) {
 						container += ` and (min-width: ${minWidth}px)`;
 					}
 					if (maxWidth != null) {
-						container += ` and (max-width: ${(maxWidth - 0.02)}px)`;
+						container += ` and (max-width: ${maxWidth - 0.02}px)`;
 					}
 				}
 			}
