@@ -164,54 +164,6 @@ it("handles multiple negative values in compound property", async () => {
 	);
 });
 
-it("provides a more-readable syntax for negating single values", async () => {
-	await run(
-		"@omnicss",
-		`.-margin-top-1rem {
-			margin-top: -1rem
-		}`,
-		{
-			source: '<div class="-margin-top-1rem"></div>',
-		}
-	);
-});
-
-it("handles negating compound values", async () => {
-	await run(
-		"@omnicss",
-		`.-margin-1rem-2rem-3rem-4rem {
-			margin: -1rem -2rem -3rem -4rem
-		}`,
-		{
-			source: '<div class="-margin-1rem-2rem-3rem-4rem"></div>',
-		}
-	);
-});
-
-it("handles negating mixed-sign compound values", async () => {
-	await run(
-		"@omnicss",
-		`.-margin-1rem--2rem-3rem--4rem {
-			margin: -1rem 2rem -3rem 4rem
-		}`,
-		{
-			source: '<div class="-margin-1rem--2rem-3rem--4rem"></div>',
-		}
-	);
-});
-
-it("handles negating abbreviated single properties", async () => {
-	await run(
-		"@omnicss",
-		`.-pt-1rem {
-			padding-top: -1rem
-		}`,
-		{
-			source: '<div class="-pt-1rem"></div>',
-		}
-	);
-});
-
 it("appends sensible default units for values if omitted", async () => {
 	await run(
 		"@omnicss",
