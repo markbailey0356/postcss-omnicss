@@ -69,8 +69,8 @@ and set this plugin in settings.
       * By default, mobile screen sizes corresponds to a max screen width of 768px, but this can be configured.
       * Similarly, classes can be applied only on desktop by prepending `desktop:` (or simply `d:`) e.g. `desktop:flex-direction-column`.
       * Modifiers for other breakpoints are available, or you can add your own.
-    * Pseudo-selectors
-      * Some CSS pseudo-selectors are also OmniCSS modifiers.
+    * Pseudo-classes
+      * Some CSS pseudo-classes are also OmniCSS modifiers.
       * These should be pretty intuitive:
       * `hover:` styles the element when it is hovered by the mouse, whereas `focus:` applies when it is focused.
       * `placeholder:` styles the placeholder of an input element.
@@ -202,6 +202,8 @@ and set this plugin in settings.
     * All abbreviations are optional. The same styles will be applied to both the abbreviated and un-abbreviated forms.
     * If OmniCSS finds multiple classes that resolve to the same CSS declaration, they will be combined into a single rule to prevent bloating the output CSS file.
   * Prefixed properties
+  * Pseudo-classes
+    * `active:`, `any-link:`, `blank:`, `checked:`, `default:`, `disabled:`, `empty:`, `enabled:`, `focus:`, `focus-visible:`, `focus-within:`, `host:`, `hover:`, `indeterminate:`, `in-range:`, `invalid:`, `link:`, `optional:`, `out-of-range:`, `placeholder-shown:`, `read-only:`, `read-write:`, `required:`, `target:`, `valid:`, `visited:`
 * Technical details
   * Specificity issues
     * Most OmniCSS rules are a single class selector and have a specificity of 10

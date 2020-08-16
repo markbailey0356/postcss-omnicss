@@ -21,21 +21,53 @@ ignoredProperties.forEach(x => {
 	knownCssProperties.delete(x);
 });
 
+const selectorAbbreviations = new Map(
+	Object.entries({
+		block: "display-block",
+		"flow-root": "display-flow-root",
+		"inline-block": "display-inline-block",
+		inline: "display-inline",
+		flex: "display-flex",
+		"inline-flex": "display-inline-flex",
+		grid: "display-grid",
+		"inline-grid": "display-inline-grid",
+		table: "display-table",
+		"table-caption": "display-table-caption",
+		"table-cell": "display-table-cell",
+		"table-column": "display-table-column",
+		"table-column-group": "display-table-column-group",
+		"table-footer-group": "display-table-footer-group",
+		"table-header-group": "display-table-header-group",
+		"table-row-group": "display-table-row-group",
+		"table-row": "display-table-row",
+	})
+);
+
 const propertyAbbreviations = new Map(
 	Object.entries({
-		p: "padding",
-		pt: "padding-top",
-		pb: "padding-bottom",
-		pl: "padding-left",
-		pr: "padding-right",
+		ac: "align-content",
+		ai: "align-items",
+		as: "align-self",
+		anim: "animation",
+		b: "border",
+		bg: "background",
+		func: "timing-function",
+		function: "timing-function",
+		h: "height",
+		jc: "justify-content",
+		ji: "justify-items",
+		js: "justify-self",
 		m: "margin",
-		mt: "margin-top",
 		mb: "margin-bottom",
 		ml: "margin-left",
 		mr: "margin-right",
+		mt: "margin-top",
+		p: "padding",
+		pb: "padding-bottom",
+		pl: "padding-left",
+		pr: "padding-right",
+		pt: "padding-top",
 		w: "width",
-		h: "height",
-		bg: "background",
 	})
 );
 
@@ -88,6 +120,7 @@ const modifierAbbreviations = new Map(
 );
 
 const expandModifierAbbreviations = x => modifierAbbreviations.get(x) || x;
+const expandSelectorAbbreviations = x => selectorAbbreviations.get(x) || x;
 
 const _defaultUnits = {
 	rem: [
@@ -140,33 +173,44 @@ const splitSelector = selector => {
 			value = selector.slice(prop.length + 1);
 		}
 	} else {
-		let negated = false;
-		const leadingHyphen = selector[0] === "-";
 		let splitIndex;
-		for (let i = 1; i <= selector.length; i++) {
+		for (let i = selector.length; i >= 1; i--) {
 			if (selector[i] !== "-" && i !== selector.length) continue;
 
-			let potentialProp = selector
-				.slice(0, i)
-				.split("-")
-				.map(segment => propertyAbbreviations.get(segment) || segment)
-				.join("-");
+			const enumeratePotentialPropertiesFromSegments = segments => {
+				if (!segments.length) return [];
+				const expandPropertySegment = segment => _.compact([propertyAbbreviations.get(segment), segment]);
+				const cartesianProduct = (a, b) => _.flatMap(a, x => b.length ? b.map(y => x + y) : x);
 
-			if (knownCssProperties.has(potentialProp)) {
-				prop = potentialProp;
-				splitIndex = i;
-			} else if (leadingHyphen && knownCssProperties.has(potentialProp.slice(1))) {
-				prop = potentialProp.slice(1);
-				splitIndex = i;
-				negated = true;
+				// console.log({
+				// 	segments,
+				// 	expandPropertySegment: expandPropertySegment(segments[0]),
+				// 	recurse: enumeratePotentialPropertiesFromSegments(segments.slice(1)),
+				// 	product: cartesianProduct(
+				// 		expandPropertySegment(segments[0]),
+				// 		enumeratePotentialPropertiesFromSegments(segments.slice(1))
+				// 	),
+				// });
+				return cartesianProduct(
+					expandPropertySegment(segments[0]),
+					enumeratePotentialPropertiesFromSegments(segments.slice(1))
+				);
+			};
+			const selectorSegments = selector.slice(0,i).split(/(-)/g);
+			for (let potentialProp of enumeratePotentialPropertiesFromSegments(selectorSegments)) {
+				if (knownCssProperties.has(potentialProp)) {
+					prop = potentialProp;
+					splitIndex = i;
+					break;
+				}
 			}
+			if (prop) break;
 		}
 		value = splitIndex && selector.slice(splitIndex + 1);
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
 			value = "auto-flow-" + value;
 		}
-		if (negated) modifiers.push("negate");
 	}
 
 	return {
@@ -569,7 +613,9 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 		}
 
 		const nodesByContainer = {};
-		for (const selector of selectors) {
+		for (let selector of selectors) {
+			selector = expandSelectorAbbreviations(selector);
+
 			let { prop, value, modifiers } = splitSelector(selector);
 
 			if (!(prop && value)) continue;
