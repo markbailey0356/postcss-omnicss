@@ -158,6 +158,11 @@ const tests = {
 		"border-box": "box-sizing: border-box",
 		"content-box": "box-sizing: content-box",
 	},
+	"flex": {
+		"basis-0": "flex-basis: 0",
+		"grow-0": "flex-grow: 0",
+		"shrink-0": "flex-shrink: 0",
+	},
 	"fonts": {
 		"family-cursive": "font-family: cursive",
 		"size-12px": "font-size: 12px",
