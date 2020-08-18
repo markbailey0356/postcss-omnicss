@@ -5,6 +5,8 @@
 * Prevent creating nonsense classes for common class names: `content-container`, `page-inner`, etc.
 * Decide what to do about semi-colons in class names
 * Shorthand property inference: `bg-cover` should become `background-size: cover` instead of `background: cover`
+* Custom `flexbox` shorthand property to set flex parent properties
+* Custom `inset` shorthand property to set `top`, `right`, `bottom`, and `left` (similar to `margin` or `padding`)
 
 ## Talking points
 

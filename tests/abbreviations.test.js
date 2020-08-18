@@ -219,6 +219,10 @@ const tests = {
 		"min-h-25em": "min-height: 25em",
 		"min-w-75%": "min-width: 75%",
 	},
+	"leading/tracking": {
+		"tracking-normal": "letter-spacing: normal",
+		"leading-normal": "line-height: normal",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

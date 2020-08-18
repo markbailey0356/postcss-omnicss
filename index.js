@@ -98,6 +98,8 @@ const _propertyAbbreviations = Object.entries({
 	"grid-column": "column",
 	"grid-auto": "auto",
 	"grid-area": "area",
+	"letter-spacing": "tracking",
+	"line-height": "leading",
 	margin: "m",
 	"margin-bottom": "mb",
 	"margin-left": "ml",
