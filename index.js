@@ -16,7 +16,9 @@ const ignoredProperties = [
 ];
 
 const getKnownCssProperties = () => {
-	let properties = _.sortBy(require("known-css-properties").all, x => -x.split("-").length);
+	let properties = require("known-css-properties").all;
+	properties = _.sortBy(properties, x => x === "justify-content" || x === "align-items"); // give property a lower priority
+	properties = _.sortBy(properties, x => -x.split("-").length);
 	return properties.filter(x => !ignoredProperties.includes(x));
 };
 
@@ -48,14 +50,15 @@ const selectorAbbreviations = new Map(
 		"content-box": "box-sizing-content-box",
 
 		// font
-		"italic": "font-style-italic",
-		"bold": "font-weight-bold",
+		italic: "font-style-italic",
+		bold: "font-weight-bold",
 	})
 );
 
 const _propertyAbbreviations = Object.entries({
 	"align-items": ["align", "items"],
 	"justify-content": "justify",
+	justify: "just",
 	"align-self": "self",
 	animation: "anim",
 	"timing-function": ["timing", "function"],
@@ -90,7 +93,7 @@ const _propertyAbbreviations = Object.entries({
 	"font-style": "style",
 	"font-weight": "weight",
 	"grid-template": "template",
-	"template": "temp",
+	template: "temp",
 	"grid-row": "row",
 	"grid-column": "column",
 	"grid-auto": "auto",
@@ -247,6 +250,13 @@ const splitSelector = selector => {
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
 			value = "auto-flow-" + value;
+		}
+
+		if (prop === "grid-column-gap" && selector.match(/^column-gap/)) {
+			prop = "column-gap";
+		}
+		if (prop === "grid-row-gap" && selector.match(/^row-gap/)) {
+			prop = "row-gap";
 		}
 	}
 
