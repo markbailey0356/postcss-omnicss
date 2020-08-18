@@ -352,6 +352,16 @@ const propertyKeywords = prop => {
 			return ["thin", "medium", "thick"];
 		case "border-style":
 			return ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
+		case "border":
+		case "border-bottom":
+		case "border-left":
+		case "border-right":
+		case "border-top":
+			return [
+				...propertyKeywords("border-width"),
+				...propertyKeywords("border-style"),
+				...propertyKeywords("border-color"),
+			]
 		case "transition-property":
 			return [...knownCssProperties, "none", "all"];
 		case "transition-timing-function":
