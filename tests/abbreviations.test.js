@@ -264,6 +264,16 @@ const tests = {
 		fixed: "position: fixed",
 		sticky: "position: sticky",
 	},
+	"text-align": {
+		"text-left": "text-align: left",
+		"text-right": "text-align: right",
+		"text-center": "text-align: center",
+		"text-justify": "text-align: justify",
+		"text-justify-all": "text-align: justify-all",
+		"text-start": "text-align: start",
+		"text-end": "text-align: end",
+		"text-match-parent": "text-align: match-parent",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
