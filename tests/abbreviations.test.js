@@ -156,6 +156,10 @@ const tests = {
 		"r-0": "right: 0",
 		"t-0": "top: 0",
 	},
+	"box-sizing": {
+		"border-box": "box-sizing: border-box",
+		"content-box": "box-sizing: content-box",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

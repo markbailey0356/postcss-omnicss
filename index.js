@@ -24,6 +24,7 @@ const knownCssProperties = getKnownCssProperties();
 
 const selectorAbbreviations = new Map(
 	Object.entries({
+		// display
 		block: "display-block",
 		"flow-root": "display-flow-root",
 		"inline-block": "display-inline-block",
@@ -41,6 +42,10 @@ const selectorAbbreviations = new Map(
 		"table-header-group": "display-table-header-group",
 		"table-row-group": "display-table-row-group",
 		"table-row": "display-table-row",
+
+		// box-sizing
+		"border-box": "box-sizing-border-box",
+		"content-box": "box-sizing-content-box",
 	})
 );
 
@@ -221,7 +226,7 @@ const splitSelector = selector => {
 		if (prop === "border" && selector.match(/^b-/)) {
 			prop = "bottom";
 		}
-		
+
 		// resolve ambiguity between `grid: auto-flow ...` and `grid-auto-flow: ...`
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
