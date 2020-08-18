@@ -17,18 +17,18 @@ const tests = {
 	"flexbox-row-reverse": ["flex", "row-reverse", "unset", "unset", "unset", "unset"],
 	"flexbox-column-reverse": ["flex", "column-reverse", "unset", "unset", "unset", "unset"],
 
-	// // just wrap
-	// "flexbox-wrap": ["flex", "unset", "wrap", "unset", "unset", "unset"],
-	// "flexbox-nowrap": ["flex", "unset", "nowrap", "unset", "unset", "unset"],
-	// "flexbox-wrap-reverse": ["flex", "unset", "wrap-reverse", "unset", "unset", "unset"],
+	// just wrap
+	"flexbox-wrap": ["flex", "unset", "wrap", "unset", "unset", "unset"],
+	"flexbox-nowrap": ["flex", "unset", "nowrap", "unset", "unset", "unset"],
+	"flexbox-wrap-reverse": ["flex", "unset", "wrap-reverse", "unset", "unset", "unset"],
 
-	// // align/justify to one value
-	// "flexbox-stretch": ["flex", "unset", "unset", "stretch", "stretch", "stretch"],
-	// "flexbox-center": ["flex", "unset", "unset", "center", "center", "center"],
-	// "flexbox-flex-start": ["flex", "unset", "unset", "flex-start", "flex-start", "flex-start"],
-	// "flexbox-flex-end": ["flex", "unset", "unset", "flex-end", "flex-end", "flex-end"],
-	// "flexbox-start": ["flex", "unset", "unset", "start", "start", "start"],
-	// "flexbox-end": ["flex", "unset", "unset", "end", "end", "end"],
+	// align/justify to one value
+	"flexbox-stretch": ["flex", "unset", "unset", "stretch", "stretch", "stretch"],
+	"flexbox-center": ["flex", "unset", "unset", "center", "center", "center"],
+	"flexbox-flex-start": ["flex", "unset", "unset", "flex-start", "flex-start", "flex-start"],
+	"flexbox-flex-end": ["flex", "unset", "unset", "flex-end", "flex-end", "flex-end"],
+	"flexbox-start": ["flex", "unset", "unset", "start", "start", "start"],
+	"flexbox-end": ["flex", "unset", "unset", "end", "end", "end"],
 	
 	// // align-items only
 	// "flexbox-self-start": ["flex", "unset", "unset", "self-start", "unset", "unset"],

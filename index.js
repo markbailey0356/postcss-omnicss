@@ -272,6 +272,8 @@ const propertyKeywords = prop => {
 		case "flex-flow":
 		case "flex-direction":
 			return ["row", "column", "row-reverse", "column-reverse"];
+		case "flex-wrap":
+			return ["wrap", "nowrap", "wrap-reverse"];
 		case "align-items":
 		case "align-self":
 		case "justify-items":
@@ -744,19 +746,35 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 			let node;
 			if (prop === "flexbox") {
-				let fallbackValue = value.includes('initial') ? 'initial' : value.includes('inherit') ? 'inherit' : 'unset';
-				let flexDirection;
-				if (propertyKeywords('flex-direction').includes(value)) {
+				let fallbackValue = value.includes("initial")
+					? "initial"
+					: value.includes("inherit")
+					? "inherit"
+					: "unset";
+				let flexDirection, flexWrap, alignItems, justifyContent, alignContent;
+				if (propertyKeywords("flex-direction").includes(value)) {
 					flexDirection = value;
+				}
+				if (propertyKeywords("flex-wrap").includes(value)) {
+					flexWrap = value;
+				}
+				if (propertyKeywords("align-items").includes(value)) {
+					alignItems = value;
+				}
+				if (propertyKeywords("justify-content").includes(value)) {
+					justifyContent = value;
+				}
+				if (propertyKeywords("align-content").includes(value)) {
+					alignContent = value;
 				}
 				node = postcss
 					.rule({ selector: realSelector })
 					.append(postcss.decl({ prop: "display", value: "flex" }))
 					.append(postcss.decl({ prop: "flex-direction", value: flexDirection || fallbackValue }))
-					.append(postcss.decl({ prop: "flex-wrap", value: fallbackValue }))
-					.append(postcss.decl({ prop: "align-items", value: fallbackValue }))
-					.append(postcss.decl({ prop: "justify-content", value: fallbackValue }))
-					.append(postcss.decl({ prop: "align-content", value: fallbackValue }));
+					.append(postcss.decl({ prop: "flex-wrap", value: flexWrap || fallbackValue }))
+					.append(postcss.decl({ prop: "align-items", value: alignItems || fallbackValue }))
+					.append(postcss.decl({ prop: "justify-content", value: justifyContent || fallbackValue }))
+					.append(postcss.decl({ prop: "align-content", value: alignContent || fallbackValue }));
 			} else {
 				node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
 			}
