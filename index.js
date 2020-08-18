@@ -176,7 +176,7 @@ const propertyRegexes = knownCssProperties.map(x => {
 	return x;
 });
 
-// console.log(propertyRegexes[knownCssProperties.findIndex(x => x === "border-top-left-radius")]);
+// console.log(propertyRegexes[knownCssProperties.findIndex(x => x === "justify-content")]);
 
 const propertyRegex = new RegExp(`^(?:${propertyRegexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 

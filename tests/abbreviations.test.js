@@ -188,7 +188,6 @@ const tests = {
 		"column-start-auto": "grid-column-start: auto",
 		"col-start-auto": "grid-column-start: auto",
 		"grid-col-gap-20px": "grid-column-gap: 20px",
-		"grid-col-start-auto": "grid-column-start: auto",
 		"area-auto": "grid-area: auto",
 		"auto-flow-row": "grid-auto-flow: row",
 		"auto-rows-min-content": "grid-auto-rows: min-content",
@@ -211,7 +210,15 @@ const tests = {
 		"grid-temp-rows-none": "grid-template-rows: none",
 		"template-rows-none": "grid-template-rows: none",
 		"temp-rows-none": "grid-template-rows: none",
-	}
+	},
+	"height/width": {
+		"h-300px": "height: 300px",
+		"w-min-content": "width: min-content",
+		"max-h-75%": "max-height: 75%",
+		"max-w-300px": "max-width: 300px",
+		"min-h-25em": "min-height: 25em",
+		"min-w-75%": "min-width: 75%",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
