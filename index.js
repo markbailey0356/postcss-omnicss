@@ -61,6 +61,7 @@ const _propertyAbbreviations = Object.entries({
 	direction: "dir",
 	border: "b",
 	background: "bg",
+	attachment: "attach",
 	margin: "m",
 	"margin-bottom": "mb",
 	"margin-left": "ml",
@@ -71,6 +72,7 @@ const _propertyAbbreviations = Object.entries({
 	"padding-left": "pl",
 	"padding-right": "pr",
 	"padding-top": "pt",
+	position: "pos",
 	height: "h",
 	width: "w",
 });

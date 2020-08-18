@@ -52,6 +52,19 @@ const tests = {
 		"anim-function-ease-in-out": "animation-timing-function: ease-in-out",
 		"anim-func-ease-in-out": "animation-timing-function: ease-in-out",
 	},
+	background: {
+		"bg-green": "background: green",
+		"bg-attachment-scroll": "background-attachment: scroll",
+		"bg-attach-scroll": "background-attachment: scroll",
+		"bg-color-red": "background-color: red",
+		"bg-position-top": "background-position: top",
+		"bg-pos-top": "background-position: top",
+		"bg-repeat-repeat-x": "background-repeat: repeat-x",
+		"bg-repeat-repeat-y": "background-repeat: repeat-y",
+		"bg-repeat-repeat": "background-repeat: repeat",
+		"bg-repeat-no-repeat": "background-repeat: no-repeat",
+		"bg-size-cover": "background-size: cover",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
