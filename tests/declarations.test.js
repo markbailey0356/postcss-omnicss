@@ -256,7 +256,7 @@ const tests = {
 		"background-size-50%,25%,25%": "background-size: 50%, 25%, 25%",
 		"background-size-6px,auto,contain": "background-size: 6px, auto, contain",
 	},
-	"border": {
+	border: {
 		"border-solid": "border: solid",
 		"border-dashed-red": "border: dashed red",
 		"border-1rem-solid": "border: 1rem solid",

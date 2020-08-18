@@ -60,6 +60,19 @@ const _propertyAbbreviations = Object.entries({
 	duration: "dur",
 	direction: "dir",
 	border: "b",
+	"border-width": "bw",
+	"border-bottom": "bb",
+	"border-left": "bl",
+	"border-right": "br",
+	"border-top": "bt",
+	"border-top-left": ["btl", "b-tl", "border-tl"],
+	"border-top-right": ["btr", "b-tr", "border-tr"],
+	"border-bottom-left": ["bbl", "b-bl", "border-bl"],
+	"border-bottom-right": ["bbr", "b-br", "border-br"],
+	"border-top-width": "btw",
+	"border-right-width": "brw",
+	"border-left-width": "blw",
+	"border-bottom-width": "bbw",
 	background: "bg",
 	attachment: "attach",
 	margin: "m",
@@ -75,6 +88,10 @@ const _propertyAbbreviations = Object.entries({
 	position: "pos",
 	height: "h",
 	width: "w",
+	bottom: "b",
+	top: "t",
+	left: "l",
+	right: "r",
 });
 
 const propertyAbbreviations = new Map(_.sortBy(_propertyAbbreviations, ([x]) => -x.split("-").length));
@@ -133,6 +150,8 @@ const propertyRegexes = knownCssProperties.map(x => {
 	}
 	return x;
 });
+
+// console.log(propertyRegexes[knownCssProperties.findIndex(x => x === "border-top-left-radius")]);
 
 const propertyRegex = new RegExp(`^(?:${propertyRegexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 
@@ -361,7 +380,7 @@ const propertyKeywords = prop => {
 				...propertyKeywords("border-width"),
 				...propertyKeywords("border-style"),
 				...propertyKeywords("border-color"),
-			]
+			];
 		case "transition-property":
 			return [...knownCssProperties, "none", "all"];
 		case "transition-timing-function":
