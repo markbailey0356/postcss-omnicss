@@ -46,6 +46,10 @@ const selectorAbbreviations = new Map(
 		// box-sizing
 		"border-box": "box-sizing-border-box",
 		"content-box": "box-sizing-content-box",
+
+		// font
+		"italic": "font-style-italic",
+		"bold": "font-weight-bold",
 	})
 );
 
@@ -78,6 +82,10 @@ const _propertyAbbreviations = Object.entries({
 	"border-bottom-width": "bbw",
 	background: "bg",
 	attachment: "attach",
+	"font-family": "family",
+	"font-size": "size",
+	"font-style": "style",
+	"font-weight": "weight",
 	"grid-template": "template",
 	"template": "temp",
 	"grid-row": "row",

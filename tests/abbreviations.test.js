@@ -158,6 +158,14 @@ const tests = {
 		"border-box": "box-sizing: border-box",
 		"content-box": "box-sizing: content-box",
 	},
+	"fonts": {
+		"family-cursive": "font-family: cursive",
+		"size-12px": "font-size: 12px",
+		"style-italic": "font-style: italic",
+		"italic": "font-style: italic",
+		"weight-bold": "font-weight: bold",
+		"bold": "font-weight: bold",
+	},
 	"grid": {
 		"grid-auto-cols-min-content": "grid-auto-columns: min-content",
 		"auto-cols-min-content": "grid-auto-columns: min-content",
