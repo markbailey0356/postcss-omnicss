@@ -78,6 +78,12 @@ const _propertyAbbreviations = Object.entries({
 	"border-bottom-width": "bbw",
 	background: "bg",
 	attachment: "attach",
+	"grid-template": "template",
+	"template": "temp",
+	"grid-row": "row",
+	"grid-column": "column",
+	"grid-auto": "auto",
+	"grid-area": "area",
 	margin: "m",
 	"margin-bottom": "mb",
 	"margin-left": "ml",
@@ -95,6 +101,8 @@ const _propertyAbbreviations = Object.entries({
 	top: "t",
 	left: "l",
 	right: "r",
+	columns: "cols",
+	column: "col",
 });
 
 const propertyAbbreviations = new Map(_.sortBy(_propertyAbbreviations, ([x]) => -x.split("-").length));
