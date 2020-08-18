@@ -22,13 +22,11 @@ const tests = {
 		"table-row-group": "display: table-row-group",
 		"table-row": "display: table-row",
 	},
-	"Align and Justify": {
-		"ac-center": "align-content: center",
-		"ai-center": "align-items: center",
-		"as-center": "align-self: center",
-		"jc-center": "justify-content: center",
-		"ji-center": "justify-items: center",
-		"js-center": "justify-self: center",
+	"align/justify": {
+		"align-center": "align-items: center",
+		"items-center": "align-items: center",
+		"self-center": "align-self: center",
+		"justify-center": "justify-content: center",
 	},
 	animation: {
 		"anim-slidein-3s": "animation: slidein 3s",

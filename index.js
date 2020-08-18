@@ -50,12 +50,9 @@ const selectorAbbreviations = new Map(
 );
 
 const _propertyAbbreviations = Object.entries({
-	"align-content": "ac",
-	"align-items": "ai",
-	"align-self": "as",
-	"justify-content": "jc",
-	"justify-items": "ji",
-	"justify-self": "js",
+	"align-items": ["align", "items"],
+	"justify-content": "justify",
+	"align-self": "self",
 	animation: "anim",
 	"timing-function": ["timing", "function"],
 	function: "func",
