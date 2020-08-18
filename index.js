@@ -1,10 +1,7 @@
 const postcss = require("postcss");
 const { PurgeCSS } = require("purgecss");
-const _knownCssProperties = require("known-css-properties");
-const knownCssProperties = new Set(_knownCssProperties.all);
-const cssEscape = require("css.escape");
 const _ = require("lodash");
-// const matchAll = require("string.prototype.matchall");
+const cssEscape = require("css.escape");
 const path = require("path");
 const _cssColors = require("colors.json");
 const cssColors = Object.keys(_cssColors);
@@ -17,9 +14,12 @@ const ignoredProperties = [
 	"text-decoration-blink",
 ];
 
-ignoredProperties.forEach(x => {
-	knownCssProperties.delete(x);
-});
+const getKnownCssProperties = () => {
+	let properties = _.sortBy(require("known-css-properties").all, x => -x.split("-").length);
+	return properties.filter(x => !ignoredProperties.includes(x));
+};
+
+const knownCssProperties = getKnownCssProperties();
 
 const selectorAbbreviations = new Map(
 	Object.entries({
@@ -43,33 +43,39 @@ const selectorAbbreviations = new Map(
 	})
 );
 
-const propertyAbbreviations = new Map(
-	Object.entries({
-		ac: "align-content",
-		ai: "align-items",
-		as: "align-self",
-		anim: "animation",
-		b: "border",
-		bg: "background",
-		func: "timing-function",
-		function: "timing-function",
-		h: "height",
-		jc: "justify-content",
-		ji: "justify-items",
-		js: "justify-self",
-		m: "margin",
-		mb: "margin-bottom",
-		ml: "margin-left",
-		mr: "margin-right",
-		mt: "margin-top",
-		p: "padding",
-		pb: "padding-bottom",
-		pl: "padding-left",
-		pr: "padding-right",
-		pt: "padding-top",
-		w: "width",
-	})
-);
+const _propertyAbbreviations = Object.entries({
+	"align-content": "ac",
+	"align-items": "ai",
+	"align-self": "as",
+	"justify-content": "jc",
+	"justify-items": "ji",
+	"justify-self": "js",
+	animation: "anim",
+	"timing-function": ["timing", "function"],
+	function: "func",
+	"play-state": ["play", "state"],
+	"iteration-count": ["iteration", "count"],
+	iteration: "iter",
+	"fill-mode": ["fill", "mode"],
+	duration: "dur",
+	direction: "dir",
+	border: "b",
+	background: "bg",
+	margin: "m",
+	"margin-bottom": "mb",
+	"margin-left": "ml",
+	"margin-right": "mr",
+	"margin-top": "mt",
+	padding: "p",
+	"padding-bottom": "pb",
+	"padding-left": "pl",
+	"padding-right": "pr",
+	"padding-top": "pt",
+	height: "h",
+	width: "w",
+});
+
+const propertyAbbreviations = new Map(_.sortBy(_propertyAbbreviations, ([x]) => -x.split("-").length));
 
 const modifierAbbreviations = new Map(
 	Object.entries({
@@ -118,6 +124,15 @@ const modifierAbbreviations = new Map(
 		"@xl": "extra-large",
 	})
 );
+
+const propertyRegexes = knownCssProperties.map(x => {
+	for (let [from, to] of propertyAbbreviations) {
+		x = x.replace(new RegExp(from, "g"), `(?:${(_.isArray(to) ? [from, ...to] : [from, to]).join("|")})`);
+	}
+	return x;
+});
+
+const propertyRegex = new RegExp(`^(?:${propertyRegexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 
 const expandModifierAbbreviations = x => modifierAbbreviations.get(x) || x;
 const expandSelectorAbbreviations = x => selectorAbbreviations.get(x) || x;
@@ -173,40 +188,13 @@ const splitSelector = selector => {
 			value = selector.slice(prop.length + 1);
 		}
 	} else {
-		let splitIndex;
-		for (let i = selector.length; i >= 1; i--) {
-			if (selector[i] !== "-" && i !== selector.length) continue;
-
-			const enumeratePotentialPropertiesFromSegments = segments => {
-				if (!segments.length) return [];
-				const expandPropertySegment = segment => _.compact([propertyAbbreviations.get(segment), segment]);
-				const cartesianProduct = (a, b) => _.flatMap(a, x => b.length ? b.map(y => x + y) : x);
-
-				// console.log({
-				// 	segments,
-				// 	expandPropertySegment: expandPropertySegment(segments[0]),
-				// 	recurse: enumeratePotentialPropertiesFromSegments(segments.slice(1)),
-				// 	product: cartesianProduct(
-				// 		expandPropertySegment(segments[0]),
-				// 		enumeratePotentialPropertiesFromSegments(segments.slice(1))
-				// 	),
-				// });
-				return cartesianProduct(
-					expandPropertySegment(segments[0]),
-					enumeratePotentialPropertiesFromSegments(segments.slice(1))
-				);
-			};
-			const selectorSegments = selector.slice(0,i).split(/(-)/g);
-			for (let potentialProp of enumeratePotentialPropertiesFromSegments(selectorSegments)) {
-				if (knownCssProperties.has(potentialProp)) {
-					prop = potentialProp;
-					splitIndex = i;
-					break;
-				}
-			}
-			if (prop) break;
+		let match = selector.match(propertyRegex);
+		if (match) {
+			let index = match.slice(1).findIndex(x => x);
+			prop = knownCssProperties[index];
+			value = match.groups.value;
 		}
-		value = splitIndex && selector.slice(splitIndex + 1);
+
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
 			value = "auto-flow-" + value;

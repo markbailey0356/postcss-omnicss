@@ -47,13 +47,11 @@ const tests = {
 		"anim-play-state-paused": "animation-play-state: paused",
 		"anim-state-paused": "animation-play-state: paused",
 		"anim-timing-function-ease-in-out": "animation-timing-function: ease-in-out",
-		"anim-time-function-ease-in-out": "animation-timing-function: ease-in-out",
 		"anim-timing-func-ease-in-out": "animation-timing-function: ease-in-out",
 		"anim-timing-ease-in-out": "animation-timing-function: ease-in-out",
-		"anim-time-ease-in-out": "animation-timing-function: ease-in-out",
 		"anim-function-ease-in-out": "animation-timing-function: ease-in-out",
 		"anim-func-ease-in-out": "animation-timing-function: ease-in-out",
-	}
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
