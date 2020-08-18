@@ -12,6 +12,7 @@ const ignoredProperties = [
 	"text-decoration-overline",
 	"text-decoration-line-through",
 	"text-decoration-blink",
+	"r",
 ];
 
 const getKnownCssProperties = () => {
@@ -216,6 +217,12 @@ const splitSelector = selector => {
 			value = match.groups.value;
 		}
 
+		// ensure that shorthand for `bottom` takes precedence over shorthand for `border`
+		if (prop === "border" && selector.match(/^b-/)) {
+			prop = "bottom";
+		}
+		
+		// resolve ambiguity between `grid: auto-flow ...` and `grid-auto-flow: ...`
 		if (prop === "grid-auto-flow" && !value.match(/^(row|column|dense|-)+$/)) {
 			prop = "grid";
 			value = "auto-flow-" + value;

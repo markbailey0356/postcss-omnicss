@@ -150,6 +150,12 @@ const tests = {
 		"b-inline-start-color-red": "border-inline-start-color: red",
 		"b-inline-start-w-thin": "border-inline-start-width: thin",
 	},
+	inset: {
+		"b-0": "bottom: 0",
+		"l-0": "left: 0",
+		"r-0": "right: 0",
+		"t-0": "top: 0",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
