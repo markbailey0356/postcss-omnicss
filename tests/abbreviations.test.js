@@ -223,6 +223,13 @@ const tests = {
 		"tracking-normal": "letter-spacing: normal",
 		"leading-normal": "line-height: normal",
 	},
+	"list-style": {
+		"list-square": "list-style: square",
+		"list-image-none": "list-style-image: none",
+		"list-position-inside": "list-style-position: inside",
+		"list-pos-inside": "list-style-position: inside",
+		"list-type-disc": "list-style-type: disc",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

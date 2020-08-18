@@ -100,6 +100,7 @@ const _propertyAbbreviations = Object.entries({
 	"grid-area": "area",
 	"letter-spacing": "tracking",
 	"line-height": "leading",
+	"list-style": "list",
 	margin: "m",
 	"margin-bottom": "mb",
 	"margin-left": "ml",
