@@ -15,8 +15,11 @@ const ignoredProperties = [
 	"r",
 ];
 
+const customProperties = ["flexbox", "inline-flexbox"];
+
 const getKnownCssProperties = () => {
-	let properties = _.sortBy(require("known-css-properties").all, x => -x.split("-").length);
+	let properties = require("known-css-properties").all.concat(customProperties);
+	properties = _.sortBy(properties, x => -x.split("-").length);
 	return properties.filter(x => !ignoredProperties.includes(x));
 };
 
@@ -46,6 +49,10 @@ const selectorAbbreviations = new Map(
 		// box-sizing
 		"border-box": "box-sizing-border-box",
 		"content-box": "box-sizing-content-box",
+
+		// flexbox
+		flexbox: "flexbox-unset",
+		"inline-flexbox": "inline-flexbox-unset",
 	})
 );
 
@@ -735,7 +742,25 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				value += " !important";
 			}
 
-			const node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
+			let node;
+			if (prop === "flexbox") {
+				let fallbackValue = value.includes('initial') ? 'initial' : value.includes('inherit') ? 'inherit' : 'unset';
+				let flexDirection;
+				if (propertyKeywords('flex-direction').includes(value)) {
+					flexDirection = value;
+				}
+				node = postcss
+					.rule({ selector: realSelector })
+					.append(postcss.decl({ prop: "display", value: "flex" }))
+					.append(postcss.decl({ prop: "flex-direction", value: flexDirection || fallbackValue }))
+					.append(postcss.decl({ prop: "flex-wrap", value: fallbackValue }))
+					.append(postcss.decl({ prop: "align-items", value: fallbackValue }))
+					.append(postcss.decl({ prop: "justify-content", value: fallbackValue }))
+					.append(postcss.decl({ prop: "align-content", value: fallbackValue }));
+			} else {
+				node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
+			}
+
 			_.set(
 				nodesByContainer,
 				[container, subContainer, numberOfSegments],
