@@ -52,6 +52,15 @@ const selectorAbbreviations = new Map(
 		// font
 		italic: "font-style-italic",
 		bold: "font-weight-bold",
+
+		// position
+		absolute: "position-absolute",
+		abs: "position-absolute",
+		static: "position-static",
+		relative: "position-relative",
+		rel: "position-relative",
+		fixed: "position-fixed",
+		sticky: "position-sticky",
 	})
 );
 
@@ -106,6 +115,7 @@ const _propertyAbbreviations = Object.entries({
 	"margin-left": "ml",
 	"margin-right": "mr",
 	"margin-top": "mt",
+	object: "obj",
 	padding: "p",
 	"padding-bottom": "pb",
 	"padding-left": "pl",

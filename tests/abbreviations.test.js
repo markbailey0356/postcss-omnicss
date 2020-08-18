@@ -230,6 +230,40 @@ const tests = {
 		"list-pos-inside": "list-style-position: inside",
 		"list-type-disc": "list-style-type: disc",
 	},
+	margin: {
+		"m-1em-auto-2em": "margin: 1em auto 2em",
+		"mb-10px": "margin-bottom: 10px",
+		"m-b-10px": "margin-bottom: 10px",
+		"m-bottom-10px": "margin-bottom: 10px",
+		"margin-b-10px": "margin-bottom: 10px",
+		"ml-1em": "margin-left: 1em",
+		"mr-10px": "margin-right: 10px",
+		"mt-auto": "margin-top: auto",
+	},
+	padding: {
+		"p-1em-auto-2em": "padding: 1em auto 2em",
+		"pb-10px": "padding-bottom: 10px",
+		"p-b-10px": "padding-bottom: 10px",
+		"p-bottom-10px": "padding-bottom: 10px",
+		"padding-b-10px": "padding-bottom: 10px",
+		"pl-1em": "padding-left: 1em",
+		"pr-10px": "padding-right: 10px",
+		"pt-auto": "padding-top: auto",
+	},
+	"object-fit/object-position": {
+		"obj-fit-contain": "object-fit: contain",
+		"obj-position-bottom": "object-position: bottom",
+		"obj-pos-bottom": "object-position: bottom",
+	},
+	position: {
+		absolute: "position: absolute",
+		abs: "position: absolute",
+		static: "position: static",
+		relative: "position: relative",
+		rel: "position: relative",
+		fixed: "position: fixed",
+		sticky: "position: sticky",
+	},
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {
