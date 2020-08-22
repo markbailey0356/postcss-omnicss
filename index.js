@@ -295,6 +295,12 @@ const propertyKeywords = prop => {
 				"stretch",
 				"legacy",
 			];
+		case "flexbox":
+			return [
+				...propertyKeywords("align-content"),
+				...propertyKeywords("flex-wrap"),
+				...propertyKeywords("flex-direction"),
+			];
 		case "justify-content":
 		case "align-content":
 			return [...propertyKeywords("align-items"), "space-evenly", "space-around", "space-between"];
@@ -744,40 +750,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				value += " !important";
 			}
 
-			let node;
-			if (prop === "flexbox") {
-				let fallbackValue = value.includes("initial")
-					? "initial"
-					: value.includes("inherit")
-					? "inherit"
-					: "unset";
-				let flexDirection, flexWrap, alignItems, justifyContent, alignContent;
-				if (propertyKeywords("flex-direction").includes(value)) {
-					flexDirection = value;
-				}
-				if (propertyKeywords("flex-wrap").includes(value)) {
-					flexWrap = value;
-				}
-				if (propertyKeywords("align-items").includes(value)) {
-					alignItems = value;
-				}
-				if (propertyKeywords("justify-content").includes(value)) {
-					justifyContent = value;
-				}
-				if (propertyKeywords("align-content").includes(value)) {
-					alignContent = value;
-				}
-				node = postcss
-					.rule({ selector: realSelector })
-					.append(postcss.decl({ prop: "display", value: "flex" }))
-					.append(postcss.decl({ prop: "flex-direction", value: flexDirection || fallbackValue }))
-					.append(postcss.decl({ prop: "flex-wrap", value: flexWrap || fallbackValue }))
-					.append(postcss.decl({ prop: "align-items", value: alignItems || fallbackValue }))
-					.append(postcss.decl({ prop: "justify-content", value: justifyContent || fallbackValue }))
-					.append(postcss.decl({ prop: "align-content", value: alignContent || fallbackValue }));
-			} else {
-				node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
-			}
+			let node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
 
 			_.set(
 				nodesByContainer,
@@ -806,5 +779,31 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 		}
 
 		root.walkAtRules("omnicss", rule => rule.replaceWith(container));
+
+		{
+			// process flexbox declarations
+			root.walkDecls("flexbox", decl => {
+				const { value } = decl;
+
+				const values =
+					value.match(
+						/\b((safe |unsafe )?(first baseline|last baseline|baseline|space-around|space-evenly|space-between|self-start|self-end|stretch|center|flex-start|flex-end|start|end|left|right|unset|initial|inherit))\b/g
+					) || [];
+
+				const flexDirection = value.match(/\b(row-reverse|row|column-reverse|column)\b/g);
+				const flexWrap = value.match(/\b(wrap-reverse|nowrap|wrap)\b/g);
+
+				const declarations = [
+					{ prop: "display", value: "flex" },
+					{ prop: "justify-content", value: values[0] || "unset" },
+					{ prop: "align-items", value: values[1] || "unset" },
+					{ prop: "align-content", value: values[2] || "unset" },
+					{ prop: "flex-direction", value: (flexDirection && flexDirection[0]) || values[3] || "unset" },
+					{ prop: "flex-wrap", value: (flexWrap && flexWrap[0]) || values[4] || "unset" },
+				];
+
+				decl.replaceWith(declarations.map(postcss.decl));
+			});
+		}
 	};
 });
