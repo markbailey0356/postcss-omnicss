@@ -15,7 +15,7 @@ const ignoredProperties = [
 	"r",
 ];
 
-const customProperties = ["flexbox", "inline-flexbox"];
+const customProperties = ["flexbox"];
 
 const getKnownCssProperties = () => {
 	let properties = require("known-css-properties").all.concat(customProperties);
@@ -792,9 +792,10 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 				const flexDirection = value.match(/\b(row-reverse|row|column-reverse|column)\b/g);
 				const flexWrap = value.match(/\b(wrap-reverse|nowrap|wrap)\b/g);
+				const inline = value.match(/\binline\b/);
 
 				const declarations = [
-					{ prop: "display", value: "flex" },
+					{ prop: "display", value: inline ? "inline-flex" : "flex" },
 					{ prop: "justify-content", value: values[0] || "unset" },
 					{ prop: "align-items", value: values[1] || "unset" },
 					{ prop: "align-content", value: values[2] || "unset" },
