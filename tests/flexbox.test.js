@@ -154,6 +154,19 @@ const tests = {
 	"flexbox-inline-stretch-center-wrap": ["inline-flex", "stretch", "center", "unset", "unset", "wrap"],
 	"flexbox-self-start-inline-nowrap-column": ["inline-flex", "self-start", "unset", "unset", "column", "nowrap"],
 	"flexbox-column-reverse-wrap-reverse-inline-space-between": ["inline-flex", "space-between", "unset", "unset", "column-reverse", "wrap-reverse"],
+
+	// skipping justify-content or align-items
+	"flexbox-column-unset-center": ["flex", "unset", "center", "unset", "column", "unset"],
+	"flexbox-wrap-unset-unset-space-between": ["flex", "unset", "unset", "space-between", "unset", "wrap"],
+	"flexbox-row-wrap-unset-stretch": ["flex", "unset", "stretch", "unset", "row", "wrap"],
+	"flexbox-unset-self-start-nowrap-column-inline": ["inline-flex", "unset", "self-start", "unset", "column", "nowrap"],
+	"flexbox-unset-stretch-center-wrap-row-reverse": ["flex", "unset", "stretch", "center", "row-reverse", "wrap"],
+	"flexbox-unset-nowrap-self-start-center-row": ["flex", "unset", "self-start", "center", "row", "nowrap"],
+	"flexbox-row-wrap-reverse-unset-inline-self-start-center": ["inline-flex", "unset", "self-start", "center", "row", "wrap-reverse"],
+	"flexbox-space-around-unset-center-wrap-row-reverse": ["flex", "space-around", "unset", "center", "row-reverse", "wrap"],
+	"flexbox-unset-column-baseline-space-between-nowrap": ["flex", "unset", "baseline", "space-between", "column", "nowrap"],
+	"flexbox-nowrap-row-reverse-unset-safe-center": ["flex", "unset", "safe center", "unset", "row-reverse", "nowrap"],
+	"flexbox-inline-wrap-reverse-unset-stretch-safe-center-column": ["inline-flex", "unset", "stretch", "safe center", "column", "wrap-reverse"],
 };
 
 const postcss = require("postcss");
