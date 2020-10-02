@@ -539,6 +539,74 @@ it("outputs child selectors before normal utility classes", async () => {
 	);
 });
 
+it("provides a modifier to style the first child of a container", async () => {
+	await run(
+		"@omnicss",
+		`.first-child\\:display-flex > *:first-child {
+			display: flex
+		}`,
+		{
+			source: '<div class="first-child:display-flex"></div>',
+		}
+	);
+});
+
+it("provides a modifier to style the last child of a container", async () => {
+	await run(
+		"@omnicss",
+		`.last-child\\:display-flex > *:last-child {
+			display: flex
+		}`,
+		{
+			source: '<div class="last-child:display-flex"></div>',
+		}
+	);
+});
+it("provides a modifier to style all but the first child of a container", async () => {
+	await run(
+		"@omnicss",
+		`.not-first-child\\:display-flex > *:not(:first-child) {
+			display: flex
+		}`,
+		{
+			source: '<div class="not-first-child:display-flex"></div>',
+		}
+	);
+});
+
+it("provides a modifier to style all but the last child of a container", async () => {
+	await run(
+		"@omnicss",
+		`.not-last-child\\:display-flex > *:not(:last-child) {
+			display: flex
+		}`,
+		{
+			source: '<div class="not-last-child:display-flex"></div>',
+		}
+	);
+});
+
+it("provides abbreviations for child selectors", async () => {
+	await run(
+		"@omnicss",
+		`.first\\:display-flex > *:first-child {
+			display: flex
+		}
+		.last\\:display-flex > *:last-child {
+			display: flex
+		}
+		.\\!first\\:display-flex > *:not(:first-child) {
+			display: flex
+		}
+		.\\!last\\:display-flex > *:not(:last-child) {
+			display: flex
+		}`,
+		{
+			source: '<div class="first:display-flex last:display-flex !first:display-flex !last:display-flex"></div>',
+		}
+	);
+});
+
 it("provides a modifier to style before elements", async () => {
 	await run(
 		"@omnicss",

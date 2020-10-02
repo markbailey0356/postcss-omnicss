@@ -194,6 +194,14 @@ const modifierAbbreviations = new Map(
 		"@md": "at-medium",
 		"@lg": "at-large",
 		"@xl": "extra-large",
+		"first": "first-child",
+		"last": "last-child",
+		"not-first": "not-first-child",
+		"not-last": "not-last-child",
+		"!first-child": "not-first-child",
+		"!last-child": "not-last-child",
+		"!first": "not-first-child",
+		"!last": "not-last-child",
 	})
 );
 
@@ -775,6 +783,22 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 			if (modifiers.includes("child")) {
 				realSelector += " > *";
+				subContainer = 0;
+			}
+			if (modifiers.includes("first-child")) {
+				realSelector += " > *:first-child";
+				subContainer = 0;
+			}
+			if (modifiers.includes("last-child")) {
+				realSelector += " > *:last-child";
+				subContainer = 0;
+			}
+			if (modifiers.includes("not-first-child")) {
+				realSelector += " > *:not(:first-child)";
+				subContainer = 0;
+			}
+			if (modifiers.includes("not-last-child")) {
+				realSelector += " > *:not(:last-child)";
 				subContainer = 0;
 			}
 			if (modifiers.includes("after")) {
