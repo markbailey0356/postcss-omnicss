@@ -707,9 +707,9 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 		const nodesByContainer = {};
 		for (let selector of selectors) {
-			selector = expandSelectorAbbreviations(selector);
+			const expanededSelector = expandSelectorAbbreviations(selector);
 
-			let { prop, value, modifiers } = splitSelector(selector);
+			let { prop, value, modifiers } = splitSelector(expanededSelector);
 
 			if (!(prop && value)) continue;
 

@@ -574,3 +574,15 @@ it("provides a modifier to style placeholders", async () => {
 		}
 	);
 });
+
+it("allows you to leave off common properties with unique values", async () => {
+	await run(
+		"@omnicss",
+		`.absolute {
+			position: absolute
+		}`,
+		{
+			source: '<div class="absolute"></div>',
+		}
+	);
+});

@@ -10,6 +10,10 @@
 * Custom `inset` shorthand property to set `top`, `right`, `bottom`, and `left` (similar to `margin` or `padding`)
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
 
+## Bugs
+
+* `flexbox` selector shorthand isn't working in real project
+
 ## Talking points
 
 * Intro
