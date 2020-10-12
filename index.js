@@ -194,8 +194,8 @@ const modifierAbbreviations = new Map(
 		"@md": "at-medium",
 		"@lg": "at-large",
 		"@xl": "extra-large",
-		"first": "first-child",
-		"last": "last-child",
+		first: "first-child",
+		last: "last-child",
 		"not-first": "not-first-child",
 		"not-last": "not-last-child",
 		"!first-child": "not-first-child",
@@ -684,8 +684,12 @@ const extractBreakpointsFromOptions = _.flow(
 );
 
 module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
+	const defaultExtensions = ["html", "vue", "js", "ts", "jsx", "tsx"];
+
+	const defaultFiles = _.flatMap(defaultExtensions, ext => [`!(node_modules/)**/*.${ext}`, `*.${ext}`]);
+
 	// Work with options here
-	const { source = "", files = [] } = options;
+	const { source = "", files = defaultFiles } = options;
 
 	const breakpoints = extractBreakpointsFromOptions(options);
 
