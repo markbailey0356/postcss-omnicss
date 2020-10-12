@@ -252,6 +252,7 @@ it("can set the value of a custom property", async () => {
 		}`,
 		{
 			source: '<div class="--color-green-#00ff00"></div>',
+			colorRgbVariants: false,
 		}
 	);
 });
@@ -264,6 +265,7 @@ it("provides a shorthand for setting a custom property", async () => {
 		}`,
 		{
 			source: '<div class="$primary-color-white"></div>',
+			colorRgbVariants: false,
 		}
 	);
 });
@@ -294,6 +296,7 @@ it("provides a shorthand for the var() function", async () => {
 		}`,
 		{
 			source: '<div class="$dark-red-#880000 background-color-$(dark-red)"></div>',
+			colorRgbVariants: false,
 		}
 	);
 });
@@ -652,5 +655,29 @@ it("allows you to leave off common properties with unique values", async () => {
 		{
 			source: '<div class="absolute"></div>',
 		}
+	);
+});
+
+it("creates RGB variants of color variables to allow changing alpha", async () => {
+	await run(
+		`:root {
+			--red: #ff0000;
+			--blue: rgb(0, 0, 255);
+			--green: hsl(120deg, 100%, 50%);
+			--black: black;
+			--not-a-color: transform(50%, 50%);
+		}`,
+		`:root {
+			--red: #ff0000;
+			--red_rgb: 255 0 0;
+			--blue: rgb(0, 0, 255);
+			--blue_rgb: 0 0 255;
+			--green: hsl(120deg, 100%, 50%);
+			--green_rgb: 0 255 0;
+			--black: black;
+			--black_rgb: 0 0 0;
+			--not-a-color: transform(50%, 50%);
+		}`,
+		{}
 	);
 });

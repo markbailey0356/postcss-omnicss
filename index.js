@@ -5,6 +5,8 @@ const cssEscape = require("css.escape");
 const path = require("path");
 const _cssColors = require("colors.json");
 const cssColors = Object.keys(_cssColors);
+const colorString = require("color-string");
+const colorConvert = require("color-convert");
 
 const ignoredProperties = [
 	"text-decoration-none",
@@ -689,7 +691,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 	const defaultFiles = _.flatMap(defaultExtensions, ext => [`!(node_modules/)**/*.${ext}`, `*.${ext}`]);
 
 	// Work with options here
-	const { source = "", files = defaultFiles } = options;
+	const { source = "", files = defaultFiles, colorRgbVariants = true } = options;
 
 	const breakpoints = extractBreakpointsFromOptions(options);
 
@@ -879,6 +881,25 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				];
 
 				decl.replaceWith(declarations.map(postcss.decl));
+			});
+		}
+
+		if (colorRgbVariants) {
+			// create RGB variants of custom properties with color values
+			root.walkDecls(/^--/, decl => {
+				let color = colorString.get(decl.value);
+				if (color === null) return;
+				color.value = color.value.slice(0, 3);
+				if (color.model !== "rgb") {
+					const convertToRgb = colorConvert[color.model].rgb;
+					color.value = convertToRgb(color.value);
+				}
+				decl.after(
+					postcss.decl({
+						prop: decl.prop + "_rgb",
+						value: color.value.join(" "),
+					})
+				);
 			});
 		}
 	};
