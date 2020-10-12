@@ -25,6 +25,51 @@
   * Supports the full set of CSS declarations, such as shorthand properties, CSS grid, filters, transforms, etc.
   * Allows the use of the most commonly reached for CSS features, such as media queries, hover & focus selectors, child selectors.
   * Supports the use of CSS custom properties and calculations, i.e. `var()` and `calc()`
+* Getting Started
+  * Using PostCSS CLI
+    * `npm install --save-dev postcss-omnicss postcss postcss-cli`
+    * Create (or locate) your source CSS file. For this example, the source file will be located in `src/app.css`.
+    * Add the `@omnicss` directive to the source CSS file. It is generally recommended to be placed at the end of your file, so that the omnicss classes can be used to override properties in your other classes.
+    * Create (or locate) your source template files. This can be any number of .html, .js, .vue or .jsx files. Other template file types will work, as long as class strings appear as single or double-quoted, space-separated strings. For this example, the source file will be `index.html` with the following content:
+
+      ```html
+      <html>
+        <head>
+          <link rel="stylesheet" href="/dist/app.css">
+        </head>
+        <body>
+          <p class="bg-red color-white">
+            I will have a red background and white text
+          </p>
+        </body>
+      </html>
+      ```
+
+      **Note:** The stylesheet link has a href of `/dist/app.css`, which is where we are going to instruct PostCSS CLI to output our CSS file after building.
+
+    * Add the plugin to PostCSS by creating a `postcss.config.js` file in the project's root folder and adding the following content:
+
+    ```js
+    module.exports = {
+      plugins: [
+        require('postcss-omnicss'),
+      ]
+    }
+    ```
+
+    * Run postcss using: `npx postcss src/app.css -o dist/app.css`, where `src/app.css` is the path to your source CSS file. This will output a `dist/app.css` from your source CSS file with the `@omnicss` directive replaced by the OmniCSS utility classes. With the example `index.html` file above, the output CSS file will be:
+
+    ```css
+    .bg-red {
+        background: red
+    }
+    .color-white {
+        color: white
+    }
+    ```
+
+    As you can see this would style the `p` element with a red background and white text color
+
 * How to turn a CSS declaration into an OmniCSS class
 * Important features
   * Modifiers
