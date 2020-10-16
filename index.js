@@ -598,6 +598,13 @@ const processPropertyValue = (prop, modifiers, value) => {
 	return result;
 };
 
+const matchFunctionToken = token => {
+	const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
+	if (!match) return {};
+	let [,functionName, args] = match;
+	return {functionName, args};
+}
+
 const processValue = (keywords, options, value) => {
 	const { defaultUnit = "", negate = false, calcShorthand = false } = options;
 	const tokens = tokenizeValue(keywords, options, value);
@@ -620,9 +627,8 @@ const processValue = (keywords, options, value) => {
 			}
 			return number + unit;
 		}
-		const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
-		if (match) {
-			let [, functionName, args] = match;
+		let {functionName, args} = matchFunctionToken(token);
+		if (functionName != undefined) {
 			if (calcShorthand) {
 				functionName = functionName || "calc";
 			}
@@ -884,22 +890,46 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 			});
 		}
 
-		if (colorRgbVariants) {
-			// create RGB variants of custom properties with color values
-			root.walkDecls(/^--/, decl => {
-				let color = colorString.get(decl.value);
-				if (color === null) return;
+		const convertValueToRgb = value => {
+			let color = colorString.get(value);
+			if (color !== null) {
 				color.value = color.value.slice(0, 3);
 				if (color.model !== "rgb") {
 					const convertToRgb = colorConvert[color.model].rgb;
 					color.value = convertToRgb(color.value);
 				}
-				decl.after(
-					postcss.decl({
-						prop: decl.prop + "_rgb",
-						value: color.value.join(" "),
-					})
-				);
+				return color.value.join(" ");
+			}
+			let {functionName, args} = matchFunctionToken(value);
+			if (functionName === 'var') {
+				const firstCommaIndex = args.indexOf(',');
+				if (firstCommaIndex !== -1) {
+					let [varName, fallback] = [args.slice(0,firstCommaIndex).trim(), args.slice(firstCommaIndex+1).trim()];
+					varName += '_rgb';
+					fallback = convertValueToRgb(fallback) || fallback;
+					return `var(${varName}, ${fallback})`;
+				} else {
+					let varName = args;
+					varName += "_rgb";
+					return `var(${varName})`;
+				}
+			}
+			return null;
+		}
+
+		if (colorRgbVariants) {
+			// create RGB variants of custom properties with color values
+			root.walkDecls(/^--/, decl => {
+				if (decl.prop.slice(-4) === '_rgb') return;
+				const rgbValue = convertValueToRgb(decl.value);
+				if (rgbValue) {
+					decl.after(
+						postcss.decl({
+							prop: decl.prop + "_rgb",
+							value: rgbValue,
+						})
+					);
+				}
 			});
 		}
 	};

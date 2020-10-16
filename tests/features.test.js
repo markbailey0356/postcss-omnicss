@@ -681,3 +681,28 @@ it("creates RGB variants of color variables to allow changing alpha", async () =
 		{}
 	);
 });
+
+it('correctly maps RGB variants when one variable is mapped to another', async () => {
+	await run(
+		`:root {
+			--red: #ff0000;
+			--blue: #0000ff;
+			--primary: var(--red);
+			--secondary: var(--blue, blue);
+			--complicated: var(--blue, var(--red, purple));
+		}`,
+		`:root {
+			--red: #ff0000;
+			--red_rgb: 255 0 0;
+			--blue: #0000ff;
+			--blue_rgb: 0 0 255;
+			--primary: var(--red);
+			--primary_rgb: var(--red_rgb);
+			--secondary: var(--blue, blue);
+			--secondary_rgb: var(--blue_rgb, 0 0 255);
+			--complicated: var(--blue, var(--red, purple));
+			--complicated_rgb: var(--blue_rgb, var(--red_rgb, 128 0 128));
+		}`,
+		{}
+	);
+})
