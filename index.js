@@ -234,7 +234,38 @@ const _defaultUnits = {
 		"margin-left",
 		"margin-right",
 		"width",
+		"max-width",
+		"min-width",
 		"height",
+		"max-height",
+		"min-height",
+		"font-size",
+		"bottom",
+		"left",
+		"right",
+		"top",
+		"grid-row-gap",
+		"grid-column-gap",
+		"row-gap",
+		"column-gap",
+	],
+	em: ["letter-spacing"],
+	px: [
+		"border",
+		"border-block-end-width",
+		"border-block-start-width",
+		"border-bottom",
+		"border-bottom-width",
+		"border-inline-end-width",
+		"border-inline-start-width",
+		"border-left",
+		"border-left-width",
+		"border-right",
+		"border-right-width",
+		"border-top",
+		"border-top-width",
+		"outline",
+		"outline-width",
 	],
 };
 
@@ -641,7 +672,6 @@ const processValue = (keywords, options, value) => {
 		}
 		let match = token.match(/^\$([^(][^@]*)(?:@(.*))?/);
 		if (match) {
-			console.log(match);
 			const [, varName, alpha] = match;
 			if (alpha) {
 				return `rgba(var(--${varName}_rgb),${alpha})`;
@@ -675,6 +705,7 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 				{
 					...options,
 					negate: false,
+					defaultUnit: "",
 				},
 				args
 			);
@@ -730,7 +761,6 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				{ extensions: ["html", "vue", "js"], extractor },
 			]);
 			selectors = undetermined;
-			console.log(selectors);
 		}
 
 		const nodesByContainer = {};
