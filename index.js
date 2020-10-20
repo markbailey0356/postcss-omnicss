@@ -701,7 +701,7 @@ const extractBreakpointsFromOptions = _.flow(
 module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 	const defaultExtensions = ["html", "vue", "js", "ts", "jsx", "tsx"];
 
-	const defaultFiles = _.flatMap(defaultExtensions, ext => [`!(node_modules/)**/*.${ext}`, `*.${ext}`]);
+	const defaultFiles = _.flatMap(defaultExtensions, ext => [`!(node_modules)/**/*.${ext}`, `*.${ext}`]);
 
 	// Work with options here
 	const { source = "", files = defaultFiles, colorRgbVariants = true } = options;
@@ -730,6 +730,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				{ extensions: ["html", "vue", "js"], extractor },
 			]);
 			selectors = undetermined;
+			console.log(selectors);
 		}
 
 		const nodesByContainer = {};
