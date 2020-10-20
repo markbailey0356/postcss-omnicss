@@ -531,7 +531,7 @@ const tokenizeValue = (keywords, options, value) => {
 			.concat([
 				"\\w+\\(", // single-word functions
 				"#\\w+", // color hash literals
-				"(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", // negated?, floating-point numbers, with unit?
+				"(?<!@)(?:-{2}|^-)?\\b\\d[\\d.]*[a-zA-Z%]*", // negated?, floating-point numbers, with unit?, not preceded by an @
 				"[[\\](){},/+*]", // standalone delimiters
 				"-(?=\\$)", // split between hyphens and $ shorthands
 			])
@@ -601,9 +601,9 @@ const processPropertyValue = (prop, modifiers, value) => {
 const matchFunctionToken = token => {
 	const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
 	if (!match) return {};
-	let [,functionName, args] = match;
-	return {functionName, args};
-}
+	let [, functionName, args] = match;
+	return { functionName, args };
+};
 
 const processValue = (keywords, options, value) => {
 	const { defaultUnit = "", negate = false, calcShorthand = false } = options;
@@ -627,7 +627,7 @@ const processValue = (keywords, options, value) => {
 			}
 			return number + unit;
 		}
-		let {functionName, args} = matchFunctionToken(token);
+		let { functionName, args } = matchFunctionToken(token);
 		if (functionName != undefined) {
 			if (calcShorthand) {
 				functionName = functionName || "calc";
@@ -639,8 +639,15 @@ const processValue = (keywords, options, value) => {
 			args = processFunctionArgs(functionName, keywords, options, args);
 			return `${functionName}(${args})`;
 		}
-		if (token.match(/^\$[^(]/)) {
-			return `var(--${token.slice(1)})`;
+		let match = token.match(/^\$([^(][^@]*)(?:@(.*))?/);
+		if (match) {
+			console.log(match);
+			const [, varName, alpha] = match;
+			if (alpha) {
+				return `rgba(var(--${varName}_rgb),${alpha})`;
+			} else {
+				return `var(--${varName})`;
+			}
 		}
 		return token;
 	});
@@ -900,12 +907,15 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				}
 				return color.value.join(" ");
 			}
-			let {functionName, args} = matchFunctionToken(value);
-			if (functionName === 'var') {
-				const firstCommaIndex = args.indexOf(',');
+			let { functionName, args } = matchFunctionToken(value);
+			if (functionName === "var") {
+				const firstCommaIndex = args.indexOf(",");
 				if (firstCommaIndex !== -1) {
-					let [varName, fallback] = [args.slice(0,firstCommaIndex).trim(), args.slice(firstCommaIndex+1).trim()];
-					varName += '_rgb';
+					let [varName, fallback] = [
+						args.slice(0, firstCommaIndex).trim(),
+						args.slice(firstCommaIndex + 1).trim(),
+					];
+					varName += "_rgb";
 					fallback = convertValueToRgb(fallback) || fallback;
 					return `var(${varName}, ${fallback})`;
 				} else {
@@ -915,12 +925,12 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				}
 			}
 			return null;
-		}
+		};
 
 		if (colorRgbVariants) {
 			// create RGB variants of custom properties with color values
 			root.walkDecls(/^--/, decl => {
-				if (decl.prop.slice(-4) === '_rgb') return;
+				if (decl.prop.slice(-4) === "_rgb") return;
 				const rgbValue = convertValueToRgb(decl.value);
 				if (rgbValue) {
 					decl.after(

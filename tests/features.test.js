@@ -682,7 +682,7 @@ it("creates RGB variants of color variables to allow changing alpha", async () =
 	);
 });
 
-it('correctly maps RGB variants when one variable is mapped to another', async () => {
+it("correctly maps RGB variants when one variable is mapped to another", async () => {
 	await run(
 		`:root {
 			--red: #ff0000;
@@ -705,4 +705,41 @@ it('correctly maps RGB variants when one variable is mapped to another', async (
 		}`,
 		{}
 	);
-})
+});
+
+it("creates RGB variants for omnicss classes", async () => {
+	await run(
+		"@omnicss",
+		`.\\$red-\\#ff0000 {
+			--red: #ff0000;
+			--red_rgb: 255 0 0
+		}
+		.\\$primary-\\$red {
+			--primary: var(--red);
+			--primary_rgb: var(--red_rgb)
+		}
+		.\\$complicated-\\$\\(primary\\,\\$\\(red\\,red\\)\\) {
+			--complicated: var(--primary, var(--red, red));
+			--complicated_rgb: var(--primary_rgb, var(--red_rgb, 255 0 0))
+		}`,
+		{
+			source: '<div class="$red-#ff0000 $primary-$red $complicated-$(primary,$(red,red))"></div>',
+		}
+	);
+});
+
+it("provides a shorthand for changing color variable opacity", async () => {
+	await run(
+		"@omnicss",
+		`.\\$red-\\#ff0000 {
+			--red: #ff0000;
+			--red_rgb: 255 0 0
+		}
+		.bg-color-\\$red\\@50\\% {
+			background-color: rgba(var(--red_rgb), 50%)
+		}`,
+		{
+			source: '<div class="$red-#ff0000 bg-color-$red@50%"></div>',
+		}
+	);
+});
