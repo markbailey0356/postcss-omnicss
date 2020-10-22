@@ -893,13 +893,13 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				const mediaQuery = postcss.atRule({
 					name: "media",
 					params,
-					nodes: childNodes,
 				});
+				mediaQuery.append(childNodes);
 				container.append(mediaQuery);
 			}
 		}
 
-		root.walkAtRules("omnicss", rule => rule.replaceWith(container));
+		root.walkAtRules("omnicss", rule => rule.replaceWith(container.nodes));
 
 		{
 			// process flexbox declarations
@@ -973,5 +973,11 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				}
 			});
 		}
+
+		root.walk(node => {
+			if (!node.parent) {
+				console.error("No parent:", node);
+			}
+		});
 	};
 });

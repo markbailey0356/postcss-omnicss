@@ -192,7 +192,8 @@ it("has a modifier to target desktop screen sizes", async () => {
 	await run(
 		"@omnicss",
 		`@media screen and (min-width: 768px) 
-		{.desktop\\:display-none {
+		{
+			.desktop\\:display-none {
 				display: none
 			}
 		}`,
@@ -206,7 +207,8 @@ it("has a modifier to target mobile screen sizes", async () => {
 	await run(
 		"@omnicss",
 		`@media screen and (max-width: 767.98px) 
-		{.mobile\\:display-none {
+		{
+			.mobile\\:display-none {
 				display: none
 			}
 		}`,
@@ -220,7 +222,8 @@ it("provides a shorthand for desktop modifier", async () => {
 	await run(
 		"@omnicss",
 		`@media screen and (min-width: 768px) 
-		{.d\\:color-black {
+		{
+			.d\\:color-black {
 				color: black
 			}
 		}`,
@@ -234,7 +237,8 @@ it("provides a shorthand for mobile modifier", async () => {
 	await run(
 		"@omnicss",
 		`@media screen and (max-width: 767.98px) 
-		{.m\\:color-black {
+		{
+			.m\\:color-black {
 				color: black
 			}
 		}`,
