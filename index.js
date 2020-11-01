@@ -936,7 +936,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					const convertToRgb = colorConvert[color.model].rgb;
 					color.value = convertToRgb(color.value);
 				}
-				return color.value.join(" ");
+				return color.value.join(", ");
 			}
 			let { functionName, args } = matchFunctionToken(value);
 			if (functionName === "var") {
@@ -973,11 +973,5 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				}
 			});
 		}
-
-		root.walk(node => {
-			if (!node.parent) {
-				console.error("No parent:", node);
-			}
-		});
 	};
 });

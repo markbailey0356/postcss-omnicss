@@ -673,13 +673,13 @@ it("creates RGB variants of color variables to allow changing alpha", async () =
 		}`,
 		`:root {
 			--red: #ff0000;
-			--red_rgb: 255 0 0;
+			--red_rgb: 255, 0, 0;
 			--blue: rgb(0, 0, 255);
-			--blue_rgb: 0 0 255;
+			--blue_rgb: 0, 0, 255;
 			--green: hsl(120deg, 100%, 50%);
-			--green_rgb: 0 255 0;
+			--green_rgb: 0, 255, 0;
 			--black: black;
-			--black_rgb: 0 0 0;
+			--black_rgb: 0, 0, 0;
 			--not-a-color: transform(50%, 50%);
 		}`,
 		{}
@@ -697,15 +697,15 @@ it("correctly maps RGB variants when one variable is mapped to another", async (
 		}`,
 		`:root {
 			--red: #ff0000;
-			--red_rgb: 255 0 0;
+			--red_rgb: 255, 0, 0;
 			--blue: #0000ff;
-			--blue_rgb: 0 0 255;
+			--blue_rgb: 0, 0, 255;
 			--primary: var(--red);
 			--primary_rgb: var(--red_rgb);
 			--secondary: var(--blue, blue);
-			--secondary_rgb: var(--blue_rgb, 0 0 255);
+			--secondary_rgb: var(--blue_rgb, 0, 0, 255);
 			--complicated: var(--blue, var(--red, purple));
-			--complicated_rgb: var(--blue_rgb, var(--red_rgb, 128 0 128));
+			--complicated_rgb: var(--blue_rgb, var(--red_rgb, 128, 0, 128));
 		}`,
 		{}
 	);
@@ -716,7 +716,7 @@ it("creates RGB variants for omnicss classes", async () => {
 		"@omnicss",
 		`.\\$red-\\#ff0000 {
 			--red: #ff0000;
-			--red_rgb: 255 0 0
+			--red_rgb: 255, 0, 0
 		}
 		.\\$primary-\\$red {
 			--primary: var(--red);
@@ -724,7 +724,7 @@ it("creates RGB variants for omnicss classes", async () => {
 		}
 		.\\$complicated-\\$\\(primary\\,\\$\\(red\\,red\\)\\) {
 			--complicated: var(--primary, var(--red, red));
-			--complicated_rgb: var(--primary_rgb, var(--red_rgb, 255 0 0))
+			--complicated_rgb: var(--primary_rgb, var(--red_rgb, 255, 0, 0))
 		}`,
 		{
 			source: '<div class="$red-#ff0000 $primary-$red $complicated-$(primary,$(red,red))"></div>',
@@ -737,7 +737,7 @@ it("provides a shorthand for changing color variable opacity", async () => {
 		"@omnicss",
 		`.\\$red-\\#ff0000 {
 			--red: #ff0000;
-			--red_rgb: 255 0 0
+			--red_rgb: 255, 0, 0
 		}
 		.bg-color-\\$red\\@50\\% {
 			background-color: rgba(var(--red_rgb), 50%)
