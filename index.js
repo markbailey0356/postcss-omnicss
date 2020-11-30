@@ -17,7 +17,7 @@ const ignoredProperties = [
 	"r",
 ];
 
-const customProperties = ["flexbox"];
+const customProperties = ["flexbox", "absolute"];
 
 const getKnownCssProperties = () => {
 	let properties = require("known-css-properties").all.concat(customProperties);
@@ -926,6 +926,109 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					{ prop: "flex-direction", value: (flexDirection && flexDirection[0]) || values[3] || "unset" },
 					{ prop: "flex-wrap", value: (flexWrap && flexWrap[0]) || values[4] || "unset" },
 				];
+
+				decl.replaceWith(declarations.map(postcss.decl));
+			});
+		}
+
+		{
+			// process absolute declarations
+			root.walkDecls("absolute", decl => {
+				const { value } = decl;
+				let top, bottom, left, right, translateX, translateY;
+
+				const center = value.match(/\bcenter\b/);
+				if (center) {
+					top = "50%";
+					left = "50%";
+					translateX = "-50%";
+					translateY = "-50%";
+				}
+
+				const stretch = value.match(/\bstretch\b/);
+				if (stretch) {
+					top = "0";
+					left = "0";
+					right = "0";
+					bottom = "0";
+					translateX = 0;
+					translateY = 0;
+				}
+
+				let directionCount = 0;
+				if (value.match(/\btop\b/)) {
+					top = "0";
+					translateY = 0;
+					if (stretch) {
+						bottom = undefined;
+					}
+					directionCount++;
+				}
+				if (value.match(/\bbottom\b/)) {
+					bottom = "0";
+					translateY = 0;
+					if (center || stretch) {
+						top = undefined;
+					}
+					directionCount++;
+				}
+				if (value.match(/\bleft\b/)) {
+					left = "0";
+					translateX = 0;
+					if (stretch) {
+						right = undefined;
+					}
+					directionCount++;
+				}
+				if (value.match(/\bright\b/)) {
+					right = "0";
+					translateX = 0;
+					if (center || stretch) {
+						left = undefined;
+					}
+					directionCount++;
+				}
+
+				let error = "";
+				if (center && stretch) {
+					error = "'center' and 'stretch' are incompatible";
+				}
+				if (center && directionCount > 1) {
+					error = "'center' can only be used with one of 'top', 'left', 'right' or 'down'";
+				}
+				if (stretch && directionCount > 1) {
+					error = "'stretch'  can only be used with one of 'top', 'left', 'right' or 'down'";
+				}
+
+				if (error) {
+					decl.warn(result, error);
+					let child = decl;
+					let parent = decl.parent;
+					while (parent && !(child.nodes && child.nodes.length)) {
+						child.remove();
+						child = parent;
+						parent = parent.parent;
+					}
+					return;
+				}
+
+				let transform;
+				if (translateX) {
+					if (translateY) {
+						transform = `translate(${translateX}, ${translateY})`;
+					} else {
+						transform = `translateX(${translateX})`;
+					}
+				} else if (translateY) {
+					transform = `translateY(${translateY})`;
+				}
+
+				const declarations = [{ prop: "position", value: "absolute" }];
+				top && declarations.push({ prop: "top", value: top });
+				bottom && declarations.push({ prop: "bottom", value: bottom });
+				left && declarations.push({ prop: "left", value: left });
+				right && declarations.push({ prop: "right", value: right });
+				transform && declarations.push({ prop: "transform", value: transform });
 
 				decl.replaceWith(declarations.map(postcss.decl));
 			});
