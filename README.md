@@ -11,7 +11,6 @@
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
 * Greedy matching for variables in certain cases to allow for e.g. `color-$gold-300`
 * `@apply` directive for using applying utility classes in CSS
-* `@breakpoint` (or some other syntax) for media query breakpoints in CSS
 
 ## Bugs
 

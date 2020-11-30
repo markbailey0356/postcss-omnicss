@@ -762,3 +762,51 @@ it("provides a shorthand for changing color variable opacity", async () => {
 		}
 	);
 });
+
+it("provides an at rule for creating media queries from breakpoint modifiers in CSS", async () => {
+	await run(
+		`@breakpoint md {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		`@media screen and (min-width: 768px) {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		{}
+	);
+});
+
+it("allows combinations of breakpoint modifiers in @breakpoint rules", async () => {
+	await run(
+		`@breakpoint d:!lg {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		`@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		{}
+	);
+});
+
+it("allows at-breakpoint modifiers in @breakpoint rules", async () => {
+	await run(
+		`@breakpoint @lg {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		`@media screen and (min-width: 1024px) and (max-width: 1279.98px) {
+			.hello-world {
+				display: flex;
+			}
+		}`,
+		{}
+	);
+});

@@ -714,6 +714,51 @@ const processFunctionArgs = (functionName, keywords, options, args) => {
 	}
 };
 
+const getMediaQueryFromModifiers = (breakpoints, modifiers) => {
+	let mediaQuery;
+	const nextBreakpointName = breakpoint => {
+		switch (breakpoint) {
+			case "small":
+				return "medium";
+			case "medium":
+				return "large";
+			case "large":
+				return "extra-large";
+			default:
+				return;
+		}
+	};
+
+	let minWidth = null,
+		maxWidth = null;
+	for (const [breakpoint, value] of Object.entries(breakpoints)) {
+		if (modifiers.includes(breakpoint)) {
+			minWidth = minWidth == null ? value : Math.min(minWidth, value);
+		}
+		if (modifiers.includes("not-" + breakpoint) || modifiers.includes("!" + breakpoint)) {
+			maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);
+		}
+		if (modifiers.includes("at-" + breakpoint || modifiers.includes("@" + breakpoint))) {
+			minWidth = minWidth == null ? value : Math.min(minWidth, value);
+			const nextBreakpoint = nextBreakpointName(breakpoint);
+			if (nextBreakpoint) {
+				const nextValue = breakpoints[nextBreakpoint];
+				maxWidth = maxWidth == null ? nextValue : Math.max(maxWidth, nextValue);
+			}
+		}
+	}
+	if (minWidth != null || maxWidth != null) {
+		mediaQuery = "screen";
+		if (minWidth != null) {
+			mediaQuery += ` and (min-width: ${minWidth}px)`;
+		}
+		if (maxWidth != null) {
+			mediaQuery += ` and (max-width: ${maxWidth - 0.02}px)`;
+		}
+	}
+	return mediaQuery;
+};
+
 const breakpointDefaults = {
 	desktop: 768,
 	small: 640,
@@ -783,49 +828,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 			value = processPropertyValue(prop, modifiers, value);
 
-			let container = "root";
-			{
-				const nextBreakpointName = breakpoint => {
-					switch (breakpoint) {
-						case "small":
-							return "medium";
-						case "medium":
-							return "large";
-						case "large":
-							return "extra-large";
-						default:
-							return;
-					}
-				};
-
-				let minWidth = null,
-					maxWidth = null;
-				for (const [breakpoint, value] of Object.entries(breakpoints)) {
-					if (modifiers.includes(breakpoint)) {
-						minWidth = minWidth == null ? value : Math.min(minWidth, value);
-					}
-					if (modifiers.includes("not-" + breakpoint) || modifiers.includes("!" + breakpoint)) {
-						maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);
-					}
-					if (modifiers.includes("at-" + breakpoint || modifiers.includes("@" + breakpoint))) {
-						minWidth = minWidth == null ? value : Math.min(minWidth, value);
-						const nextBreakpoint = nextBreakpointName(breakpoint);
-						if (nextBreakpoint) {
-							const nextValue = breakpoints[nextBreakpoint];
-							maxWidth = maxWidth == null ? nextValue : Math.max(maxWidth, nextValue);
-						}
-					}
-				}
-				if (minWidth != null || maxWidth != null) {
-					container = "screen";
-					if (minWidth != null) {
-						container += ` and (min-width: ${minWidth}px)`;
-					}
-					if (maxWidth != null) {
-						container += ` and (max-width: ${maxWidth - 0.02}px)`;
-					}
-				}
-			}
+			const container = getMediaQueryFromModifiers(breakpoints, modifiers) || "root";
 
 			let subContainer = 1;
 
@@ -925,6 +928,16 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				];
 
 				decl.replaceWith(declarations.map(postcss.decl));
+			});
+		}
+
+		{
+			// process breakpoint at rules
+			root.walkAtRules("breakpoint", rule => {
+				rule.name = "media";
+				let modifiers = rule.params.split(":");
+				modifiers = modifiers.map(expandModifierAbbreviations);
+				rule.params = getMediaQueryFromModifiers(breakpoints, modifiers);
 			});
 		}
 
