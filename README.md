@@ -1,4 +1,4 @@
-# OmniCSS 
+# OmniCSS
 
 ## Features to do
 
@@ -11,6 +11,17 @@
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
 * Greedy matching for variables in certain cases to allow for e.g. `color-$gold-300`
 * `@apply` directive for using applying utility classes in CSS
+* Namespaced CSS variables: variable name of `--padding-small: 1rem` should be able to used by `p-$small`
+  * Or `--transform-center: translate(-50%, -50%)` as `transform-$center`
+* Some sort of debug mode so you can figure out why a selector doesn't work.
+
+## Housekeeping tasks
+
+* Commenting
+* Pull out data objects and data-like functions to seperate files
+* Prefer snake_case variable and functions names
+* Refactor features.test.js to a better format
+* Possibly pull out some reused test functions
 
 ## Bugs
 
