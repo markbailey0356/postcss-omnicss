@@ -6,13 +6,14 @@
 * Decide what to do about semi-colons in class names
 * Shorthand property inference: `bg-cover` should become `background-size: cover` instead of `background: cover`
   * `object-fit` and `object-position`
-* Custom `flexbox` shorthand property to set flex parent properties
 * Custom `inset` shorthand property to set `top`, `right`, `bottom`, and `left` (similar to `margin` or `padding`)
+* `absolute-top-left` class of shorthands for setting `position: absolute; top: 0; left: 0` quickly.
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
+* Greedy matching for variables in certain cases to allow for e.g. `color-$gold-300`
+* `@apply` directive for using applying utility classes in CSS
+* `@breakpoint` (or some other syntax) for media query breakpoints in CSS
 
 ## Bugs
-
-* `flexbox` selector shorthand isn't working in real project
 
 ## Talking points
 

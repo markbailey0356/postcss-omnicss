@@ -283,6 +283,8 @@ const splitSelector = selector => {
 	let modifiers = modifierSplits.slice(0, -1);
 	selector = modifierSplits[modifierSplits.length - 1];
 
+	selector = expandSelectorAbbreviations(selector);
+
 	modifiers = modifiers.map(expandModifierAbbreviations);
 
 	let prop, value;
@@ -765,9 +767,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 		const nodesByContainer = {};
 		for (let selector of selectors) {
-			const expanededSelector = expandSelectorAbbreviations(selector);
-
-			let { prop, value, modifiers } = splitSelector(expanededSelector);
+			let { prop, value, modifiers } = splitSelector(selector);
 
 			if (!(prop && value)) continue;
 

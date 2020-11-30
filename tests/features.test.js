@@ -662,6 +662,21 @@ it("allows you to leave off common properties with unique values", async () => {
 	);
 });
 
+it("handles modifiers used in conjuction with selector abbreviations", async () => {
+	await run(
+		"@omnicss",
+		`@media screen and (min-width: 768px) 
+		{
+			.d\\:abs {
+				position: absolute
+			}
+		}`,
+		{
+			source: '<div class="d:abs"></div>',
+		}
+	);
+});
+
 it("creates RGB variants of color variables to allow changing alpha", async () => {
 	await run(
 		`:root {
