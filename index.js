@@ -1,14 +1,14 @@
 const postcss = require("postcss");
 const { PurgeCSS } = require("purgecss");
 const _ = require("lodash");
-const cssEscape = require("css.escape");
+const css_escape = require("css.escape");
 const path = require("path");
-const _cssColors = require("colors.json");
-const cssColors = Object.keys(_cssColors);
-const colorString = require("color-string");
-const colorConvert = require("color-convert");
+const _css_colors = require("colors.json");
+const css_colors = Object.keys(_css_colors);
+const color_string = require("color-string");
+const color_convert = require("color-convert");
 
-const ignoredProperties = [
+const ignored_properties = [
 	"text-decoration-none",
 	"text-decoration-underline",
 	"text-decoration-overline",
@@ -17,18 +17,18 @@ const ignoredProperties = [
 	"r",
 ];
 
-const customProperties = ["flexbox", "absolute"];
+const custom_properties = ["flexbox", "absolute"];
 
-const getKnownCssProperties = () => {
-	let properties = require("known-css-properties").all.concat(customProperties);
+const get_known_css_properties = () => {
+	let properties = require("known-css-properties").all.concat(custom_properties);
 	properties = _.sortBy(properties, x => x === "justify-content" || x === "align-items"); // give property a lower priority
 	properties = _.sortBy(properties, x => -x.split("-").length);
-	return properties.filter(x => !ignoredProperties.includes(x));
+	return properties.filter(x => !ignored_properties.includes(x));
 };
 
-const knownCssProperties = getKnownCssProperties();
+const known_css_properties = get_known_css_properties();
 
-const selectorAbbreviations = new Map(
+const selector_abbreviations = new Map(
 	Object.entries({
 		// display
 		block: "display-block",
@@ -81,7 +81,7 @@ const selectorAbbreviations = new Map(
 	})
 );
 
-const _propertyAbbreviations = Object.entries({
+const _property_abbreviations = Object.entries({
 	"align-items": ["align", "items"],
 	"justify-content": "justify",
 	justify: "just",
@@ -149,9 +149,9 @@ const _propertyAbbreviations = Object.entries({
 	column: "col",
 });
 
-const propertyAbbreviations = new Map(_.sortBy(_propertyAbbreviations, ([x]) => -x.split("-").length));
+const property_abbreviations = new Map(_.sortBy(_property_abbreviations, ([x]) => -x.split("-").length));
 
-const modifierAbbreviations = new Map(
+const modifier_abbreviations = new Map(
 	Object.entries({
 		mobile: "not-desktop",
 		d: "desktop",
@@ -207,8 +207,8 @@ const modifierAbbreviations = new Map(
 	})
 );
 
-const propertyRegexes = knownCssProperties.map(x => {
-	for (let [from, to] of propertyAbbreviations) {
+const property_regexes = known_css_properties.map(x => {
+	for (let [from, to] of property_abbreviations) {
 		x = x.replace(new RegExp(from, "g"), `(?:${(_.isArray(to) ? [from, ...to] : [from, to]).join("|")})`);
 	}
 	return x;
@@ -216,12 +216,12 @@ const propertyRegexes = knownCssProperties.map(x => {
 
 // console.log(propertyRegexes[knownCssProperties.findIndex(x => x === "justify-content")]);
 
-const propertyRegex = new RegExp(`^(?:${propertyRegexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
+const property_regex = new RegExp(`^(?:${property_regexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 
-const expandModifierAbbreviations = x => modifierAbbreviations.get(x) || x;
-const expandSelectorAbbreviations = x => selectorAbbreviations.get(x) || x;
+const expand_modifier_abbreviations = x => modifier_abbreviations.get(x) || x;
+const expand_selector_abbreviations = x => selector_abbreviations.get(x) || x;
 
-const _defaultUnits = {
+const _default_units = {
 	rem: [
 		"padding",
 		"padding-top",
@@ -269,23 +269,23 @@ const _defaultUnits = {
 	],
 };
 
-const defaultUnits = new Map();
-for (const [unit, properties] of Object.entries(_defaultUnits)) {
+const default_units = new Map();
+for (const [unit, properties] of Object.entries(_default_units)) {
 	for (const property of properties) {
-		defaultUnits.set(property, unit);
+		default_units.set(property, unit);
 	}
 }
 
 const extractor = content => content.match(/[^"'=<>\s]+/g) || [];
 
-const splitSelector = selector => {
-	const modifierSplits = selector.split(":");
-	let modifiers = modifierSplits.slice(0, -1);
-	selector = modifierSplits[modifierSplits.length - 1];
+const split_selector = selector => {
+	const modifier_splits = selector.split(":");
+	let modifiers = modifier_splits.slice(0, -1);
+	selector = modifier_splits[modifier_splits.length - 1];
 
-	selector = expandSelectorAbbreviations(selector);
+	selector = expand_selector_abbreviations(selector);
 
-	modifiers = modifiers.map(expandModifierAbbreviations);
+	modifiers = modifiers.map(expand_modifier_abbreviations);
 
 	let prop, value;
 
@@ -305,10 +305,10 @@ const splitSelector = selector => {
 			value = selector.slice(prop.length + 1);
 		}
 	} else {
-		let match = selector.match(propertyRegex);
+		let match = selector.match(property_regex);
 		if (match) {
 			let index = match.slice(1).findIndex(x => x);
-			prop = knownCssProperties[index];
+			prop = known_css_properties[index];
 			value = match.groups.value;
 		}
 
@@ -338,7 +338,7 @@ const splitSelector = selector => {
 	};
 };
 
-const propertyKeywords = prop => {
+const property_keywords = prop => {
 	switch (prop) {
 		case "animation-direction":
 			return ["normal", "revese", "alternate", "alternate-reverse"];
@@ -350,10 +350,10 @@ const propertyKeywords = prop => {
 			return ["paused", "running"];
 		case "animation":
 			return [
-				...propertyKeywords("animation-direction"),
-				...propertyKeywords("animation-fill-mode"),
-				...propertyKeywords("animation-iteration-count"),
-				...propertyKeywords("animation-play-state"),
+				...property_keywords("animation-direction"),
+				...property_keywords("animation-fill-mode"),
+				...property_keywords("animation-iteration-count"),
+				...property_keywords("animation-play-state"),
 			];
 		case "overflow":
 			return ["visible", "hidden", "clip", "scroll", "auto"];
@@ -387,13 +387,13 @@ const propertyKeywords = prop => {
 			];
 		case "flexbox":
 			return [
-				...propertyKeywords("align-content"),
-				...propertyKeywords("flex-wrap"),
-				...propertyKeywords("flex-direction"),
+				...property_keywords("align-content"),
+				...property_keywords("flex-wrap"),
+				...property_keywords("flex-direction"),
 			];
 		case "justify-content":
 		case "align-content":
-			return [...propertyKeywords("align-items"), "space-evenly", "space-around", "space-between"];
+			return [...property_keywords("align-items"), "space-evenly", "space-around", "space-between"];
 		case "grid-auto-columns":
 		case "grid-auto-rows":
 			return ["min-content", "max-content", "fit-content", "minmax", "auto"];
@@ -432,7 +432,7 @@ const propertyKeywords = prop => {
 			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
 		case "text-decoration":
 			return [
-				...propertyKeywords("text-decoration-line"),
+				...property_keywords("text-decoration-line"),
 				"auto",
 				"from-font",
 				"solid",
@@ -455,7 +455,7 @@ const propertyKeywords = prop => {
 		// return ["rgb", "rgba", "hsl", "hsla"];
 		case "background-image":
 			return [
-				...propertyKeywords("background-color"),
+				...property_keywords("background-color"),
 				"url",
 				"image",
 				"image-set",
@@ -474,14 +474,14 @@ const propertyKeywords = prop => {
 			return ["scroll", "fixed", "local"];
 		case "background":
 			return [
-				...propertyKeywords("background-clip"),
-				...propertyKeywords("background-color"),
-				...propertyKeywords("background-image"),
-				...propertyKeywords("background-origin"),
-				...propertyKeywords("background-position"),
-				...propertyKeywords("background-repeat"),
-				...propertyKeywords("background-size"),
-				...propertyKeywords("background-attachment"),
+				...property_keywords("background-clip"),
+				...property_keywords("background-color"),
+				...property_keywords("background-image"),
+				...property_keywords("background-origin"),
+				...property_keywords("background-position"),
+				...property_keywords("background-repeat"),
+				...property_keywords("background-size"),
+				...property_keywords("background-attachment"),
 			];
 		case "border-width":
 		case "outline-width":
@@ -494,12 +494,12 @@ const propertyKeywords = prop => {
 		case "border-right":
 		case "border-top":
 			return [
-				...propertyKeywords("border-width"),
-				...propertyKeywords("border-style"),
-				...propertyKeywords("border-color"),
+				...property_keywords("border-width"),
+				...property_keywords("border-style"),
+				...property_keywords("border-color"),
 			];
 		case "transition-property":
-			return [...knownCssProperties, "none", "all"];
+			return [...known_css_properties, "none", "all"];
 		case "transition-timing-function":
 		case "animation-timing-function":
 			return [
@@ -520,14 +520,14 @@ const propertyKeywords = prop => {
 				"end",
 			];
 		case "transition":
-			return [...propertyKeywords("transition-property"), ...propertyKeywords("transition-timing-function")];
+			return [...property_keywords("transition-property"), ...property_keywords("transition-timing-function")];
 		case "outline-style":
 			return ["none", "auto", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 		case "outline":
 			return [
-				...propertyKeywords("outline-width"),
-				...propertyKeywords("outline-style"),
-				...propertyKeywords("outline-color"),
+				...property_keywords("outline-width"),
+				...property_keywords("outline-style"),
+				...property_keywords("outline-color"),
 			];
 		case "width":
 		case "min-width":
@@ -539,27 +539,27 @@ const propertyKeywords = prop => {
 		case "color":
 		case "border-color":
 		case "background-color":
-			return [...cssColors, "currentcolor"];
+			return [...css_colors, "currentcolor"];
 		case "outline-color":
-			return [...propertyKeywords("color"), "invert"];
+			return [...property_keywords("color"), "invert"];
 		case "box-shadow":
-			return [...propertyKeywords("color"), "inset"];
+			return [...property_keywords("color"), "inset"];
 		default:
 			return [];
 	}
 };
 
-const tokenizeValue = (keywords, options, value) => {
-	const { keepHyphens = false } = options;
+const tokenize_value = (keywords, options, value) => {
+	const { keep_hyphens = false } = options;
 	value = value
 		.replace(/(^|[-,/])\.(\d)/g, "$10.$2")
 		.replace(/,-+/g, ",--")
 		.replace(/^-/, "--");
-	const keywordsSorted = keywords
+	const keywords_sorted = keywords
 		.sort((x, y) => y.length - x.length)
 		.sort((x, y) => y.split("-").length - x.split("-").length);
 	const regex = new RegExp(
-		`(${keywordsSorted
+		`(${keywords_sorted
 			.map(x => `\\b(?<!\\$)${x}\\b`) // any keywords not preceded by a $
 			.concat([
 				"\\w+\\(", // single-word functions
@@ -573,11 +573,11 @@ const tokenizeValue = (keywords, options, value) => {
 	);
 	let matches = value.split(regex);
 	matches = _.compact(matches);
-	matches = collectBracketTokens(matches);
+	matches = collect_bracket_tokens(matches);
 	matches = _.compact(
 		matches.map(match => {
 			match = match.replace(/^-(\D)/, "$1");
-			if (!keepHyphens) {
+			if (!keep_hyphens) {
 				match = match.replace(/-+$/, "");
 			}
 			return match;
@@ -586,62 +586,62 @@ const tokenizeValue = (keywords, options, value) => {
 	return matches;
 };
 
-const collectBracketTokens = matches => {
-	let roundBrackets = 0;
-	let squareBrackets = 0;
-	let curlyBrackets = 0;
-	let currentToken = [];
+const collect_bracket_tokens = matches => {
+	let round_brackets_count = 0;
+	let square_brackets_count = 0;
+	let curly_brackets_count = 0;
+	let current_token = [];
 	const tokens = [];
 	for (const match of matches) {
-		currentToken.push(match);
+		current_token.push(match);
 
 		if (match === "[") {
-			squareBrackets++;
+			square_brackets_count++;
 		} else if (match === "]") {
-			squareBrackets--;
+			square_brackets_count--;
 		} else if (match === "(") {
-			roundBrackets++;
-			currentToken.unshift(tokens.pop());
+			round_brackets_count++;
+			current_token.unshift(tokens.pop());
 		} else if (match.includes("(")) {
-			roundBrackets++;
+			round_brackets_count++;
 		} else if (match === ")") {
-			roundBrackets--;
+			round_brackets_count--;
 		} else if (match === "{") {
-			curlyBrackets++;
+			curly_brackets_count++;
 		} else if (match === "}") {
-			curlyBrackets--;
+			curly_brackets_count--;
 		}
 
-		if (squareBrackets <= 0 && roundBrackets <= 0 && curlyBrackets <= 0) {
-			tokens.push(currentToken.join(""));
-			currentToken = [];
+		if (square_brackets_count <= 0 && round_brackets_count <= 0 && curly_brackets_count <= 0) {
+			tokens.push(current_token.join(""));
+			current_token = [];
 		}
 	}
 	return tokens;
 };
 
-const processPropertyValue = (prop, modifiers, value) => {
-	const keywords = propertyKeywords(prop);
+const process_property_value = (prop, modifiers, value) => {
+	const keywords = property_keywords(prop);
 	const options = {
-		defaultUnit: defaultUnits.get(prop),
+		default_unit: default_units.get(prop),
 		negate: modifiers.includes("negate"),
-		calcShorthand: true,
+		calc_shorthand: true,
 	};
-	const result = processValue(keywords, options, value);
+	const result = process_value(keywords, options, value);
 	return result;
 };
 
-const matchFunctionToken = token => {
+const match_function_token = token => {
 	const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
 	if (!match) return {};
-	let [, functionName, args] = match;
-	return { functionName, args };
+	let [, function_name, args] = match;
+	return { function_name, args };
 };
 
-const processValue = (keywords, options, value) => {
-	const { defaultUnit = "", negate = false, calcShorthand = false } = options;
-	const tokens = tokenizeValue(keywords, options, value);
-	const transformedTokens = tokens.map(token => {
+const process_value = (keywords, options, value) => {
+	const { default_unit = "", negate = false, calc_shorthand = false } = options;
+	const tokens = tokenize_value(keywords, options, value);
+	const transformed_tokens = tokens.map(token => {
 		if (token.match(/^\[.*\]$/)) {
 			return token.replace(/,/g, " ");
 		}
@@ -652,25 +652,25 @@ const processValue = (keywords, options, value) => {
 		if (!isNaN(number)) {
 			let unit = token.match(/[a-zA-Z%]+/);
 			unit = unit ? unit[0] : "";
-			if (defaultUnit && number !== 0) {
-				unit = unit || defaultUnit;
+			if (default_unit && number !== 0) {
+				unit = unit || default_unit;
 			}
 			if (negate) {
 				number *= -1;
 			}
 			return number + unit;
 		}
-		let { functionName, args } = matchFunctionToken(token);
-		if (functionName != undefined) {
-			if (calcShorthand) {
-				functionName = functionName || "calc";
+		let { function_name, args } = match_function_token(token);
+		if (function_name != undefined) {
+			if (calc_shorthand) {
+				function_name = function_name || "calc";
 			}
-			if (functionName === "$") {
-				functionName = "var";
+			if (function_name === "$") {
+				function_name = "var";
 				args = args.replace(/^-*/, "--");
 			}
-			args = processFunctionArgs(functionName, keywords, options, args);
-			return `${functionName}(${args})`;
+			args = process_function_args(function_name, keywords, options, args);
+			return `${function_name}(${args})`;
 		}
 		let match = token.match(/^\$([^(][^@]*)(?:@(.*))?/);
 		if (match) {
@@ -683,40 +683,40 @@ const processValue = (keywords, options, value) => {
 		}
 		return token;
 	});
-	const result = transformedTokens.join(" ").replace(/\s*,\s*/g, ", ");
+	const result = transformed_tokens.join(" ").replace(/\s*,\s*/g, ", ");
 	return result;
 };
 
-const processFunctionArgs = (functionName, keywords, options, args) => {
-	switch (functionName) {
+const process_function_args = (function_name, keywords, options, args) => {
+	switch (function_name) {
 		case "calc":
-			return processValue([], { keepHyphens: true }, args);
+			return process_value([], { keep_hyphens: true }, args);
 		case "var": {
-			const firstCommaIndex = args.indexOf(",");
-			if (firstCommaIndex > -1) {
-				const variableName = args.slice(0, firstCommaIndex);
-				const remainingArgs = args.slice(firstCommaIndex + 1);
-				return variableName + "," + processValue(keywords, options, remainingArgs);
+			const first_comma_index = args.indexOf(",");
+			if (first_comma_index > -1) {
+				const variable_name = args.slice(0, first_comma_index);
+				const remaining_args = args.slice(first_comma_index + 1);
+				return variable_name + "," + process_value(keywords, options, remaining_args);
 			} else {
 				return args;
 			}
 		}
 		default:
-			return processValue(
+			return process_value(
 				keywords,
 				{
 					...options,
 					negate: false,
-					defaultUnit: "",
+					default_unit: "",
 				},
 				args
 			);
 	}
 };
 
-const getMediaQueryFromModifiers = (breakpoints, modifiers) => {
-	let mediaQuery;
-	const nextBreakpointName = breakpoint => {
+const get_media_query_from_modifiers = (breakpoints, modifiers) => {
+	let media_query;
+	const next_breakpoint_name = breakpoint => {
 		switch (breakpoint) {
 			case "small":
 				return "medium";
@@ -729,37 +729,37 @@ const getMediaQueryFromModifiers = (breakpoints, modifiers) => {
 		}
 	};
 
-	let minWidth = null,
-		maxWidth = null;
+	let min_width = null,
+		max_width = null;
 	for (const [breakpoint, value] of Object.entries(breakpoints)) {
 		if (modifiers.includes(breakpoint)) {
-			minWidth = minWidth == null ? value : Math.min(minWidth, value);
+			min_width = min_width == null ? value : Math.min(min_width, value);
 		}
 		if (modifiers.includes("not-" + breakpoint) || modifiers.includes("!" + breakpoint)) {
-			maxWidth = maxWidth == null ? value : Math.max(maxWidth, value);
+			max_width = max_width == null ? value : Math.max(max_width, value);
 		}
 		if (modifiers.includes("at-" + breakpoint || modifiers.includes("@" + breakpoint))) {
-			minWidth = minWidth == null ? value : Math.min(minWidth, value);
-			const nextBreakpoint = nextBreakpointName(breakpoint);
-			if (nextBreakpoint) {
-				const nextValue = breakpoints[nextBreakpoint];
-				maxWidth = maxWidth == null ? nextValue : Math.max(maxWidth, nextValue);
+			min_width = min_width == null ? value : Math.min(min_width, value);
+			const next_breakpoint = next_breakpoint_name(breakpoint);
+			if (next_breakpoint) {
+				const next_value = breakpoints[next_breakpoint];
+				max_width = max_width == null ? next_value : Math.max(max_width, next_value);
 			}
 		}
 	}
-	if (minWidth != null || maxWidth != null) {
-		mediaQuery = "screen";
-		if (minWidth != null) {
-			mediaQuery += ` and (min-width: ${minWidth}px)`;
+	if (min_width != null || max_width != null) {
+		media_query = "screen";
+		if (min_width != null) {
+			media_query += ` and (min-width: ${min_width}px)`;
 		}
-		if (maxWidth != null) {
-			mediaQuery += ` and (max-width: ${maxWidth - 0.02}px)`;
+		if (max_width != null) {
+			media_query += ` and (max-width: ${max_width - 0.02}px)`;
 		}
 	}
-	return mediaQuery;
+	return media_query;
 };
 
-const breakpointDefaults = {
+const breakpoint_defaults = {
 	desktop: 768,
 	small: 640,
 	medium: 768,
@@ -767,24 +767,25 @@ const breakpointDefaults = {
 	"extra-large": 1280,
 };
 
-const extractBreakpointsFromOptions = _.flow(
+const extract_breakpoints_from_options = _.flow(
 	x => (_.isObject(x.breakpoints) ? x.breakpoints : {}),
-	x => _.mapKeys(x, (value, key) => expandModifierAbbreviations(key).replace(/^(not|at)-/g, "")),
+	x => _.mapKeys(x, (value, key) => expand_modifier_abbreviations(key).replace(/^(not|at)-/g, "")),
 	x => _.toPairs(x),
 	x => _.filter(x, ([name, value]) => _.isString(name) && _.isNumber(value)),
 	x => _.fromPairs(x),
-	x => _.defaults(x, breakpointDefaults)
+	x => _.defaults(x, breakpoint_defaults)
 );
 
 module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
-	const defaultExtensions = ["html", "vue", "js", "ts", "jsx", "tsx"];
+	const default_extensions = ["html", "vue", "js", "ts", "jsx", "tsx"];
 
-	const defaultFiles = _.flatMap(defaultExtensions, ext => [`!(node_modules)/**/*.${ext}`, `*.${ext}`]);
+	const default_files = _.flatMap(default_extensions, ext => [`!(node_modules)/**/*.${ext}`, `*.${ext}`]);
 
 	// Work with options here
-	const { source = "", files = defaultFiles, colorRgbVariants = true } = options;
+	options = _.mapKeys(options, (value, key) => _.snakeCase(key));
+	const { source = "", files = default_files, color_rgb_variants = true } = options;
 
-	const breakpoints = extractBreakpointsFromOptions(options);
+	const breakpoints = extract_breakpoints_from_options(options);
 
 	return async (root, result) => {
 		let selectors = [];
@@ -810,95 +811,95 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 			selectors = undetermined;
 		}
 
-		const nodesByContainer = {};
+		const nodes_by_container = {};
 		for (let selector of selectors) {
-			let { prop, value, modifiers } = splitSelector(selector);
+			let { prop, value, modifiers } = split_selector(selector);
 
 			if (!(prop && value)) continue;
 
-			let numberOfSegments = prop.match(/[^-]+/g).length;
+			let number_of_segments = prop.match(/[^-]+/g).length;
 
 			if (prop === "flex-flow") {
-				numberOfSegments = 1;
+				number_of_segments = 1;
 			}
 
 			if (prop === "all") {
-				numberOfSegments = 0;
+				number_of_segments = 0;
 			}
 
-			value = processPropertyValue(prop, modifiers, value);
+			value = process_property_value(prop, modifiers, value);
 
-			const container = getMediaQueryFromModifiers(breakpoints, modifiers) || "root";
+			const container = get_media_query_from_modifiers(breakpoints, modifiers) || "root";
 
-			let subContainer = 1;
+			let sub_container = 1;
 
-			let realSelector = "." + cssEscape(selector);
+			let real_selector = "." + css_escape(selector);
 
 			if (modifiers.includes("child")) {
-				realSelector += " > *";
-				subContainer = 0;
+				real_selector += " > *";
+				sub_container = 0;
 			}
 			if (modifiers.includes("first-child")) {
-				realSelector += " > *:first-child";
-				subContainer = 0;
+				real_selector += " > *:first-child";
+				sub_container = 0;
 			}
 			if (modifiers.includes("last-child")) {
-				realSelector += " > *:last-child";
-				subContainer = 0;
+				real_selector += " > *:last-child";
+				sub_container = 0;
 			}
 			if (modifiers.includes("not-first-child")) {
-				realSelector += " > *:not(:first-child)";
-				subContainer = 0;
+				real_selector += " > *:not(:first-child)";
+				sub_container = 0;
 			}
 			if (modifiers.includes("not-last-child")) {
-				realSelector += " > *:not(:last-child)";
-				subContainer = 0;
+				real_selector += " > *:not(:last-child)";
+				sub_container = 0;
 			}
 			if (modifiers.includes("after")) {
-				realSelector += "::after";
+				real_selector += "::after";
 			}
 			if (modifiers.includes("before")) {
-				realSelector += "::before";
+				real_selector += "::before";
 			}
 			if (modifiers.includes("placeholder")) {
-				realSelector += "::placeholder";
+				real_selector += "::placeholder";
 			}
 			if (modifiers.includes("hover")) {
-				realSelector += ":hover";
+				real_selector += ":hover";
 			}
 			if (modifiers.includes("focus")) {
-				realSelector += ":focus";
+				real_selector += ":focus";
 			}
 
 			if (modifiers.includes("important")) {
 				value += " !important";
 			}
 
-			let node = postcss.rule({ selector: realSelector }).append(postcss.decl({ prop, value }));
+			let node = postcss.rule({ selector: real_selector }).append(postcss.decl({ prop, value }));
 
 			_.set(
-				nodesByContainer,
-				[container, subContainer, numberOfSegments],
-				_.get(nodesByContainer, [container, subContainer, numberOfSegments], [])
+				nodes_by_container,
+				[container, sub_container, number_of_segments],
+				_.get(nodes_by_container, [container, sub_container, number_of_segments], [])
 			);
-			nodesByContainer[container][subContainer][numberOfSegments].push(node);
+			nodes_by_container[container][sub_container][number_of_segments].push(node);
 		}
 
-		const nodes = _.mapValues(nodesByContainer, _.flow(_.flattenDeep, _.compact));
+		const nodes = _.mapValues(nodes_by_container, _.flow(_.flattenDeep, _.compact));
 
 		const container = postcss.root();
 		nodes.root && container.append(nodes.root);
 
 		delete nodes.root;
 
-		for (const [params, childNodes] of Object.entries(nodes)) {
-			if (childNodes && childNodes.length) {
-				const mediaQuery = postcss.atRule({
+		for (const [params, child_nodes] of Object.entries(nodes)) {
+			if (child_nodes && child_nodes.length) {
+				const media_query = postcss.atRule({
 					name: "media",
 					params,
 				});
-				mediaQuery.append(childNodes);
-				container.append(mediaQuery);
+				media_query.append(child_nodes);
+				container.append(media_query);
 			}
 		}
 
@@ -914,8 +915,8 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 						/\b((safe |unsafe )?(first baseline|last baseline|baseline|space-around|space-evenly|space-between|self-start|self-end|stretch|center|flex-start|flex-end|start|end|left|right|unset|initial|inherit))\b/g
 					) || [];
 
-				const flexDirection = value.match(/\b(row-reverse|row|column-reverse|column)\b/g);
-				const flexWrap = value.match(/\b(wrap-reverse|nowrap|wrap)\b/g);
+				const flex_direction = value.match(/\b(row-reverse|row|column-reverse|column)\b/g);
+				const flex_wrap = value.match(/\b(wrap-reverse|nowrap|wrap)\b/g);
 				const inline = value.match(/\binline\b/);
 
 				const declarations = [
@@ -923,8 +924,8 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					{ prop: "justify-content", value: values[0] || "unset" },
 					{ prop: "align-items", value: values[1] || "unset" },
 					{ prop: "align-content", value: values[2] || "unset" },
-					{ prop: "flex-direction", value: (flexDirection && flexDirection[0]) || values[3] || "unset" },
-					{ prop: "flex-wrap", value: (flexWrap && flexWrap[0]) || values[4] || "unset" },
+					{ prop: "flex-direction", value: (flex_direction && flex_direction[0]) || values[3] || "unset" },
+					{ prop: "flex-wrap", value: (flex_wrap && flex_wrap[0]) || values[4] || "unset" },
 				];
 
 				decl.replaceWith(declarations.map(postcss.decl));
@@ -935,14 +936,14 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 			// process absolute declarations
 			root.walkDecls("absolute", decl => {
 				const { value } = decl;
-				let top, bottom, left, right, translateX, translateY;
+				let top, bottom, left, right, translate_x, translate_y;
 
 				const center = value.match(/\bcenter\b/);
 				if (center) {
 					top = "50%";
 					left = "50%";
-					translateX = "-50%";
-					translateY = "-50%";
+					translate_x = "-50%";
+					translate_y = "-50%";
 				}
 
 				const stretch = value.match(/\bstretch\b/);
@@ -951,52 +952,52 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					left = "0";
 					right = "0";
 					bottom = "0";
-					translateX = 0;
-					translateY = 0;
+					translate_x = 0;
+					translate_y = 0;
 				}
 
-				let directionCount = 0;
+				let direction_count = 0;
 				if (value.match(/\btop\b/)) {
 					top = "0";
-					translateY = 0;
+					translate_y = 0;
 					if (stretch) {
 						bottom = undefined;
 					}
-					directionCount++;
+					direction_count++;
 				}
 				if (value.match(/\bbottom\b/)) {
 					bottom = "0";
-					translateY = 0;
+					translate_y = 0;
 					if (center || stretch) {
 						top = undefined;
 					}
-					directionCount++;
+					direction_count++;
 				}
 				if (value.match(/\bleft\b/)) {
 					left = "0";
-					translateX = 0;
+					translate_x = 0;
 					if (stretch) {
 						right = undefined;
 					}
-					directionCount++;
+					direction_count++;
 				}
 				if (value.match(/\bright\b/)) {
 					right = "0";
-					translateX = 0;
+					translate_x = 0;
 					if (center || stretch) {
 						left = undefined;
 					}
-					directionCount++;
+					direction_count++;
 				}
 
 				let error = "";
 				if (center && stretch) {
 					error = "'center' and 'stretch' are incompatible";
 				}
-				if (center && directionCount > 1) {
+				if (center && direction_count > 1) {
 					error = "'center' can only be used with one of 'top', 'left', 'right' or 'down'";
 				}
-				if (stretch && directionCount > 1) {
+				if (stretch && direction_count > 1) {
 					error = "'stretch'  can only be used with one of 'top', 'left', 'right' or 'down'";
 				}
 
@@ -1013,14 +1014,14 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				}
 
 				let transform;
-				if (translateX) {
-					if (translateY) {
-						transform = `translate(${translateX}, ${translateY})`;
+				if (translate_x) {
+					if (translate_y) {
+						transform = `translate(${translate_x}, ${translate_y})`;
 					} else {
-						transform = `translateX(${translateX})`;
+						transform = `translateX(${translate_x})`;
 					}
-				} else if (translateY) {
-					transform = `translateY(${translateY})`;
+				} else if (translate_y) {
+					transform = `translateY(${translate_y})`;
 				}
 
 				const declarations = [{ prop: "position", value: "absolute" }];
@@ -1039,51 +1040,51 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 			root.walkAtRules("breakpoint", rule => {
 				rule.name = "media";
 				let modifiers = rule.params.split(":");
-				modifiers = modifiers.map(expandModifierAbbreviations);
-				rule.params = getMediaQueryFromModifiers(breakpoints, modifiers);
+				modifiers = modifiers.map(expand_modifier_abbreviations);
+				rule.params = get_media_query_from_modifiers(breakpoints, modifiers);
 			});
 		}
 
-		const convertValueToRgb = value => {
-			let color = colorString.get(value);
+		const convert_value_to_rgb = value => {
+			let color = color_string.get(value);
 			if (color !== null) {
 				color.value = color.value.slice(0, 3);
 				if (color.model !== "rgb") {
-					const convertToRgb = colorConvert[color.model].rgb;
-					color.value = convertToRgb(color.value);
+					const convert_to_rgb = color_convert[color.model].rgb;
+					color.value = convert_to_rgb(color.value);
 				}
 				return color.value.join(", ");
 			}
-			let { functionName, args } = matchFunctionToken(value);
-			if (functionName === "var") {
-				const firstCommaIndex = args.indexOf(",");
-				if (firstCommaIndex !== -1) {
-					let [varName, fallback] = [
-						args.slice(0, firstCommaIndex).trim(),
-						args.slice(firstCommaIndex + 1).trim(),
+			let { function_name, args } = match_function_token(value);
+			if (function_name === "var") {
+				const first_comma_index = args.indexOf(",");
+				if (first_comma_index !== -1) {
+					let [var_name, fallback] = [
+						args.slice(0, first_comma_index).trim(),
+						args.slice(first_comma_index + 1).trim(),
 					];
-					varName += "_rgb";
-					fallback = convertValueToRgb(fallback) || fallback;
-					return `var(${varName}, ${fallback})`;
+					var_name += "_rgb";
+					fallback = convert_value_to_rgb(fallback) || fallback;
+					return `var(${var_name}, ${fallback})`;
 				} else {
-					let varName = args;
-					varName += "_rgb";
-					return `var(${varName})`;
+					let var_name = args;
+					var_name += "_rgb";
+					return `var(${var_name})`;
 				}
 			}
 			return null;
 		};
 
-		if (colorRgbVariants) {
+		if (color_rgb_variants) {
 			// create RGB variants of custom properties with color values
 			root.walkDecls(/^--/, decl => {
 				if (decl.prop.slice(-4) === "_rgb") return;
-				const rgbValue = convertValueToRgb(decl.value);
-				if (rgbValue) {
+				const rgb_value = convert_value_to_rgb(decl.value);
+				if (rgb_value) {
 					decl.after(
 						postcss.decl({
 							prop: decl.prop + "_rgb",
-							value: rgbValue,
+							value: rgb_value,
 						})
 					);
 				}
