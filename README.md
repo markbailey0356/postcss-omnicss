@@ -7,13 +7,15 @@
 * Shorthand property inference: `bg-cover` should become `background-size: cover` instead of `background: cover`
   * `object-fit` and `object-position`
 * Custom `inset` shorthand property to set `top`, `right`, `bottom`, and `left` (similar to `margin` or `padding`)
-* `absolute-top-left` class of shorthands for setting `position: absolute; top: 0; left: 0` quickly.
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
 * Greedy matching for variables in certain cases to allow for e.g. `color-$gold-300`
 * `@apply` directive for using applying utility classes in CSS
 * Namespaced CSS variables: variable name of `--padding-small: 1rem` should be able to used by `p-$small`
   * Or `--transform-center: translate(-50%, -50%)` as `transform-$center`
 * Some sort of debug mode so you can figure out why a selector doesn't work.
+* Pug template parsing
+* Better / more performant parsing of files specifically geared for extracting class strings
+* Caching parse results to avoid reparsing files that haven't changed.
 
 ## Housekeeping tasks
 
