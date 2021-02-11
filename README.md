@@ -10,12 +10,47 @@
 * `mx`, `my`, `px` and `py` shorthands for setting horizontal/vertical padding/margin.
 * Greedy matching for variables in certain cases to allow for e.g. `color-$gold-300`
 * `@apply` directive for using applying utility classes in CSS
+  * or even an `@omnicss` block
 * Namespaced CSS variables: variable name of `--padding-small: 1rem` should be able to used by `p-$small`
   * Or `--transform-center: translate(-50%, -50%)` as `transform-$center`
 * Some sort of debug mode so you can figure out why a selector doesn't work.
 * Pug template parsing
 * Better / more performant parsing of files specifically geared for extracting class strings
 * Caching parse results to avoid reparsing files that haven't changed.
+* Change `!first` modifier to use `> * + *` because of it's low specificity
+* @apply to css (and sass) converter
+* css to omnicss translator
+* Set up documentation framework
+* `hover:` classes should be wrapped in a `@media (hover)` block by default (with option to turn off)
+* nth-child selectors
+* accept `@screen` as an alias for `@breakpoint`
+* add `border-top-radius`, `border-bottom-radius`, etc. custom properties and utility classes
+* add `rounded` as an alias for `border-radius`
+* property default values: `padding` would become `padding: var(--padding)`
+  * needs to deal with abbreviations: `p` would still become `padding: var(--padding)`
+* default property values from tailwind injected as CSS variables
+  * e.g. `--transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform`
+* explore ways to achieve `group-hover` selectors
+* `white-space-nowrap` should be less picky about it's hyphenation
+* support for variables that start with a number, i.e. `font-size-$3xs`
+* add `z` as a shorthand for `z-index`
+* custom units: `margin-10$x--$y` would become `margin: calc(10 * var(--x)) calc(-1 * var(--y))`
+* `motion-reduce` and `motion-safe` support
+* use `$` syntax in CSS for variable declaration
+* explore Tailwind compatibility mode that makes tailwind classes just work in OmniCSS
+* add way to generate modified versions of user-defined classes
+  * Tailwind does this by wrapping the classes in an `@responsive` block
+  * we could even do this for all classes by default (could be slow)
+* desktop breakpoint should exclude iPad (i.e. >=768px and mobile would be <768px)
+* add `uppercase` as a short-hand for `text-transform-uppercase`
+* add `ch:` as a short-hand for `child:`
+* nesting modifiers: e.g. `child:child:`
+* change `first:` to not be a child selector (have same behaviour as CSS `:first-child`).
+  * current behaviour would be attained with `first:child:`
+  * same with `last:`
+* modifier order: e.g. `hover:child:` should have different behaviour to `child:hover:`
+* `not` (or `!`) should work with any pseudo class modifier: e.g. `!hover:` becomes `:not(:hover)`
+* add a `fixed` custom property to match `absolute`
 
 ## Housekeeping tasks
 
@@ -26,6 +61,12 @@
 * Possibly pull out some reused test functions
 
 ## Bugs
+
+* `absolute` custom property should have a lower specificity than `right`, `left`, `transform`, etc.
+  * Same with `flexbox` and it's dependent properties (not sure if I did this)
+* `opacity-50%` became `opacity: 1%` when building for production using webpack and postcss-loader
+* `col-span-3` becomes `column-span: 3` and not `grid-column: span 3`
+* `-rotate--10deg` converts to `--rotate-: 10deg;`
 
 ## Talking points
 
