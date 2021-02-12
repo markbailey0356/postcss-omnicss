@@ -1,0 +1,191 @@
+selectors:
+  # display
+  block: display-block
+  flow-root: display-flow-root
+  inline-block: display-inline-block
+  inline: display-inline
+  flex: display-flex
+  inline-flex: display-inline-flex
+  grid: display-grid
+  inline-grid: display-inline-grid
+  table: display-table
+  table-caption: display-table-caption
+  table-cell: display-table-cell
+  table-column: display-table-column
+  table-column-group: display-table-column-group
+  table-footer-group: display-table-footer-group
+  table-header-group: display-table-header-group
+  table-row-group: display-table-row-group
+  table-row: display-table-row
+
+  # box-sizing
+  border-box: box-sizing-border-box
+  content-box: box-sizing-content-box
+
+  # font
+  italic: font-style-italic
+  bold: font-weight-bold
+
+  # position
+  absolute: position-absolute
+  abs: position-absolute
+  static: position-static
+  relative: position-relative
+  rel: position-relative
+  fixed: position-fixed
+  sticky: position-sticky
+
+  # text-align
+  text-left: text-align-left
+  text-right: text-align-right
+  text-center: text-align-center
+  text-justify: text-align-justify
+  text-justify-all: text-align-justify-all
+  text-start: text-align-start
+  text-end: text-align-end
+  text-match-parent: text-align-match-parent
+
+  # flexbox
+  flexbox: flexbox-unset
+
+properties:
+  align-items:
+    - align
+    - items
+  justify-content: justify
+  justify: just
+  align-self: self
+  animation: anim
+  timing-function: 
+    - timing
+    - function
+  function: func
+  play-state: 
+    - play
+    - state
+  iteration-count: 
+    - iteration
+    - count
+  iteration: iter
+  fill-mode: 
+    - fill
+    - mode
+  duration: dur
+  direction: dir
+  border: b
+  border-width: bw
+  border-bottom: bb
+  border-left: bl
+  border-right: br
+  border-top: bt
+  border-top-left:
+    - btl
+    - b-tl
+    - border-tl
+  border-top-right: 
+    - btr
+    - b-tr
+    - border-tr
+  border-bottom-left:
+    - bbl
+    - b-bl
+    - border-bl
+  border-bottom-right:
+    - bbr
+    - b-br
+    - border-br
+  border-top-width: btw
+  border-right-width: brw
+  border-left-width: blw
+  border-bottom-width: bbw
+  background: bg
+  attachment: attach
+  flex-basis: basis
+  flex-grow: grow
+  flex-shrink: shrink
+  font-family: family
+  font-size: size
+  font-style: style
+  font-weight: weight
+  grid-template: template
+  template: temp
+  grid-row: row
+  grid-column: column
+  grid-auto: auto
+  grid-area: area
+  letter-spacing: tracking
+  line-height: leading
+  list-style: list
+  margin: m
+  margin-bottom: mb
+  margin-left: ml
+  margin-right: mr
+  margin-top: mt
+  object: obj
+  padding: p
+  padding-bottom: pb
+  padding-left: pl
+  padding-right: pr
+  padding-top: pt
+  position: pos
+  height: h
+  width: w
+  bottom: b
+  top: t
+  left: l
+  right: r
+  columns: cols
+  column: col
+
+modifiers:
+  mobile: not-desktop
+  d: desktop
+  m: not-desktop
+  sm: small
+  md: medium
+  lg: large
+  xl: extra-large
+  not-mobile: desktop
+  not-d: not-desktop
+  not-m: desktop
+  not-sm: not-small
+  not-md: not-medium
+  not-lg: not-large
+  not-xl: not-extra-large
+  "!mobile": desktop
+  "!d": not-desktop
+  "!m": desktop
+  "!sm": not-small
+  "!md": not-medium
+  "!lg": not-large
+  "!xl": not-extra-large
+  at-desktop: desktop
+  at-mobile: not-desktop
+  at-extra-small: not-small
+  at-extra-large: extra-large
+  at-d: desktop
+  at-m: not-desktop
+  at-xs: not-small
+  at-xl: extra-large
+  "@desktop": desktop
+  "@mobile": not-desktop
+  "@extra-small": not-small
+  "@small": at-small
+  "@medium": at-medium
+  "@large": at-large
+  "@extra-large": extra-large
+  "@d": desktop
+  "@m": not-desktop
+  "@xs": not-small
+  "@sm": at-small
+  "@md": at-medium
+  "@lg": at-large
+  "@xl": extra-large
+  first: first-child
+  last: last-child
+  not-first: not-first-child
+  not-last: not-last-child
+  "!first-child": not-first-child
+  "!last-child": not-last-child
+  "!first": not-first-child
+  "!last": not-last-child

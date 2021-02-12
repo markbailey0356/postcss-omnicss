@@ -50,6 +50,15 @@ anchors:
     - opacity()
     - saturate()
     - sepia()
+  flex-direction: &flex-direction
+    - row
+    - row-reverse
+    - column
+    - column-reverse
+  flex-wrap: &flex-wrap
+    - nowrap
+    - wrap
+    - wrap-reverse
   image: &image
     - none
     - url()
@@ -139,6 +148,10 @@ anchors:
     - right
     - inline-start
     - inline-end
+  grid-auto-flow: &grid-auto-flow
+    - row
+    - column
+    - dense
   grid-auto-template: &grid-auto-template
     - <length>
     - <percentage>
@@ -164,10 +177,17 @@ anchors:
     - repeat()
     - masonry
     - subgrid
+  grid-template-areas: &grid-template-areas
+    - none
+    - <string>
   inset: &inset
     - <length>
     - <percentage>
     - auto
+  justify-content: &justify-content
+    - *align-content
+    - left
+    - right
   justify-self: &justify-self
     - *align-items
     - auto
@@ -206,6 +226,36 @@ anchors:
     - fit-content()
 
 properties:
+  # custom properties
+  absolute:
+    keywords:
+      - top
+      - bottom
+      - left
+      - right
+      - center
+      - stretch
+    children:
+      - position
+      - top
+      - bottom
+      - left
+      - right
+      - transform
+  flexbox:
+    keywords:
+      - inline
+      - *flex-direction
+      - *flex-wrap
+      - *justify-content
+      - *align-items
+      - *align-content
+    children:
+      - flex-flow
+      - place-items
+      - place-content
+
+  # standardised properties
   align-content: *align-content
   align-items: *align-items
   align-self:
@@ -687,11 +737,7 @@ properties:
   flex-basis:
     - content
     - *width
-  flex-direction:
-    - row
-    - row-reverse
-    - column
-    - column-reverse
+  flex-direction: *flex-direction
   flex-flow:
     children:
       - flex-direction
@@ -700,10 +746,7 @@ properties:
     - <number>
   flex-shrink:
     - <number>
-  flex-wrap:
-    - nowrap
-    - wrap
-    - wrap-reverse
+  flex-wrap: *flex-wrap
   float: *float
   flood-color:
     - <color>
@@ -873,7 +916,12 @@ properties:
     - <angle>
   grid:
     keywords:
+      - none
       - auto-flow
+      - *grid-auto-template
+      - *grid-auto-flow
+      - *grid-template-areas
+      - *grid-template
     children:
       - grid-auto-columns
       - grid-auto-flow
@@ -888,10 +936,7 @@ properties:
       - grid-row-end
       - grid-row-start
   grid-auto-columns: *grid-auto-template
-  grid-auto-flow:
-    - row
-    - column
-    - dense
+  grid-auto-flow: *grid-auto-flow
   grid-auto-rows: *grid-auto-template
   grid-column:
     children:
@@ -916,9 +961,7 @@ properties:
       - grid-template-areas
       - grid-template-columns
       - grid-template-rows
-  grid-template-areas:
-    - none
-    - <string>
+  grid-template-areas: *grid-template-areas
   grid-template-columns: *grid-template
   grid-template-rows: *grid-template
   hanging-punctuation:
@@ -967,10 +1010,7 @@ properties:
   isolation:
     - auto
     - isolate
-  justify-content: 
-    - *align-content
-    - left
-    - right
+  justify-content: *justify-content
   justify-items: 
     - *justify-self
     - legacy

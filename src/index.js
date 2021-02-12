@@ -8,205 +8,14 @@ const css_colors = Object.keys(_css_colors);
 const color_string = require("color-string");
 const color_convert = require("color-convert");
 
-const custom_properties = ["flexbox", "absolute"];
+const { css_properties, selector_abbreviations, property_abbreviations, modifier_abbreviations } = require("./data");
 
-const get_known_css_properties = () => {
-	let properties = require("./css-properties.js");
-	properties = Object.keys(properties).concat(custom_properties);
-	properties = _.sortBy(properties, x => x === "justify-content" || x === "align-items"); // give property a lower priority
-	properties = _.sortBy(properties, x => -x.split("-").length);
-	return properties;
-};
-
-const known_css_properties = get_known_css_properties();
-
-const selector_abbreviations = new Map(
-	Object.entries({
-		// display
-		block: "display-block",
-		"flow-root": "display-flow-root",
-		"inline-block": "display-inline-block",
-		inline: "display-inline",
-		flex: "display-flex",
-		"inline-flex": "display-inline-flex",
-		grid: "display-grid",
-		"inline-grid": "display-inline-grid",
-		table: "display-table",
-		"table-caption": "display-table-caption",
-		"table-cell": "display-table-cell",
-		"table-column": "display-table-column",
-		"table-column-group": "display-table-column-group",
-		"table-footer-group": "display-table-footer-group",
-		"table-header-group": "display-table-header-group",
-		"table-row-group": "display-table-row-group",
-		"table-row": "display-table-row",
-
-		// box-sizing
-		"border-box": "box-sizing-border-box",
-		"content-box": "box-sizing-content-box",
-
-		// font
-		italic: "font-style-italic",
-		bold: "font-weight-bold",
-
-		// position
-		absolute: "position-absolute",
-		abs: "position-absolute",
-		static: "position-static",
-		relative: "position-relative",
-		rel: "position-relative",
-		fixed: "position-fixed",
-		sticky: "position-sticky",
-
-		// text-align
-		"text-left": "text-align-left",
-		"text-right": "text-align-right",
-		"text-center": "text-align-center",
-		"text-justify": "text-align-justify",
-		"text-justify-all": "text-align-justify-all",
-		"text-start": "text-align-start",
-		"text-end": "text-align-end",
-		"text-match-parent": "text-align-match-parent",
-
-		// flexbox
-		flexbox: "flexbox-unset",
-	})
-);
-
-const _property_abbreviations = Object.entries({
-	"align-items": ["align", "items"],
-	"justify-content": "justify",
-	justify: "just",
-	"align-self": "self",
-	animation: "anim",
-	"timing-function": ["timing", "function"],
-	function: "func",
-	"play-state": ["play", "state"],
-	"iteration-count": ["iteration", "count"],
-	iteration: "iter",
-	"fill-mode": ["fill", "mode"],
-	duration: "dur",
-	direction: "dir",
-	border: "b",
-	"border-width": "bw",
-	"border-bottom": "bb",
-	"border-left": "bl",
-	"border-right": "br",
-	"border-top": "bt",
-	"border-top-left": ["btl", "b-tl", "border-tl"],
-	"border-top-right": ["btr", "b-tr", "border-tr"],
-	"border-bottom-left": ["bbl", "b-bl", "border-bl"],
-	"border-bottom-right": ["bbr", "b-br", "border-br"],
-	"border-top-width": "btw",
-	"border-right-width": "brw",
-	"border-left-width": "blw",
-	"border-bottom-width": "bbw",
-	background: "bg",
-	attachment: "attach",
-	"flex-basis": "basis",
-	"flex-grow": "grow",
-	"flex-shrink": "shrink",
-	"font-family": "family",
-	"font-size": "size",
-	"font-style": "style",
-	"font-weight": "weight",
-	"grid-template": "template",
-	template: "temp",
-	"grid-row": "row",
-	"grid-column": "column",
-	"grid-auto": "auto",
-	"grid-area": "area",
-	"letter-spacing": "tracking",
-	"line-height": "leading",
-	"list-style": "list",
-	margin: "m",
-	"margin-bottom": "mb",
-	"margin-left": "ml",
-	"margin-right": "mr",
-	"margin-top": "mt",
-	object: "obj",
-	padding: "p",
-	"padding-bottom": "pb",
-	"padding-left": "pl",
-	"padding-right": "pr",
-	"padding-top": "pt",
-	position: "pos",
-	height: "h",
-	width: "w",
-	bottom: "b",
-	top: "t",
-	left: "l",
-	right: "r",
-	columns: "cols",
-	column: "col",
-});
-
-const property_abbreviations = new Map(_.sortBy(_property_abbreviations, ([x]) => -x.split("-").length));
-
-const modifier_abbreviations = new Map(
-	Object.entries({
-		mobile: "not-desktop",
-		d: "desktop",
-		m: "not-desktop",
-		sm: "small",
-		md: "medium",
-		lg: "large",
-		xl: "extra-large",
-		"not-mobile": "desktop",
-		"not-d": "not-desktop",
-		"not-m": "desktop",
-		"not-sm": "not-small",
-		"not-md": "not-medium",
-		"not-lg": "not-large",
-		"not-xl": "not-extra-large",
-		"!mobile": "desktop",
-		"!d": "not-desktop",
-		"!m": "desktop",
-		"!sm": "not-small",
-		"!md": "not-medium",
-		"!lg": "not-large",
-		"!xl": "not-extra-large",
-		"at-desktop": "desktop",
-		"at-mobile": "not-desktop",
-		"at-extra-small": "not-small",
-		"at-extra-large": "extra-large",
-		"at-d": "desktop",
-		"at-m": "not-desktop",
-		"at-xs": "not-small",
-		"at-xl": "extra-large",
-		"@desktop": "desktop",
-		"@mobile": "not-desktop",
-		"@extra-small": "not-small",
-		"@small": "at-small",
-		"@medium": "at-medium",
-		"@large": "at-large",
-		"@extra-large": "extra-large",
-		"@d": "desktop",
-		"@m": "not-desktop",
-		"@xs": "not-small",
-		"@sm": "at-small",
-		"@md": "at-medium",
-		"@lg": "at-large",
-		"@xl": "extra-large",
-		first: "first-child",
-		last: "last-child",
-		"not-first": "not-first-child",
-		"not-last": "not-last-child",
-		"!first-child": "not-first-child",
-		"!last-child": "not-last-child",
-		"!first": "not-first-child",
-		"!last": "not-last-child",
-	})
-);
-
-const property_regexes = known_css_properties.map(x => {
+const property_regexes = css_properties.map(x => {
 	for (let [from, to] of property_abbreviations) {
 		x = x.replace(new RegExp(from, "g"), `(?:${(_.isArray(to) ? [from, ...to] : [from, to]).join("|")})`);
 	}
 	return x;
 });
-
-// console.log(propertyRegexes[knownCssProperties.findIndex(x => x === "justify-content")]);
 
 const property_regex = new RegExp(`^(?:${property_regexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 
@@ -300,7 +109,7 @@ const split_selector = selector => {
 		let match = selector.match(property_regex);
 		if (match) {
 			let index = match.slice(1).findIndex(x => x);
-			prop = known_css_properties[index];
+			prop = css_properties[index];
 			value = match.groups.value;
 		}
 
@@ -491,7 +300,7 @@ const property_keywords = prop => {
 				...property_keywords("border-color"),
 			];
 		case "transition-property":
-			return [...known_css_properties, "none", "all"];
+			return [...css_properties, "none", "all"];
 		case "transition-timing-function":
 		case "animation-timing-function":
 			return [
