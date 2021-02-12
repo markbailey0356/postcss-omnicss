@@ -86,12 +86,11 @@ anchors:
     - space
     - round
   background-size: &background-size
-    - repeat-x
-    - repeat-y
-    - repeat
-    - no-repeat
-    - space
-    - round
+    - contain
+    - cover
+    - auto
+    - <length>
+    - <percentage>
   border-color: &border-color
     - <color>
   border-style: &border-style

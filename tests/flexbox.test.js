@@ -171,7 +171,7 @@ const tests = {
 
 const postcss = require("postcss");
 
-const plugin = require("..");
+const plugin = require("../src");
 
 const _ = require("lodash");
 

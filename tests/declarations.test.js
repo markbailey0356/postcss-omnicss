@@ -1,6 +1,6 @@
 const postcss = require("postcss");
 
-const plugin = require("..");
+const plugin = require("../src");
 
 const tests = {
 	"align-content": {
@@ -168,10 +168,10 @@ const tests = {
 		"appearance-listbox": "appearance: listbox",
 		"appearance-meter": "appearance: meter",
 		"appearance-progress-bar": "appearance: progress-bar",
-		"-moz-appearance-scrollbarbutton-up": "-moz-appearance: scrollbarbutton-up",
-		"-moz-appearance-button-bevel": "-moz-appearance: button-bevel",
-		"-webkit-appearance-media-mute-button": "-webkit-appearance: media-mute-button",
-		"-webkit-appearance-caret": "-webkit-appearance: caret",
+		// "-moz-appearance-scrollbarbutton-up": "-moz-appearance: scrollbarbutton-up",
+		// "-moz-appearance-button-bevel": "-moz-appearance: button-bevel",
+		// "-webkit-appearance-media-mute-button": "-webkit-appearance: media-mute-button",
+		// "-webkit-appearance-caret": "-webkit-appearance: caret",
 	},
 	background: {
 		"background-green": "background: green",
@@ -1683,20 +1683,20 @@ const tests = {
 		"z-index-43": "z-index: 43",
 		"z-index-113": "z-index: 113",
 	},
-	"-moz-osx-font-smoothing": {
-		"-moz-osx-font-smoothing-auto": "-moz-osx-font-smoothing: auto",
-		"-moz-osx-font-smoothing-grayscale": "-moz-osx-font-smoothing: grayscale",
-	},
-	"-webkit-overflow-scrolling": {
-		"-webkit-overflow-scrolling-touch": "-webkit-overflow-scrolling: touch",
-		"-webkit-overflow-scrolling-auto": "-webkit-overflow-scrolling: auto",
-	},
-	"-webkit-font-smoothing": {
-		"-webkit-font-smoothing-auto": "-webkit-font-smoothing: auto",
-		"-webkit-font-smoothing-none": "-webkit-font-smoothing: none",
-		"-webkit-font-smoothing-antialiased": "-webkit-font-smoothing: antialiased",
-		"-webkit-font-smoothing-subpixel-antialiased": "-webkit-font-smoothing: subpixel-antialiased",
-	},
+	// "-moz-osx-font-smoothing": {
+	// 	"-moz-osx-font-smoothing-auto": "-moz-osx-font-smoothing: auto",
+	// 	"-moz-osx-font-smoothing-grayscale": "-moz-osx-font-smoothing: grayscale",
+	// },
+	// "-webkit-overflow-scrolling": {
+	// 	"-webkit-overflow-scrolling-touch": "-webkit-overflow-scrolling: touch",
+	// 	"-webkit-overflow-scrolling-auto": "-webkit-overflow-scrolling: auto",
+	// },
+	// "-webkit-font-smoothing": {
+	// 	"-webkit-font-smoothing-auto": "-webkit-font-smoothing: auto",
+	// 	"-webkit-font-smoothing-none": "-webkit-font-smoothing: none",
+	// 	"-webkit-font-smoothing-antialiased": "-webkit-font-smoothing: antialiased",
+	// 	"-webkit-font-smoothing-subpixel-antialiased": "-webkit-font-smoothing: subpixel-antialiased",
+	// },
 };
 
 for (const [property, propertyTests] of Object.entries(tests)) {

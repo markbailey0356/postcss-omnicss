@@ -8,22 +8,14 @@ const css_colors = Object.keys(_css_colors);
 const color_string = require("color-string");
 const color_convert = require("color-convert");
 
-const ignored_properties = [
-	"text-decoration-none",
-	"text-decoration-underline",
-	"text-decoration-overline",
-	"text-decoration-line-through",
-	"text-decoration-blink",
-	"r",
-];
-
 const custom_properties = ["flexbox", "absolute"];
 
 const get_known_css_properties = () => {
-	let properties = require("known-css-properties").all.concat(custom_properties);
+	let properties = require("./css-properties.js");
+	properties = Object.keys(properties).concat(custom_properties);
 	properties = _.sortBy(properties, x => x === "justify-content" || x === "align-items"); // give property a lower priority
 	properties = _.sortBy(properties, x => -x.split("-").length);
-	return properties.filter(x => !ignored_properties.includes(x));
+	return properties;
 };
 
 const known_css_properties = get_known_css_properties();

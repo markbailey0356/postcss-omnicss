@@ -41,7 +41,7 @@ const tests = {
 
 const postcss = require("postcss");
 
-const plugin = require("..");
+const plugin = require("../src");
 
 for (const [selector, properties] of Object.entries(tests)) {
 	it(selector, async () => {

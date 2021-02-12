@@ -318,7 +318,7 @@ const tests = {
 };
 
 const postcss = require("postcss");
-const plugin = require("..");
+const plugin = require("../src");
 
 const runTests = (tests, options = {}) => {
 	const massageString = string => string.replace(/{\s*/g, "{ ").replace(/\s+/g, " ");
