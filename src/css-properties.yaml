@@ -1,0 +1,1748 @@
+---
+anchors:
+  align-content: &align-content
+    - normal
+    - center
+    - start
+    - end
+    - flex-start
+    - flex-end
+    - baseline
+    - first
+    - last
+    - stretch
+    - safe
+    - unsafe
+    - space-between
+    - space-around
+    - space-evenly
+  align-items: &align-items
+    - normal
+    - center
+    - start
+    - end
+    - flex-start
+    - flex-end
+    - baseline
+    - first
+    - last
+    - stretch
+    - safe
+    - unsafe
+    - self-start
+    - self-end
+  basic-shape: &basic-shape
+    - inset()
+    - circle()
+    - ellipse()
+    - polygon()
+    - path()
+  filter: &filter
+    - none
+    - url()
+    - blur()
+    - brightness()
+    - contrast()
+    - drop-shadow()
+    - grayscale()
+    - hue-rotate()
+    - invert()
+    - opacity()
+    - saturate()
+    - sepia()
+  image: &image
+    - none
+    - url()
+    - image()
+    - image-set()
+    - element()
+    - paint()
+    - cross-fade()
+    - linear-gradient()
+    - repeating-linear-gradient()
+    - radial-gradient()
+    - repeating-radial-gradient()
+    - conic-gradient()
+  background-position-x: &background-position-x
+    - left
+    - center
+    - right
+    - <length>
+    - <percentage> 
+  background-position-y: &background-position-y
+    - center
+    - top
+    - bottom
+    - <length>
+    - <percentage>
+  background-position: &background-position
+    - *background-position-x
+    - *background-position-y 
+  background-repeat: &background-repeat
+    - repeat-x
+    - repeat-y
+    - repeat
+    - no-repeat
+    - space
+    - round
+  background-size: &background-size
+    - repeat-x
+    - repeat-y
+    - repeat
+    - no-repeat
+    - space
+    - round
+  border-color: &border-color
+    - <color>
+  border-style: &border-style
+    - none
+    - hidden
+    - dotted
+    - dashed
+    - solid
+    - double
+    - groove
+    - ridge
+    - inset
+    - outset
+  border-width: &border-width
+    - <length>
+    - thin
+    - medium
+    - thick
+  border-radius: &border-radius
+    - <length>
+    - <percentage>
+  page-break-after: &page-break-after
+    - auto
+    - avoid
+    - always
+    - left
+    - right
+    - recto
+    - verso
+  break-after: &break-after
+    - *page-break-after
+    - all
+    - avoid-page
+    - page
+    - avoid-column
+    - column
+    - avoid-region
+    - region
+  counter-increment: &counter-increment
+    - <custom-ident>
+    - <integer>
+    - none
+  float: &float
+    - none
+    - left
+    - right
+    - inline-start
+    - inline-end
+  grid-auto-template: &grid-auto-template
+    - <length>
+    - <percentage>
+    - <flex>
+    - max-content
+    - min-content
+    - minmax()
+    - fit-content()
+    - auto
+  grid-column: &grid-column
+    - auto
+    - <custom-ident>
+    - <integer>
+    - span
+  grid-gap: &grid-gap
+    - normal
+    - <length>
+    - <percentage>
+  grid-template: &grid-template
+    - none
+    - <line-name>
+    - *grid-auto-template
+    - repeat()
+    - masonry
+    - subgrid
+  inset: &inset
+    - <length>
+    - <percentage>
+    - auto
+  justify-self: &justify-self
+    - *align-items
+    - auto
+    - left
+    - right
+  margin: &margin
+    - <length>
+    - <percentage>
+    - auto
+  opacity: &opacity
+    - <number>
+    - <percentage>
+  overflow: &overflow
+    - visible
+    - hidden
+    - scroll
+    - auto
+  overscroll-behavior: &overscroll-behavior
+    - auto
+    - contain
+    - none
+  padding: &padding
+    - <length>
+    - <percentage>
+  shape-box: &shape-box
+    - margin-box
+    - border-box
+    - padding-box
+    - content-box
+  width: &width
+    - <length>
+    - <percentage>
+    - auto
+    - max-content
+    - min-content
+    - fit-content()
+
+properties:
+  align-content: *align-content
+  align-items: *align-items
+  align-self:
+    - *align-items
+    - auto
+  alignment-baseline:
+    - auto
+    - baseline
+    - before-edge
+    - text-before-edge
+    - middle
+    - central
+    - after-edge
+    - text-after-edge
+    - ideographic
+    - alphabetic
+    - hanging
+    - mathematical
+    - top
+    - center
+    - bottom
+  all:
+    - revert
+  animation:
+    children:
+      - animation-name
+      - animation-duration
+      - animation-timing-function
+      - animation-delay
+      - animation-iteration-count
+      - animation-direction
+      - animation-fill-mode
+      - animation-play-state
+  animation-delay:
+    - <time>
+  animation-direction:
+    - normal
+    - reverse
+    - alternate
+    - alternate-reverse
+  animation-duration:
+    - <time> 
+  animation-fill-mode:
+    - none
+    - forwards
+    - backwards
+    - both
+  animation-iteration-count:
+    - infinite
+    - <number>
+  animation-name:
+    - none
+    - <custom-ident>
+    - <string>
+  animation-play-state:
+    - running
+    - paused
+  animation-timing-function: &easing-function
+    - ease
+    - ease-in
+    - ease-out
+    - ease-in-out
+    - linear
+    - step-start
+    - step-end
+    - cubic-bezier()
+    - steps()
+  appearance:
+    - none
+    - auto
+    - menulist-button
+    - text-field
+    - button
+    - checkbox
+    - listbox
+    - menulist
+    - meter
+    - progress-bar
+    - push-button
+    - radio
+    - search-field
+    - slider-horizontal
+    - square-button
+    - textarea
+  aspect-ratio:
+    - auto
+    - <ratio>
+  backdrop-filter: *filter
+  backface-visibility:
+    - visible
+    - hidden
+  background:
+    children:
+      - background-attachment
+      - background-clip
+      - background-color
+      - background-image
+      - background-origin
+      - background-position
+      - background-repeat
+      - background-size
+  background-attachment:
+    - scroll
+    - fixed
+    - local
+  background-blend-mode:
+    - normal
+    - multiply
+    - screen
+    - overlay
+    - darken
+    - lighten
+    - color-dodge
+    - color-burn
+    - hard-light
+    - soft-light
+    - difference
+    - exclusion
+    - hue
+    - saturation
+    - color
+    - luminosity
+  background-clip:
+    - border-box
+    - padding-box
+    - content-box
+    - text
+  background-color:
+    - <color>
+  background-image: *image
+  background-origin:
+    - border-box
+    - padding-box
+    - content-box
+  background-position:
+    children:
+      - background-position-x
+      - background-position-y
+  background-position-x: *background-position-x
+  background-position-y: *background-position-y
+  background-repeat: *background-repeat
+  background-size: *background-size
+  baseline-shift:
+    - sub
+    - super
+    - <length>
+    - <percentage>
+  block-size: *width
+  border:
+    children:
+      - border-color
+      - border-width
+      - border-style 
+  border-block:
+    children:
+      - border-block-color
+      - border-block-width
+      - border-block-style 
+  border-block-color: *border-color
+  border-block-end:
+    children:
+      - border-block-end-color
+      - border-block-end-width
+      - border-block-end-style
+  border-block-end-color: *border-color
+  border-block-end-style: *border-style
+  border-block-end-width: *border-width
+  border-block-start:
+    children:
+      - border-block-start-color
+      - border-block-start-width
+      - border-block-start-style
+  border-block-start-color: *border-color
+  border-block-start-style: *border-style
+  border-block-start-width: *border-width
+  border-block-style: *border-style
+  border-block-width: *border-width
+  border-bottom:
+    children:
+      - border-bottom-color
+      - border-bottom-width
+      - border-bottom-style
+  border-bottom-color: *border-color
+  border-bottom-left-radius: *border-radius
+  border-bottom-right-radius: *border-radius
+  border-bottom-style: *border-style
+  border-bottom-width: *border-width
+  border-collapse:
+    - collapse
+    - separate
+  border-color:
+    children:
+      - border-bottom-color
+      - border-left-color
+      - border-right-color
+      - border-top-color
+  border-end-end-radius: *border-radius
+  border-end-start-radius: *border-radius
+  border-image:
+    children:
+      - border-image-outset
+      - border-image-repeat
+      - border-image-slice
+      - border-image-source
+      - border-image-width
+  border-image-outset:
+    - <length>
+    - <number>
+  border-image-repeat:
+    - stretch
+    - repeat
+    - round
+    - space
+  border-image-slice:
+    - <number>
+    - <percentage>
+    - fill
+  border-image-source: *image
+  border-image-width:
+    - <length>
+    - <percentage>
+    - <number>
+    - auto
+  border-inline:
+    children:
+      - border-inline-color
+      - border-inline-width
+      - border-inline-style
+  border-inline-color: *border-color
+  border-inline-end:
+    children:
+      - border-inline-end-color
+      - border-inline-end-width
+      - border-inline-end-style
+  border-inline-end-color: *border-color
+  border-inline-end-style: *border-style
+  border-inline-end-width: *border-width
+  border-inline-start:
+    children:
+      - border-inline-start-color
+      - border-inline-start-width
+      - border-inline-start-style
+  border-inline-start-color: *border-color
+  border-inline-start-style: *border-style
+  border-inline-start-width: *border-width
+  border-inline-style: *border-style
+  border-inline-width: *border-width
+  border-left:
+    children:
+      - border-left-color
+      - border-left-width
+      - border-left-style
+  border-left-color: *border-color
+  border-left-style: *border-style
+  border-left-width: *border-width
+  border-radius:
+    children:
+      - border-top-left-radius
+      - border-top-right-radius
+      - border-bottom-right-radius
+      - border-bottom-left-radius
+  border-right: 
+    children:
+      - border-right-color
+      - border-right-style
+      - border-right-width
+  border-right-color: *border-color
+  border-right-style: *border-style
+  border-right-width: *border-width
+  border-spacing:
+    - <length>
+  border-start-end-radius: *border-radius
+  border-start-start-radius: *border-radius
+  border-style:
+    children:
+      - border-top-style
+      - border-right-style
+      - border-bottom-style
+      - border-left-style
+  border-top:
+    children:
+      - border-top-color
+      - border-top-style
+      - border-top-width
+  border-top-color: *border-color
+  border-top-left-radius: *border-radius
+  border-top-right-radius: *border-radius
+  border-top-style: *border-style
+  border-top-width: *border-width
+  border-width:
+    children:
+      - border-top-width
+      - border-right-width
+      - border-bottom-width
+      - border-left-width
+  bottom: *inset
+  box-decoration-break:
+    - slice
+    - clone
+  box-shadow:
+    - inset
+    - <length>
+    - <color>
+  box-sizing:
+    - content-box
+    - border-box
+  break-after: *break-after 
+  break-before: *break-after
+  break-inside:
+    - auto
+    - avoid
+    - avoid-page
+    - avoid-column
+    - avoid-region
+  caption-side:
+    - top
+    - bottom
+    - block-start
+    - block-end
+    - inline-start
+    - inline-end 
+  caret-color:
+    - auto
+    - <color>
+  clear:
+    - both
+    - *float
+  clip-path:
+    - url()
+    - *basic-shape
+    - *shape-box
+    - fill-box
+    - stroke-box
+    - view-box
+    - none
+  color:
+    - <color>
+  color-scheme:
+    - normal
+    - light
+    - dark
+  column-count:
+    - auto
+    - <integer>
+  column-fill:
+    - auto
+    - balance
+    - balance-all
+  column-gap:
+    - normal
+    - <length>
+    - <percentage>
+  column-rule:
+    children:
+      - column-rule-color
+      - column-rule-style
+      - column-rule-width 
+  column-rule-color: *border-color
+  column-rule-style: *border-style
+  column-rule-width: *border-width
+  column-span:
+    - none
+    - all
+  column-width:
+    - auto
+    - <length>
+  columns:
+    children:
+      - column-count
+      - column-width
+  contain:
+    - none
+    - strict
+    - content
+    - size
+    - layout
+    - style
+    - paint
+  content:
+    - none
+    - normal
+    - <string>
+    - *image
+    - counter()
+    - counters()
+    - attr()
+    - open-quote
+    - close-quote
+    - no-open-quote
+    - no-close-quote
+  counter-increment: *counter-increment
+  counter-reset: *counter-increment
+  counter-set: *counter-increment
+  cursor:
+    - url()
+    - <number>
+    - auto
+    - default
+    - none
+    - context-menu
+    - help
+    - pointer
+    - progress
+    - wait
+    - cell
+    - crosshair
+    - text
+    - vertical-text
+    - alias
+    - copy
+    - move
+    - no-drop
+    - not-allowed
+    - grab
+    - grabbing
+    - all-scroll
+    - col-resize
+    - row-resize
+    - n-resize
+    - e-resize
+    - w-resize
+    - s-resize
+    - ne-resize
+    - nw-resize
+    - se-resize
+    - sw-resize
+    - ew-resize
+    - ns-resize
+    - nesw-resize
+    - nwse-resize
+    - zoom-in
+    - zoom-out
+  direction:
+    - ltr
+    - rtl 
+  display:
+    - block
+    - inline
+    - run-in
+    - flow
+    - flow-root
+    - table
+    - flex
+    - grid
+    - list-item
+    - table-row-group
+    - table-header-group
+    - table-footer-group
+    - table-row
+    - table-cell
+    - table-column-group
+    - table-column
+    - table-caption
+    - contents
+    - none
+    - inline-block
+    - inline-flex
+    - inline-grid
+    - inline-table
+  empty-cells:
+    - show
+    - hide
+  fill: &paint
+    - none
+    - <color>
+    - url()
+    - context-fill
+    - context-stroke
+  fill-opacity: *opacity
+  fill-rule:
+    - nonzero
+    - evenodd
+  filter: *filter
+  flex:
+    children:
+      - flex-grow
+      - flex-shrink
+      - flex-basis 
+  flex-basis:
+    - content
+    - *width
+  flex-direction:
+    - row
+    - row-reverse
+    - column
+    - column-reverse
+  flex-flow:
+    children:
+      - flex-direction
+      - flex-wrap
+  flex-grow:
+    - <number>
+  flex-shrink:
+    - <number>
+  flex-wrap:
+    - nowrap
+    - wrap
+    - wrap-reverse
+  float: *float
+  flood-color:
+    - <color>
+  flood-opacity: *opacity
+  font:
+    children:
+      - font-family
+      - font-size
+      - font-stretch
+      - font-style
+      - font-variant
+      - font-weight
+      - line-height
+  font-display:
+    - auto
+    - block
+    - swap
+    - fallback
+    - optional
+  font-family:
+    - <string>
+    - <custom-ident>
+    - serif
+    - sans-serif
+    - monospace
+    - cursive
+    - fantasy
+    - system-ui
+    - ui-serif
+    - ui-sans-serif
+    - ui-monospace
+    - ui-rounded
+    - math
+    - emoji
+    - fangsong
+  font-feature-settings:
+    - normal
+    - <string>
+    - <integer>
+    - 'on'
+    - 'off'
+  font-kerning:
+    - auto
+    - normal
+    - none
+  font-language-override:
+    - normal
+    - <string>
+  font-optical-sizing:
+    - none
+    - auto
+  font-size:
+    - xx-small
+    - x-small
+    - small
+    - medium
+    - large
+    - x-large
+    - xx-large
+    - xxx-large
+    - larger
+    - smaller
+    - <length>
+    - <percentage>
+  font-size-adjust:
+    - none
+    - <number>
+  font-stretch:
+    - normal
+    - semi-condensed
+    - condensed
+    - extra-condensed
+    - ultra-condensed
+    - semi-expanded
+    - expanded
+    - extra-expanded
+    - ultra-expanded
+    - <percentage>
+  font-style:
+    - normal
+    - italic
+    - oblique
+    - <angle>
+  font-synthesis:
+    - none
+    - weight
+    - style
+  font-variant:
+    children:
+      - font-variant-alternates
+      - font-variant-caps
+      - font-variant-east-asian
+      - font-variant-ligatures
+      - font-variant-numeric
+  font-variant-alternates:
+    - normal
+    - historical-forms
+    - stylistic()
+    - styleset()
+    - character-variant()
+    - swash()
+    - ornaments()
+    - annotation()
+  font-variant-caps:
+    - normal
+    - small-caps
+    - all-small-caps
+    - petite-caps
+    - all-petite-caps
+    - unicase
+    - titling-caps
+  font-variant-east-asian:
+    - normal
+    - jis78
+    - jis83
+    - jis90
+    - jis04
+    - simplified
+    - traditional
+    - proportional-width
+    - full-width
+  font-variant-ligatures:
+    - normal
+    - none
+    - common-ligatures
+    - no-common-ligatures
+    - discretionary-ligatures
+    - no-discretionary-ligatures
+    - historical-ligatures
+    - no-historical-ligatures
+    - contextual
+    - no-contextual
+  font-variant-numeric:
+    - normal
+    - ordinal
+    - slashed-zero
+    - lining-nums
+    - oldstyle-nums
+    - proportional-nums
+    - tabular-nums
+    - diagonal-fractions
+    - stacked-fractions
+  font-variant-position: 
+    - normal
+    - sub
+    - super
+  font-variation-settings:
+    - normal
+    - <string>
+    - <number>
+  font-weight:
+    - normal
+    - bold
+    - lighter
+    - bolder
+    - <integer>
+  forced-color-adjust:
+    - auto
+    - none
+  gap:
+    - <length>
+    - <percentage>
+  glyph-orientation-horizontal:
+    - <angle>
+  glyph-orientation-vertical:
+    - auto
+    - <angle>
+  grid:
+    keywords:
+      - auto-flow
+    children:
+      - grid-auto-columns
+      - grid-auto-flow
+      - grid-auto-rows
+      - grid-template-areas
+      - grid-template-columns
+      - grid-template-rows
+  grid-area:
+    children:
+      - grid-column-end
+      - grid-column-start
+      - grid-row-end
+      - grid-row-start
+  grid-auto-columns: *grid-auto-template
+  grid-auto-flow:
+    - row
+    - column
+    - dense
+  grid-auto-rows: *grid-auto-template
+  grid-column:
+    children:
+      - grid-column-end
+      - grid-column-start
+  grid-column-end: *grid-column
+  grid-column-gap: *grid-gap
+  grid-column-start: *grid-column
+  grid-gap:
+    children:
+      - grid-column-gap
+      - grid-row-gap
+  grid-row:
+    chilren:
+      - grid-row-end
+      - grid-row-start
+  grid-row-end: *grid-column
+  grid-row-gap: *grid-gap
+  grid-row-start: *grid-column
+  grid-template:
+    children:
+      - grid-template-areas
+      - grid-template-columns
+      - grid-template-rows
+  grid-template-areas:
+    - none
+    - <string>
+  grid-template-columns: *grid-template
+  grid-template-rows: *grid-template
+  hanging-punctuation:
+    - none
+    - first
+    - last
+    - force-end
+    - allow-end
+  height: *width
+  hyphens: 
+    - none
+    - manual
+    - auto
+  image-rendering:
+    - auto
+    - smooth
+    - high-quality
+    - crisp-edges
+    - pixelated
+  image-resolution:
+    - <resolution>
+    - from-image
+    - snap
+  initial-letter:
+    - normal
+    - <number>
+  initial-letter-align:
+    - auto
+    - alphabetic
+    - hanging
+    - ideographic
+  inline-size: *width
+  inset: *inset
+  inset-block: 
+    children:
+      - inset-block-end
+      - inset-block-start
+  inset-block-end: *inset
+  inset-block-start: *inset
+  inset-inline:
+    children:
+      - inset-inline-end
+      - inset-inline-start
+  inset-inline-end: *inset
+  inset-inline-start: *inset
+  isolation:
+    - auto
+    - isolate
+  justify-content: 
+    - *align-content
+    - left
+    - right
+  justify-items: 
+    - *justify-self
+    - legacy
+  justify-self: *justify-self
+  left: *inset
+  letter-spacing:
+    - normal
+    - <length>
+  lighting-color:
+    - <color>
+  line-break:
+    - auto
+    - loose
+    - normal
+    - strict
+    - anywhere
+  line-clamp:
+    - none
+    - <integer>
+  line-height:
+    - normal
+    - <number>
+    - <length>
+    - <percentage>
+  line-height-step:
+    - <length>
+  list-style:
+    children:
+      - list-style-image
+      - list-style-position
+      - list-style-type
+  list-style-image:
+    - *image
+    - none
+  list-style-position:
+    - inside
+    - outside
+  list-style-type:
+    - <custom-ident>
+    - symbols()
+    - <string>
+    - none
+    - disc
+    - circle
+    - square
+    - decimal
+    - cjk-decimal
+    - decimal-leading-zero
+    - lower-roman
+    - upper-roman
+    - lower-greek
+    - lower-alpha
+    - lower-latin
+    - upper-alpha
+    - upper-latin
+    - arabic-indic
+    - armenian
+    - bengali
+    - cambodian
+    - cjk-earthly-branch
+    - cjk-heavenly-stem
+    - cjk-ideographic
+    - devanagari
+    - ethiopic-numeric
+    - georgian
+    - gujarati
+    - gurmukhi
+    - hebrew
+    - hiragana
+    - hiragana-iroha
+    - japanese-formal
+    - japanese-informal
+    - kannada
+    - katakana
+    - katakana-iroha
+    - khmer
+    - korean-hangul-formal
+    - korean-hanja-formal
+    - korean-hanja-informal
+    - lao
+    - lower-armenian
+    - malayalam
+    - mongolian
+    - myanmar
+    - oriya
+    - persian
+    - simp-chinese-formal
+    - simp-chinese-informal
+    - tamil
+    - telugu
+    - thai
+    - tibetan
+    - trad-chinese-formal
+    - trad-chinese-informal
+    - upper-armenian
+    - disclosure-open
+    - disclosure-closed
+    - ethiopic-halehame-ti-er
+    - ethiopic-halehame-ti-et
+    - hangul
+    - hangul-consonant
+    - urdu
+  margin:
+    children:
+      - margin-top
+      - margin-right
+      - margin-bottom
+      - margin-left 
+  margin-block:
+    children:
+      - margin-block-end
+      - margin-block-start
+  margin-block-end: *margin
+  margin-block-start: *margin
+  margin-bottom: *margin
+  margin-inline:
+    children:
+      - margin-inline-end
+      - margin-inline-start
+  margin-inline-end: *margin
+  margin-inline-start: *margin
+  margin-left: *margin
+  margin-right: *margin
+  margin-top: *margin
+  margin-trim:
+    - none
+    - in-flow
+    - all
+  mask:
+    children:
+      - mask-clip
+      - mask-composite
+      - mask-image
+      - mask-mode
+      - mask-origin
+      - mask-position
+      - mask-repeat
+      - mask-size
+  mask-border:
+    children:
+      - mask-border-mode
+      - mask-border-outset
+      - mask-border-repeat
+      - mask-border-slice
+      - mask-border-source
+      - mask-border-width
+  mask-border-mode:
+    - luminance
+    - alpha
+  mask-border-outset:
+    - <length>
+    - <number>
+  mask-border-repeat:
+    - stretch
+    - repeat
+    - round
+    - space
+  mask-border-slice:
+    - <number>
+    - <percentage>
+    - fill
+  mask-border-source:
+    - none
+    - *image
+  mask-border-width: 
+    - <length>
+    - <percentage>
+    - <number>
+    - auto
+  mask-clip:
+    - *shape-box
+    - fill-box
+    - stroke-box
+    - view-box
+    - no-clip
+    - border
+    - padding
+    - content
+    - text
+  mask-composite:
+    - add
+    - subtract
+    - intersect
+    - exclude
+  mask-image:
+    - none
+    - url()
+    - *image
+  mask-mode:
+    - alpha
+    - luminance
+    - match-source
+  mask-origin:
+    - *shape-box
+    - fill-box
+    - stroke-box
+    - view-box
+    - content
+    - padding
+    - border
+  mask-position: *background-position
+  mask-repeat: *background-repeat
+  mask-size: *background-size
+  mask-type:
+    - luminance
+    - alpha
+  max-block-size: *width
+  max-height: *width
+  max-inline-size: *width
+  max-width: *width
+  min-block-size: *width
+  min-height: *width
+  min-inline-size: *width
+  min-width: *width
+  mix-blend-mode:
+    - normal
+    - multiply
+    - screen
+    - overlay
+    - darken
+    - lighten
+    - color-dodge
+    - color-burn
+    - hard-light
+    - soft-light
+    - difference
+    - exclusion
+    - hue
+    - saturation
+    - color
+    - luminosity
+  object-fit:
+    - contain
+    - cover
+    - fill
+    - none
+    - scale-down
+  object-position: *background-position
+  offset:
+    children:
+      - offset-anchor
+      - offset-distance
+      - offset-path
+      - offset-position
+      - offset-rotate
+  offset-anchor:
+    - auto
+    - *background-position
+  offset-distance:
+    - <length>
+    - <percentage>
+  offset-path:
+    - ray()
+    - url()
+    - *basic-shape
+    - none
+  offset-position:
+    - auto
+    - *background-position
+  offset-rotate:
+    - auto
+    - <angle>
+    - reverse
+  opacity: *opacity
+  order: 
+    - <integer>
+  orphans:
+    - <integer>
+  outline:
+    children:
+      - outline-color
+      - outline-style
+      - outline-width
+  outline-color:
+    - invert
+    - *border-color
+  outline-offset:
+    - <length>
+  outline-style:
+    - auto
+    - *border-style
+  outline-width: *border-width
+  overflow:
+    children:
+      - overflow-x
+      - overflow-y
+  overflow-anchor: null
+    - auto
+    - none
+  overflow-block: *overflow
+  overflow-inline: *overflow
+  overflow-wrap:
+    - normal
+    - break-word
+    - anywhere
+  overflow-x:
+    - clip
+    - *overflow
+  overflow-y:
+    - clip
+    - *overflow
+  overscroll-behavior:
+    children:
+      - overscroll-behavior-x
+      - overscroll-behavior-y
+  overscroll-behavior-block: *overscroll-behavior
+  overscroll-behavior-inline: *overscroll-behavior
+  overscroll-behavior-x: *overscroll-behavior
+  overscroll-behavior-y: *overscroll-behavior
+  padding:
+    children:
+      - padding-top
+      - padding-right
+      - padding-bottom
+      - padding-left
+  padding-block:
+    children:
+      - padding-block-end
+      - padding-block-start
+  padding-block-end: *padding
+  padding-block-start: *padding
+  padding-bottom: *padding
+  padding-inline:
+    children:
+      - padding-inline-end
+      - padding-inline-start
+  padding-inline-end: *padding
+  padding-inline-start: *padding
+  padding-left: *padding
+  padding-right: *padding
+  padding-top: *padding
+  page-break-after: *page-break-after
+  page-break-before: *page-break-after
+  page-break-inside:
+    - auto
+    - avoid
+  paint-order:
+    - normal
+    - stroke
+    - fill
+    - markers
+  perspective:
+    - none
+    - <length>
+  perspective-origin: *background-position
+  place-content:
+    children:
+      - align-content
+      - justify-content
+  place-items:
+    children:
+      - align-items
+      - justify-items
+  place-self:
+    children:
+      - align-self
+      - justify-self
+  pointer-events:
+    - auto
+    - none
+    - visiblePainted
+    - visibleFill
+    - visibleStroke
+    - visible
+    - painted
+    - fill
+    - stroke
+    - all
+  position:
+    - static
+    - relative
+    - absolute
+    - fixed
+    - sticky
+  quotes:
+    - none
+    - auto
+    - <string>
+  resize:
+    - none
+    - both
+    - horizontal
+    - vertical
+    - block
+    - inline
+  right: *inset
+  row-gap: *grid-gap
+  scroll-behavior:
+    - auto
+    - smooth
+  scroll-margin:
+    children:
+      - scroll-margin-top
+      - scroll-margin-right
+      - scroll-margin-bottom
+      - scroll-margin-left
+  scroll-margin-block:
+    children:
+      - scroll-margin-block-end
+      - scroll-margin-block-start
+  scroll-margin-block-end: &scroll-margin
+    - <length>
+  scroll-margin-block-start: *scroll-margin
+  scroll-margin-bottom: *scroll-margin
+  scroll-margin-inline: 
+    children:
+      - scroll-margin-inline-end
+      - scroll-margin-inline-start
+  scroll-margin-inline-end: *scroll-margin
+  scroll-margin-inline-start: *scroll-margin
+  scroll-margin-left: *scroll-margin
+  scroll-margin-right: *scroll-margin
+  scroll-margin-top: *scroll-margin
+  scroll-padding:
+    children:
+      - scroll-padding-top
+      - scroll-padding-right
+      - scroll-padding-bottom
+      - scroll-padding-left
+  scroll-padding-block:
+    children:
+      - scroll-padding-block-end
+      - scroll-padding-block-start
+  scroll-padding-block-end: &scroll-padding
+  scroll-padding-block-start: *scroll-padding
+  scroll-padding-bottom: *scroll-padding
+  scroll-padding-inline:
+    children:
+      - scroll-padding-inline-end
+      - scroll-padding-inline-start 
+  scroll-padding-inline-end: *scroll-padding
+  scroll-padding-inline-start: *scroll-padding
+  scroll-padding-left: *scroll-padding
+  scroll-padding-right: *scroll-padding
+  scroll-padding-top: *scroll-padding
+  scroll-snap-align: 
+    - none
+    - start
+    - end
+    - center
+  scroll-snap-stop:
+    - normal
+    - always
+  scroll-snap-type: 
+    - none
+    - 'x'
+    - 'y'
+    - block
+    - inline
+    - both
+    - mandatory
+    - proximity
+  scrollbar-color:
+    - auto
+    - dark
+    - light
+    - <color>
+  scrollbar-gutter:
+    - auto
+    - stable
+    - always
+    - both
+    - force
+  scrollbar-width:
+    - auto
+    - thin
+    - none
+  shape-image-threshold: *opacity
+  shape-margin:
+    - <length>
+    - <percentage>
+  shape-outside:
+    - none
+    - *shape-box
+    - *basic-shape
+    - *image
+  shape-rendering: 
+    - auto
+    - optimizeSpeed
+    - crispEdges
+    - geometricPrecision
+  stop-color:
+    - <color>
+  stop-opacity: *opacity
+  stroke: *paint
+  stroke-dasharray:
+    - <length>
+    - <percentage>
+  stroke-dashoffset:
+    - <length>
+    - <percentage>
+  stroke-linecap:
+    - butt
+    - round
+    - square
+  stroke-linejoin: 
+    - arcs
+    - bevel
+    - miter
+    - miter-clip
+    - round
+  stroke-miterlimit:
+    - <number>
+  stroke-opacity: *opacity
+  stroke-width:
+    - <length>
+    - <percentage>
+  tab-size:
+    - <integer>
+    - <length>
+  table-layout:
+    - auto
+    - fixed
+  text-align: 
+    - left
+    - right
+    - center
+    - justify
+    - justify-all
+    - start
+    - end
+    - match-parent
+  text-align-last:
+    - auto
+    - start
+    - end
+    - left
+    - right
+    - center
+    - justify
+  text-anchor:
+    - start
+    - middle
+    - end
+  text-combine-upright:
+    - none
+    - all
+    - digits
+    - <integer>
+  text-decoration:
+    children:
+      - text-decoration-color
+      - text-decoration-line
+      - text-decoration-style
+      - text-decoration-thickness
+  text-decoration-color:
+    - <color>
+  text-decoration-line:
+    - none
+    - underline
+    - overline
+    - line-through
+    - blink
+  text-decoration-skip-ink:
+    - auto
+    - none
+    - all
+  text-decoration-style:
+    - solid
+    - double
+    - dotted
+    - dashed
+    - wavy
+  text-decoration-thickness:
+    - auto
+    - from-font
+    - <length>
+    - <percentage>
+  text-emphasis:
+    children:
+      - text-emphasis-color
+      - text-emphasis-style
+  text-emphasis-color: 
+    - <color>
+  text-emphasis-position:
+    - over
+    - under
+    - right
+    - left
+  text-emphasis-style:
+    - none
+    - filled
+    - open
+    - dot
+    - circle
+    - double-circle
+    - triangle
+    - sesame
+    - <string>
+  text-indent:
+    - <length>
+    - <percentage>
+    - each-line
+    - hanging
+  text-justify:
+    - none
+    - auto
+    - inter-word
+    - inter-character
+  text-orientation:
+    - mixed
+    - upright
+    - sideways-right
+    - sideways
+    - use-glyph-orientation
+  text-overflow:
+    - clip
+    - ellipsis
+    - <string>
+    - fade
+    - fade()
+  text-rendering:
+    - auto
+    - optimizeSpeed
+    - optimizeLegibility
+    - geometricPrecision
+  text-shadow:
+    - <color>
+    - <length>
+  text-size-adjust:
+    - none
+    - auto
+    - <percentage>
+  text-transform:
+    - none
+    - capitalize
+    - uppercase
+    - lowercase
+    - full-width
+    - full-size-kana
+  text-underline-offset:
+    - auto
+    - <length>
+    - <percentage>
+  text-underline-position:
+    - auto
+    - from-font
+    - under
+    - left
+    - right
+    - auto-pos
+    - above
+    - below
+  top: *inset 
+  touch-action:
+    - auto
+    - none
+    - pan-x
+    - pan-y
+    - manipulation
+    - pan-left
+    - pan-right
+    - pan-up
+    - pan-down
+    - pinch-zoom
+  transform:
+    - none
+    - matrix()
+    - matrix3d()
+    - perspective()
+    - rotate()
+    - rotate3d()
+    - rotateX()
+    - rotateY()
+    - rotateZ()
+    - scale()
+    - scale3d()
+    - scaleX()
+    - scaleY()
+    - scaleZ()
+    - skew()
+    - skewX()
+    - skewY()
+    - translate()
+    - translate3d()
+    - translateX()
+    - translateY()
+    - translateZ()
+  transform-box:
+    - content-box
+    - border-box
+    - fill-box
+    - stroke-box
+    - view-box
+  transform-origin: *background-position
+  transform-style: 
+    - flat
+    - preserve-3d
+  transition:
+    children:
+      - transition-delay
+      - transition-duration
+      - transition-property
+      - transition-timing-function
+  transition-delay:
+    - <time>
+  transition-duration:
+    - <time>
+  transition-property:
+    - none
+    - all
+    - <custom-ident>
+  transition-timing-function: *easing-function
+  unicode-bidi:
+    - normal
+    - embed
+    - isolate
+    - bidi-override
+    - isolate-override
+    - plaintext
+  user-select:
+    - none
+    - auto
+    - text
+    - all
+    - contain
+  vector-effect:
+    - none
+    - non-scaling-stroke
+    - non-scaling-size
+    - non-rotation
+    - fixed-position
+  vertical-align:
+    - baseline
+    - sub
+    - super
+    - text-top
+    - text-bottom
+    - middle
+    - top
+    - bottom
+    - <length>
+    - <percentage>
+  visibility:
+    - visible
+    - hidden
+    - collapse
+  white-space:
+    - normal
+    - nowrap
+    - pre
+    - pre-wrap
+    - pre-line
+    - break-spaces
+  widows: 
+    - <integer>
+  width: *width
+  will-change:
+    - auto
+    - scroll-position
+    - contents
+    - <custom-ident>
+  word-break:
+    - normal
+    - break-all
+    - keep-all
+  word-spacing:
+    - normal
+    - <length>
+    - <percentage>
+  writing-mode:
+    - horizontal-tb
+    - vertical-rl
+    - vertical-lr
+    - sideways-rl
+    - sidewars-lr
+  z-index:
+    - auto
+    - <integer>
+  zoom: 
+    - normal
+    - reset
+    - <percentage>
+    - <number>

@@ -32,6 +32,7 @@
   * e.g. `--transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform`
 * explore ways to achieve `group-hover` selectors
 * `white-space-nowrap` should be less picky about it's hyphenation
+  * same with `flex-wrap-nowrap`
 * support for variables that start with a number, i.e. `font-size-$3xs`
 * add `z` as a shorthand for `z-index`
 * custom units: `margin-10$x--$y` would become `margin: calc(10 * var(--x)) calc(-1 * var(--y))`
@@ -51,6 +52,8 @@
 * modifier order: e.g. `hover:child:` should have different behaviour to `child:hover:`
 * `not` (or `!`) should work with any pseudo class modifier: e.g. `!hover:` becomes `:not(:hover)`
 * add a `fixed` custom property to match `absolute`
+* make modifiers for vendor prefixes
+* accept kabab-case versions of all CSS functions i.e. `transform-translate-x(5px)`
 
 ## Housekeeping tasks
 

@@ -24,7 +24,8 @@
 		"lodash": "^4.17.15",
 		"postcss": "^7.0.18",
 		"purgecss": "^2.2.1",
-		"string.prototype.matchall": "^4.0.2"
+		"string.prototype.matchall": "^4.0.2",
+		"yaml": "^1.10.0"
 	},
 	"devDependencies": {
 		"babel-eslint": "^10.1.0",
