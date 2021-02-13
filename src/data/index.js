@@ -3,27 +3,32 @@ const fs = require("fs");
 const path = require("path");
 const _ = require("lodash");
 
-// normalize property structure to { keywords: string[], children?: string[] }
-// properties = _.mapValues(properties, value => {
-// 	if (_.isArray(value)) {
-// 		return {
-// 			keywords: _.flattenDeep(value),
-// 		};
-// 	} else if (_.isObject(value)) {
-// 		return {
-// 			...value,
-// 			keywords: _.isArray(value.keywords) ? _.flattenDeep(value.keywords) : [],
-// 		};
-// 	} else {
-// 		return {
-// 			keywords: [],
-// 		};
-// 	}
-// });
 
 const require_yaml = path => YAML.parse(fs.readFileSync(path, "utf-8"));
 
-let { properties } = require_yaml(path.resolve(__dirname, "./css-properties.yaml"));
+let { properties, functions } = require_yaml(path.resolve(__dirname, "./css-properties.yaml"));
+
+// normalize property structure to { keywords: string[], children?: string[] }
+properties = _.mapValues(properties, value => {
+	if (_.isArray(value)) {
+		return {
+			keywords: _.flattenDeep(value),
+		};
+	} else if (_.isObject(value)) {
+		return {
+			...value,
+			keywords: _.isArray(value.keywords) ? _.flattenDeep(value.keywords) : [],
+		};
+	} else {
+		return {
+			keywords: [],
+		};
+	}
+});
+
+const function_keywords = _.mapValues(functions, value => value || []);
+
+const property_keywords = _.mapValues(properties, x => x.keywords);
 properties = Object.keys(properties);
 properties = _.sortBy(properties, x => x === "justify-content" || x === "align-items"); // give property a lower priority
 properties = _.sortBy(properties, x => -x.split("-").length);
@@ -42,4 +47,6 @@ module.exports = {
 	selector_abbreviations,
 	property_abbreviations,
 	modifier_abbreviations,
+	property_keywords,
+	function_keywords,
 };

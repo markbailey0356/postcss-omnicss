@@ -225,6 +225,94 @@ anchors:
     - min-content
     - fit-content()
 
+functions:
+  annotation: null
+  attr: null
+  blur: null
+  brightness: null
+  calc: null
+  circle: null
+  clamp: null
+  character-variant: null
+  conic-gradient: null
+  contrast: null
+  counters: null
+  cross-fade: null
+  cubic-bezier: null
+  drop-shadow: null
+  element: null
+  ellipse: null
+  env: null
+  fit-content: null
+  format: null
+  grayscale: null
+  hsl: null
+  hsla: null
+  hue-rotate: null
+  image: null
+  image-set: null
+  inset: null
+  invert: null
+  leader: null
+  linear-gradient: null
+  local: null
+  matrix: null
+  matrix3d: null
+  max: null
+  min: null
+  minmax: null
+  opacity: null
+  ornaments: null
+  paint: null
+  path: null
+  perspective: null
+  polygon: null
+  radial-gradient: null
+  rect: null
+  repeat: null
+  repeating-linear-gradient: null
+  repeating-radial-gradient: null
+  rgb: null
+  rgba: null
+  rotate: null
+  rotate3d: null
+  rotateX: null
+  rotateY: null
+  rotateZ: null
+  saturate: null
+  scale: null
+  scale3d: null
+  scaleX: null
+  scaleY: null
+  scaleZ: null
+  selector: null
+  sepia: null
+  skew: null
+  skewX: null
+  skewY: null
+  steps:
+    - <integer>
+    - jump-start
+    - jump-end
+    - jump-both
+    - jump-none
+    - start
+    - end
+  styleset: null
+  stylistic: null
+  swash: null
+  symbols: null
+  target-counter: null
+  target-counters: null
+  target-text: null
+  translate: null
+  translate3d: null
+  translateX: null
+  translateY: null
+  translateZ: null
+  url: null
+  var: null
+
 properties:
   # custom properties
   absolute:
@@ -340,6 +428,7 @@ properties:
     - slider-horizontal
     - square-button
     - textarea
+    - <custom-ident>
   aspect-ratio:
     - auto
     - <ratio>

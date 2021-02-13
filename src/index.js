@@ -8,7 +8,14 @@ const css_colors = Object.keys(_css_colors);
 const color_string = require("color-string");
 const color_convert = require("color-convert");
 
-const { css_properties, selector_abbreviations, property_abbreviations, modifier_abbreviations } = require("./data");
+const {
+	css_properties,
+	selector_abbreviations,
+	property_abbreviations,
+	modifier_abbreviations,
+	property_keywords,
+	function_keywords,
+} = require("./data");
 
 const property_regexes = css_properties.map(x => {
 	for (let [from, to] of property_abbreviations) {
@@ -139,218 +146,55 @@ const split_selector = selector => {
 	};
 };
 
-const property_keywords = prop => {
-	switch (prop) {
-		case "animation-direction":
-			return ["normal", "revese", "alternate", "alternate-reverse"];
-		case "animation-fill-mode":
-			return ["none", "forwards", "backwards", "both"];
-		case "animation-iteration-count":
-			return ["infinite"];
-		case "animation-play-state":
-			return ["paused", "running"];
-		case "animation":
-			return [
-				...property_keywords("animation-direction"),
-				...property_keywords("animation-fill-mode"),
-				...property_keywords("animation-iteration-count"),
-				...property_keywords("animation-play-state"),
-			];
-		case "overflow":
-			return ["visible", "hidden", "clip", "scroll", "auto"];
-		case "object-position":
-			return ["left", "center", "right", "top", "bottom"];
-		case "flex-flow":
-		case "flex-direction":
-			return ["row", "column", "row-reverse", "column-reverse"];
-		case "flex-wrap":
-			return ["wrap", "nowrap", "wrap-reverse"];
-		case "align-items":
-		case "align-self":
-		case "justify-items":
-		case "justify-self":
-			return [
-				"normal",
-				"unsafe",
-				"safe",
-				"start",
-				"end",
-				"center",
-				"first",
-				"last",
-				"baseline",
-				"flex-start",
-				"flex-end",
-				"self-start",
-				"self-end",
-				"stretch",
-				"legacy",
-			];
-		case "flexbox":
-			return [
-				...property_keywords("align-content"),
-				...property_keywords("flex-wrap"),
-				...property_keywords("flex-direction"),
-			];
-		case "justify-content":
-		case "align-content":
-			return [...property_keywords("align-items"), "space-evenly", "space-around", "space-between"];
-		case "grid-auto-columns":
-		case "grid-auto-rows":
-			return ["min-content", "max-content", "fit-content", "minmax", "auto"];
-		case "grid-template-columns":
-		case "grid-template-rows":
-		case "grid-template":
-			return ["min-content", "max-content", "fit-content", "auto-fit", "auto-fill"];
-		case "grid-auto-flow":
-			return ["row", "column", "dense"];
-		case "grid":
-			return [
-				"dense",
-				"auto-flow",
-				"min-content",
-				"max-content",
-				"fit-content",
-				"minmax",
-				"auto",
-				"auto-fit",
-				"auto-fill",
-			];
-		case "grid-row-start":
-		case "grid-row-end":
-		case "grid-column-start":
-		case "grid-column-end":
-		case "grid-row":
-		case "grid-column":
-		case "grid-area":
-			return ["span", "auto"];
-		case "transform-origin":
-		case "background-position":
-			return ["left", "bottom", "top", "right", "center"];
-		case "list-style":
-			return ["inside", "outside", "url"];
-		case "text-decoration-line":
-			return ["none", "underline", "overline", "line-through", "blink", "spelling-error", "grammar-error"];
-		case "text-decoration":
-			return [
-				...property_keywords("text-decoration-line"),
-				"auto",
-				"from-font",
-				"solid",
-				"double",
-				"dotted",
-				"dashed",
-				"wavy",
-				"-moz-none",
-				"currentcolor",
-			];
-		case "text-overflow":
-			return ["clip", "ellipsis", "fade"];
-		case "background-repeat":
-			return ["repeat-x", "repeat-y", "repeat", "space", "round", "no-repeat"];
-		case "background-size":
-			return ["cover", "contain", "auto"];
-		case "background-clip":
-			return ["border-box", "padding-box", "content-box", "text"];
-		// case "background-color":
-		// return ["rgb", "rgba", "hsl", "hsla"];
-		case "background-image":
-			return [
-				...property_keywords("background-color"),
-				"url",
-				"image",
-				"image-set",
-				"element",
-				"paint-set",
-				"cross-fade",
-				"linear-gradient",
-				"repeating-linear-gradient",
-				"radial-gradient",
-				"repeating-radial-gradient",
-				"conic-gradient",
-			];
-		case "background-origin":
-			return ["content-box", "padding-box", "border-box"];
-		case "background-attachment":
-			return ["scroll", "fixed", "local"];
-		case "background":
-			return [
-				...property_keywords("background-clip"),
-				...property_keywords("background-color"),
-				...property_keywords("background-image"),
-				...property_keywords("background-origin"),
-				...property_keywords("background-position"),
-				...property_keywords("background-repeat"),
-				...property_keywords("background-size"),
-				...property_keywords("background-attachment"),
-			];
-		case "border-width":
-		case "outline-width":
-			return ["thin", "medium", "thick"];
-		case "border-style":
-			return ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
-		case "border":
-		case "border-bottom":
-		case "border-left":
-		case "border-right":
-		case "border-top":
-			return [
-				...property_keywords("border-width"),
-				...property_keywords("border-style"),
-				...property_keywords("border-color"),
-			];
-		case "transition-property":
-			return [...css_properties, "none", "all"];
-		case "transition-timing-function":
-		case "animation-timing-function":
-			return [
-				"ease",
-				"ease-in",
-				"ease-out",
-				"ease-in-out",
-				"linear",
-				"step-start",
-				"step-end",
-				"steps",
-				"cubic-bezier",
-				"jump-end",
-				"jump-start",
-				"jump-none",
-				"jump-both",
-				"start",
-				"end",
-			];
-		case "transition":
-			return [...property_keywords("transition-property"), ...property_keywords("transition-timing-function")];
-		case "outline-style":
-			return ["none", "auto", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
-		case "outline":
-			return [
-				...property_keywords("outline-width"),
-				...property_keywords("outline-style"),
-				...property_keywords("outline-color"),
-			];
-		case "width":
-		case "min-width":
-		case "max-width":
-		case "height":
-		case "min-height":
-		case "max-height":
-			return ["max-content", "min-content", "fit-content", "auto"];
-		case "color":
-		case "border-color":
-		case "background-color":
-			return [...css_colors, "currentcolor"];
-		case "outline-color":
-			return [...property_keywords("color"), "invert"];
-		case "box-shadow":
-			return [...property_keywords("color"), "inset"];
-		default:
-			return [];
-	}
-};
+const get_property_keywords = prop => property_keywords[prop];
+const get_function_keywords = function_name => function_keywords[function_name]
 
 const tokenize_value = (keywords, options, value) => {
+	const keywords_sorted = keywords
+		.sort((x, y) => y.length - x.length)
+		.sort((x, y) => y.split("-").length - x.split("-").length)
+		.map(x => (x === "<custom-ident>" ? "[^,/]+" : x));
+	const keywords_regex = keywords_sorted.length && new RegExp(`^(${keywords_sorted.join("|")})`);
+	const tokens = [];
+	while (value.length) {
+		let slice_index = -1;
+		let matches;
+
+		if (keywords_regex && (matches = value.match(keywords_regex))) {
+			const matched_keyword = matches && matches[1];
+			slice_index = matched_keyword.length;
+		} else if (value.startsWith("(")) {
+			slice_index = 1;
+			let bracket_count = 1;
+			while (slice_index < value.length) {
+				const char = value.charAt(slice_index);
+				if (char === "(") {
+					bracket_count++;
+				} else if (char === ")") {
+					bracket_count--;
+				}
+				slice_index++;
+			}
+		} else {
+			delimeter_index = value.search(/[-,]/);
+			slice_index = delimeter_index || 1;
+		}
+
+		if (slice_index < 0) slice_index = value.length;
+
+		token = value.slice(0, slice_index);
+		value = value.slice(slice_index);
+
+		if (token.startsWith("(") && tokens.length) {
+			tokens[tokens.length - 1] += token;
+		} else if (token !== "-") {
+			tokens.push(token);
+		}
+	}
+	return tokens;
+};
+
+const tokenize_value_old = (keywords, options, value) => {
 	const { keep_hyphens = false } = options;
 	value = value
 		.replace(/(^|[-,/])\.(\d)/g, "$10.$2")
@@ -422,7 +266,7 @@ const collect_bracket_tokens = matches => {
 };
 
 const process_property_value = (prop, modifiers, value) => {
-	const keywords = property_keywords(prop);
+	const keywords = get_property_keywords(prop);
 	const options = {
 		default_unit: default_units.get(prop),
 		negate: modifiers.includes("negate"),
@@ -503,6 +347,7 @@ const process_function_args = (function_name, keywords, options, args) => {
 			}
 		}
 		default:
+			const keywords = get_function_keywords(function_name);
 			return process_value(
 				keywords,
 				{
