@@ -43,6 +43,7 @@ property_abbreviations = new Map(property_abbreviations);
 let modifier_abbreviations = new Map(Object.entries(abbreviations.modifiers));
 
 module.exports = {
+	require_yaml,
 	css_properties: properties,
 	selector_abbreviations,
 	property_abbreviations,
