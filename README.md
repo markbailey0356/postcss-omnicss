@@ -54,6 +54,7 @@
 * add a `fixed` custom property to match `absolute`
 * make modifiers for vendor prefixes
 * accept kabab-case versions of all CSS functions i.e. `transform-translate-x(5px)`
+* add CSS reset similar to Tailwind's base.css
 
 ## Housekeeping tasks
 

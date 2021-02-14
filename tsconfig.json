@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "es2015",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true
+	}
+}

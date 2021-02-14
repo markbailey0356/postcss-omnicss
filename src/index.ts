@@ -1,21 +1,22 @@
-const postcss = require("postcss");
-const { PurgeCSS } = require("purgecss");
-const _ = require("lodash");
-const css_escape = require("css.escape");
-const path = require("path");
-const _css_colors = require("colors.json");
-const css_colors = Object.keys(_css_colors);
-const color_string = require("color-string");
-const color_convert = require("color-convert");
+import postcss from "postcss";
+import { PurgeCSS } from "purgecss";
+import _  from "lodash";
+import css_escape from "css.escape";
+import path from "path";
+import color_string from "color-string";
+import color_convert from "color-convert";
 
-const {
+import _css_colors from "colors.json";
+const css_colors = Object.keys(_css_colors);
+
+import {
 	css_properties,
 	selector_abbreviations,
 	property_abbreviations,
 	modifier_abbreviations,
 	property_keywords,
 	function_keywords,
-} = require("./data");
+} from "./data";
 
 const property_regexes = css_properties.map(x => {
 	for (let [from, to] of property_abbreviations) {
@@ -176,13 +177,13 @@ const tokenize_value = (keywords, options, value) => {
 				slice_index++;
 			}
 		} else {
-			delimeter_index = value.search(/[-,]/);
+			const delimeter_index = value.search(/[-,]/);
 			slice_index = delimeter_index || 1;
 		}
 
 		if (slice_index < 0) slice_index = value.length;
 
-		token = value.slice(0, slice_index);
+		const token = value.slice(0, slice_index);
 		value = value.slice(slice_index);
 
 		if (token.startsWith("(") && tokens.length) {
@@ -347,9 +348,8 @@ const process_function_args = (function_name, keywords, options, args) => {
 			}
 		}
 		default:
-			const keywords = get_function_keywords(function_name);
 			return process_value(
-				keywords,
+				get_function_keywords(function_name),
 				{
 					...options,
 					negate: false,
@@ -360,7 +360,7 @@ const process_function_args = (function_name, keywords, options, args) => {
 	}
 };
 
-const get_media_query_from_modifiers = (breakpoints, modifiers) => {
+const get_media_query_from_modifiers = (breakpoints: {[key: string]: number}, modifiers) => {
 	let media_query;
 	const next_breakpoint_name = breakpoint => {
 		switch (breakpoint) {
@@ -422,7 +422,15 @@ const extract_breakpoints_from_options = _.flow(
 	x => _.defaults(x, breakpoint_defaults)
 );
 
-module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
+interface OmnicssOptions {
+	source?: string,
+	files?: string[],
+	color_rgb_variants?: boolean,
+}
+
+const plugin_name = "postcss-omnicss";
+
+module.exports = postcss.plugin(plugin_name, (options: OmnicssOptions = {}) => {
 	const default_extensions = ["html", "vue", "js", "ts", "jsx", "tsx"];
 
 	const default_files = _.flatMap(default_extensions, ext => [`!(node_modules)/**/*.${ext}`, `*.${ext}`]);
@@ -434,10 +442,10 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 	const breakpoints = extract_breakpoints_from_options(options);
 
 	return async (root, result) => {
-		let selectors = [];
+		let selectors = new Set<string>();
 
 		if (source.length) {
-			const { undetermined } = await new PurgeCSS().extractSelectorsFromString(
+			const { undetermined } : {undetermined: Set<string>} = <any>await new PurgeCSS().extractSelectorsFromString(
 				[{ raw: source, extension: "html" }],
 				[{ extensions: ["html"], extractor }]
 			);
@@ -448,16 +456,17 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 					type: "dependency",
 					parent: root.source.input.file,
 					file: path.resolve(file),
+					plugin: plugin_name,
 				});
 			});
 
-			const { undetermined } = await new PurgeCSS().extractSelectorsFromFiles(files, [
+			const { undetermined } : {undetermined: Set<string>} = <any>await new PurgeCSS().extractSelectorsFromFiles(files, [
 				{ extensions: ["html", "vue", "js"], extractor },
 			]);
 			selectors = undetermined;
 		}
 
-		const nodes_by_container = {};
+		const nodes_by_container: {[key: string]: object[]} = {};
 		for (let selector of selectors) {
 			let { prop, value, modifiers } = split_selector(selector);
 
@@ -649,13 +658,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 
 				if (error) {
 					decl.warn(result, error);
-					let child = decl;
-					let parent = decl.parent;
-					while (parent && !(child.nodes && child.nodes.length)) {
-						child.remove();
-						child = parent;
-						parent = parent.parent;
-					}
+					decl.remove();
 					return;
 				}
 
