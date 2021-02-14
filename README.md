@@ -55,6 +55,7 @@
 * make modifiers for vendor prefixes
 * accept kabab-case versions of all CSS functions i.e. `transform-translate-x(5px)`
 * add CSS reset similar to Tailwind's base.css
+* add flag to turn off `flexbox` and `absolute` custom properties
 
 ## Housekeeping tasks
 

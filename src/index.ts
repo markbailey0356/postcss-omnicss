@@ -1,6 +1,6 @@
 import postcss from "postcss";
 import { PurgeCSS } from "purgecss";
-import _  from "lodash";
+import _ from "lodash";
 import css_escape from "css.escape";
 import path from "path";
 import color_string from "color-string";
@@ -27,8 +27,8 @@ const property_regexes = css_properties.map(x => {
 
 const property_regex = new RegExp(`^(?:${property_regexes.map(x => `(${x})`).join("|")})-(?<value>.+)`);
 
-const expand_modifier_abbreviations = x => modifier_abbreviations.get(x) || x;
-const expand_selector_abbreviations = x => selector_abbreviations.get(x) || x;
+const expand_modifier_abbreviations = (x: string) => modifier_abbreviations.get(x) || x;
+const expand_selector_abbreviations = (x: string) => selector_abbreviations.get(x) || x;
 
 const _default_units = {
 	rem: [
@@ -78,16 +78,16 @@ const _default_units = {
 	],
 };
 
-const default_units = new Map();
+const default_units = new Map<string, string>();
 for (const [unit, properties] of Object.entries(_default_units)) {
 	for (const property of properties) {
 		default_units.set(property, unit);
 	}
 }
 
-const extractor = content => content.match(/[^"'=<>\s]+/g) || [];
+const extractor = (content: string) => content.match(/[^"'=<>\s]+/g) || [];
 
-const split_selector = selector => {
+const split_selector = (selector: string) => {
 	const modifier_splits = selector.split(":");
 	let modifiers = modifier_splits.slice(0, -1);
 	selector = modifier_splits[modifier_splits.length - 1];
@@ -96,7 +96,7 @@ const split_selector = selector => {
 
 	modifiers = modifiers.map(expand_modifier_abbreviations);
 
-	let prop, value;
+	let prop: string, value: string;
 
 	selector = selector.replace(/^\$/, "--");
 	if (selector.match(/^-?text-decoration-line-through/)) {
@@ -147,10 +147,10 @@ const split_selector = selector => {
 	};
 };
 
-const get_property_keywords = prop => property_keywords[prop];
-const get_function_keywords = function_name => function_keywords[function_name]
+const get_property_keywords = (prop: string) => property_keywords[prop];
+const get_function_keywords = (function_name: string) => function_keywords[function_name];
 
-const tokenize_value = (keywords, options, value) => {
+const tokenize_value = (keywords: string[], options: object, value: string): string[] => {
 	const keywords_sorted = keywords
 		.sort((x, y) => y.length - x.length)
 		.sort((x, y) => y.split("-").length - x.split("-").length)
@@ -232,7 +232,7 @@ const tokenize_value_old = (keywords, options, value) => {
 	return matches;
 };
 
-const collect_bracket_tokens = matches => {
+const collect_bracket_tokens = (matches: string[]): string[] => {
 	let round_brackets_count = 0;
 	let square_brackets_count = 0;
 	let curly_brackets_count = 0;
@@ -266,7 +266,7 @@ const collect_bracket_tokens = matches => {
 	return tokens;
 };
 
-const process_property_value = (prop, modifiers, value) => {
+const process_property_value = (prop: string, modifiers: string[], value: string): string => {
 	const keywords = get_property_keywords(prop);
 	const options = {
 		default_unit: default_units.get(prop),
@@ -277,14 +277,21 @@ const process_property_value = (prop, modifiers, value) => {
 	return result;
 };
 
-const match_function_token = token => {
+const match_function_token = (token: string): { function_name?: string; args?: string } => {
 	const match = token.match(/^([\w-]*|\$)\((.*)\)$/);
 	if (!match) return {};
 	let [, function_name, args] = match;
 	return { function_name, args };
 };
 
-const process_value = (keywords, options, value) => {
+interface ProcessValueOptions {
+	default_unit?: string;
+	negate?: boolean;
+	calc_shorthand?: boolean;
+	keep_hyphens?: boolean;
+}
+
+const process_value = (keywords: string[], options: ProcessValueOptions = {}, value: string): string => {
 	const { default_unit = "", negate = false, calc_shorthand = false } = options;
 	const tokens = tokenize_value(keywords, options, value);
 	const transformed_tokens = tokens.map(token => {
@@ -296,8 +303,8 @@ const process_value = (keywords, options, value) => {
 		}
 		let number = parseFloat(token);
 		if (!isNaN(number)) {
-			let unit = token.match(/[a-zA-Z%]+/);
-			unit = unit ? unit[0] : "";
+			let match = token.match(/[a-zA-Z%]+/);
+			let unit = match ? match[0] : "";
 			if (default_unit && number !== 0) {
 				unit = unit || default_unit;
 			}
@@ -333,7 +340,7 @@ const process_value = (keywords, options, value) => {
 	return result;
 };
 
-const process_function_args = (function_name, keywords, options, args) => {
+const process_function_args = (function_name: string, keywords: string[], options: ProcessValueOptions = {}, args: string) => {
 	switch (function_name) {
 		case "calc":
 			return process_value([], { keep_hyphens: true }, args);
@@ -360,7 +367,11 @@ const process_function_args = (function_name, keywords, options, args) => {
 	}
 };
 
-const get_media_query_from_modifiers = (breakpoints: {[key: string]: number}, modifiers) => {
+interface Breakpoints {
+	[x: string]: number
+}
+
+const get_media_query_from_modifiers = (breakpoints: { [x: string]: number }, modifiers: string[]) : string => {
 	let media_query;
 	const next_breakpoint_name = breakpoint => {
 		switch (breakpoint) {
@@ -384,7 +395,7 @@ const get_media_query_from_modifiers = (breakpoints: {[key: string]: number}, mo
 		if (modifiers.includes("not-" + breakpoint) || modifiers.includes("!" + breakpoint)) {
 			max_width = max_width == null ? value : Math.max(max_width, value);
 		}
-		if (modifiers.includes("at-" + breakpoint || modifiers.includes("@" + breakpoint))) {
+		if (modifiers.includes("at-" + breakpoint) || modifiers.includes("@" + breakpoint)) {
 			min_width = min_width == null ? value : Math.min(min_width, value);
 			const next_breakpoint = next_breakpoint_name(breakpoint);
 			if (next_breakpoint) {
@@ -413,7 +424,7 @@ const breakpoint_defaults = {
 	"extra-large": 1280,
 };
 
-const extract_breakpoints_from_options = _.flow(
+const extract_breakpoints_from_options : (OmnicssOptions) => Breakpoints = _.flow(
 	x => (_.isObject(x.breakpoints) ? x.breakpoints : {}),
 	x => _.mapKeys(x, (value, key) => expand_modifier_abbreviations(key).replace(/^(not|at)-/g, "")),
 	x => _.toPairs(x),
@@ -423,9 +434,10 @@ const extract_breakpoints_from_options = _.flow(
 );
 
 interface OmnicssOptions {
-	source?: string,
-	files?: string[],
-	color_rgb_variants?: boolean,
+	source?: string;
+	files?: string[];
+	color_rgb_variants?: boolean;
+	breakpoints?: Breakpoints;
 }
 
 const plugin_name = "postcss-omnicss";
@@ -445,9 +457,11 @@ module.exports = postcss.plugin(plugin_name, (options: OmnicssOptions = {}) => {
 		let selectors = new Set<string>();
 
 		if (source.length) {
-			const { undetermined } : {undetermined: Set<string>} = <any>await new PurgeCSS().extractSelectorsFromString(
-				[{ raw: source, extension: "html" }],
-				[{ extensions: ["html"], extractor }]
+			const { undetermined }: { undetermined: Set<string> } = <any>(
+				await new PurgeCSS().extractSelectorsFromString(
+					[{ raw: source, extension: "html" }],
+					[{ extensions: ["html"], extractor }]
+				)
 			);
 			selectors = undetermined;
 		} else if (files.length) {
@@ -460,13 +474,15 @@ module.exports = postcss.plugin(plugin_name, (options: OmnicssOptions = {}) => {
 				});
 			});
 
-			const { undetermined } : {undetermined: Set<string>} = <any>await new PurgeCSS().extractSelectorsFromFiles(files, [
-				{ extensions: ["html", "vue", "js"], extractor },
-			]);
+			const { undetermined }: { undetermined: Set<string> } = <any>(
+				await new PurgeCSS().extractSelectorsFromFiles(files, [
+					{ extensions: ["html", "vue", "js"], extractor },
+				])
+			);
 			selectors = undetermined;
 		}
 
-		const nodes_by_container: {[key: string]: object[]} = {};
+		const nodes_by_container: { [key: string]: object[] } = {};
 		for (let selector of selectors) {
 			let { prop, value, modifiers } = split_selector(selector);
 
@@ -697,12 +713,12 @@ module.exports = postcss.plugin(plugin_name, (options: OmnicssOptions = {}) => {
 		const convert_value_to_rgb = value => {
 			let color = color_string.get(value);
 			if (color !== null) {
-				color.value = color.value.slice(0, 3);
+				let value: [number, number, number] = [color.value[0], color.value[1], color.value[2]];
 				if (color.model !== "rgb") {
 					const convert_to_rgb = color_convert[color.model].rgb;
-					color.value = convert_to_rgb(color.value);
+					value = convert_to_rgb(value);
 				}
-				return color.value.join(", ");
+				return value.join(", ");
 			}
 			let { function_name, args } = match_function_token(value);
 			if (function_name === "var") {
