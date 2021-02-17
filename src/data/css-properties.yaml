@@ -428,6 +428,7 @@ properties:
     - slider-horizontal
     - square-button
     - textarea
+    - button-bevel
     - <custom-ident>
   aspect-ratio:
     - auto

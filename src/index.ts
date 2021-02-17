@@ -150,47 +150,122 @@ const split_selector = (selector: string) => {
 const get_property_keywords = (prop: string) => property_keywords[prop];
 const get_function_keywords = (function_name: string) => function_keywords[function_name];
 
+const find_closing_brace = (opening_brace_index: number, value: string) => {
+	const opening_brace = value.charAt(opening_brace_index);
+	const closing_brace = (opening_brace => {
+		switch (opening_brace) {
+			case "(":
+				return ")";
+			case "[":
+				return "]";
+			case "{":
+				return "}";
+			default:
+				return null;
+		}
+	})(opening_brace);
+
+	if (!closing_brace) return -1;
+
+	let nest_count = 1;
+	for (let i = opening_brace_index + 1; i < value.length; i++) {
+		const char = value.charAt(i);
+		if (char === opening_brace) {
+			nest_count++;
+		} else if (char === closing_brace) {
+			nest_count--;
+			if (nest_count === 0) return i;
+		}
+	}
+
+	return -1;
+};
+
+// the regex should do the following:
+// * fail early - if it fails to match, then it is not a valid omnicss value and we can abort processing
+// * match the start of the next CSS token that isn't a <custom-ident>
+// * it doesn't need to match the full extent of the CSS token, as regex is not suited for finding matching brackets when they could be nested
+// * if it can do additional work to break up the token further without impacting performance, then it should
+
+// the lexing process will be as follows:
+// 1. Run the regex against the value string
+// 2. if it doesn't match, early out (and, for debug mode, possibly do work to find out why)
+// 3. if the <custom-ident> part matches, yield it
+// 4. depending on the token type, match the extent of the token and break into parts
+// 5. yield the token
+// 6. slice the matched tokens from the value string, along with any trailing hyphens
+// 7. any hyphens left at the start of the next value string should be significant
+// 8. repeat this process until the value string is empty
+
 const tokenize_value = (keywords: string[], options: object, value: string): string[] => {
+	const global_keywords = ["unset", "initial", "inherit"];
 	const keywords_sorted = keywords
-		.sort((x, y) => y.length - x.length)
-		.sort((x, y) => y.split("-").length - x.split("-").length)
-		.map(x => (x === "<custom-ident>" ? "[^,/]+" : x));
-	const keywords_regex = keywords_sorted.length && new RegExp(`^(${keywords_sorted.join("|")})`);
+		.filter(x => !x.startsWith("<") && !x.endsWith("()"))
+		.concat(global_keywords)
+		.sort((x, y) => y.length - x.length);
+
+	const global_functions = ["var", "calc"];
+	const functions_sorted = keywords
+		.filter(x => x.endsWith("()"))
+		.map(x => x.slice(0, -2))
+		.concat(global_functions)
+		.sort((x, y) => y.length - x.length);
+
+	let next_token_regex = new RegExp(
+		"(?<custom_ident>[\\w\\d-_]*?)" +
+			"(" +
+			[
+				"(?<delimeter>[,)/])",
+				// "(-|^)\\$",
+				`\\b(?<keyword>${keywords_sorted.join("|")})\\b`,
+				`\\b(?<function_name>${functions_sorted.join("|")})\\b\\(`,
+				// '\\(',
+				"(-|^)(?<number>-?(\\d*\\.\\d+|\\d+))(?<unit>%|\\w+)?",
+				"$",
+			].join("|") +
+			")"
+	);
+
+	// console.log(next_token_regex);
+
 	const tokens = [];
 	while (value.length) {
-		let slice_index = -1;
-		let matches;
+		let matches = value.match(next_token_regex);
 
-		if (keywords_regex && (matches = value.match(keywords_regex))) {
-			const matched_keyword = matches && matches[1];
-			slice_index = matched_keyword.length;
-		} else if (value.startsWith("(")) {
-			slice_index = 1;
-			let bracket_count = 1;
-			while (slice_index < value.length) {
-				const char = value.charAt(slice_index);
-				if (char === "(") {
-					bracket_count++;
-				} else if (char === ")") {
-					bracket_count--;
-				}
-				slice_index++;
-			}
-		} else {
-			const delimeter_index = value.search(/[-,]/);
-			slice_index = delimeter_index || 1;
+		if (!matches) return [];
+
+		const { custom_ident, delimeter, keyword, function_name, number, unit } = matches.groups;
+
+		const match_length = matches[0].length;
+
+		let slice_index = match_length;
+
+		if (custom_ident) {
+			tokens.push(custom_ident);
 		}
 
-		if (slice_index < 0) slice_index = value.length;
-
-		const token = value.slice(0, slice_index);
-		value = value.slice(slice_index);
-
-		if (token.startsWith("(") && tokens.length) {
-			tokens[tokens.length - 1] += token;
-		} else if (token !== "-") {
+		if (delimeter) {
+			tokens.push(delimeter);
+		} else if (keyword) {
+			tokens.push(keyword);
+		} else if (function_name) {
+			// this assumes that if the function_name group matches, that the match will end in an opening brace
+			const opening_brace_index = match_length - 1;
+			const closing_brace_index = find_closing_brace(opening_brace_index, value);
+			if (closing_brace_index === -1) return [];
+			slice_index = closing_brace_index + 1;
+			const token = function_name + value.slice(opening_brace_index, slice_index);
+			tokens.push(token);
+		} else if (number) {
+			const token = number + (unit || "");
 			tokens.push(token);
 		}
+
+		if (!delimeter && value.charAt(slice_index) === "-") {
+			slice_index++;
+		}
+
+		value = value.slice(slice_index);
 	}
 	return tokens;
 };
@@ -340,7 +415,12 @@ const process_value = (keywords: string[], options: ProcessValueOptions = {}, va
 	return result;
 };
 
-const process_function_args = (function_name: string, keywords: string[], options: ProcessValueOptions = {}, args: string) => {
+const process_function_args = (
+	function_name: string,
+	keywords: string[],
+	options: ProcessValueOptions = {},
+	args: string
+) => {
 	switch (function_name) {
 		case "calc":
 			return process_value([], { keep_hyphens: true }, args);
@@ -368,10 +448,10 @@ const process_function_args = (function_name: string, keywords: string[], option
 };
 
 interface Breakpoints {
-	[x: string]: number
+	[x: string]: number;
 }
 
-const get_media_query_from_modifiers = (breakpoints: { [x: string]: number }, modifiers: string[]) : string => {
+const get_media_query_from_modifiers = (breakpoints: { [x: string]: number }, modifiers: string[]): string => {
 	let media_query;
 	const next_breakpoint_name = breakpoint => {
 		switch (breakpoint) {
@@ -424,7 +504,7 @@ const breakpoint_defaults = {
 	"extra-large": 1280,
 };
 
-const extract_breakpoints_from_options : (OmnicssOptions) => Breakpoints = _.flow(
+const extract_breakpoints_from_options: (OmnicssOptions) => Breakpoints = _.flow(
 	x => (_.isObject(x.breakpoints) ? x.breakpoints : {}),
 	x => _.mapKeys(x, (value, key) => expand_modifier_abbreviations(key).replace(/^(not|at)-/g, "")),
 	x => _.toPairs(x),

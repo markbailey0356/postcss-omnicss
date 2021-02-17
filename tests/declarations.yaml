@@ -1,4 +1,4 @@
-=align-content: 
+align-content: 
   align-content-normal: "align-content: normal"
   align-content-flex-start: "align-content: flex-start"
   align-content-flex-end: "align-content: flex-end"
@@ -163,7 +163,7 @@ appearance:
   # "-webkit-appearance-media-mute-button: "-webkit-appearance: media-mute-button"
   # "-webkit-appearance-caret: "-webkit-appearance: caret"
 
-background: 
+=background: 
   background-green: "background: green"
   background-url(test.jpg})-repeat-y: 'background: url("test.jpg") repeat-y'
   background-border-box-red: "background: border-box red"
