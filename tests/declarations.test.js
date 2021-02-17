@@ -2,22 +2,17 @@ const postcss = require("postcss");
 
 const plugin = require("../src");
 
-const { require_yaml } = require('../src/data');
+const { require_yaml } = require("../src/data");
 
-const tests = require_yaml(require('path').resolve(__dirname, './declarations.yaml'));
+const tests = require_yaml(require("path").resolve(__dirname, "./declarations.yaml"));
 
 for (const [property, propertyTests] of Object.entries(tests)) {
 	describe(property, () => {
-		const propertyOnly = property.startsWith('=');
+		const propertyOnly = property.startsWith("=");
 		for (const [selector, declaration] of Object.entries(propertyTests)) {
-			let test;
+			let test = it;
 			if (propertyOnly) {
-				test = it.only
-			} else if (selector.startsWith('=')) {
 				test = it.only;
-				selector = selector.slice(1);
-			} else {
-				test = it;
 			}
 			test(selector, async () => {
 				const result = await postcss([plugin({ source: selector })]).process("@omnicss", { from: undefined });
@@ -28,4 +23,5 @@ for (const [property, propertyTests] of Object.entries(tests)) {
 			});
 		}
 	});
+	if (property.startsWith('<')) break;
 }
