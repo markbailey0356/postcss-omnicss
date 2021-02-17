@@ -163,7 +163,7 @@ appearance:
   # "-webkit-appearance-media-mute-button: "-webkit-appearance: media-mute-button"
   # "-webkit-appearance-caret: "-webkit-appearance: caret"
 
-=background: 
+background: 
   background-green: "background: green"
   background-url({test.jpg})-repeat-y: 'background: url("test.jpg") repeat-y'
   background-border-box-red: "background: border-box red"
@@ -185,7 +185,7 @@ background-attachment:
   background-attachment-scroll,local: "background-attachment: scroll, local"
   background-attachment-fixed,scroll: "background-attachment: fixed, scroll"
 
-background-color: 
+<background-color: 
   background-color-red: "background-color: red"
   background-color-indigo: "background-color: indigo"
   background-color-#bbff00: "background-color: #bbff00"

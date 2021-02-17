@@ -181,6 +181,13 @@ const find_closing_brace = (opening_brace_index: number, value: string) => {
 	return -1;
 };
 
+const extract_brace_token = (opening_brace_index: number, value: string) => {
+	const closing_brace_index = find_closing_brace(opening_brace_index, value);
+	if (closing_brace_index === -1) return null;
+	const token = value.slice(opening_brace_index, closing_brace_index+1);
+	return token;	
+} 
+
 // the regex should do the following:
 // * fail early - if it fails to match, then it is not a valid omnicss value and we can abort processing
 // * match the start of the next CSS token that isn't a <custom-ident>
@@ -215,11 +222,12 @@ const tokenize_value = (keywords: string[], options: object, value: string): str
 		"(?<custom_ident>[\\w\\d-_]*?)" +
 			"(" +
 			[
-				"(?<delimeter>[,)/])",
+				"(?<delimeter>[,/])",
+				"(-|^)(?<hash>#\\w+)",
 				// "(-|^)\\$",
 				`\\b(?<keyword>${keywords_sorted.join("|")})\\b`,
 				`\\b(?<function_name>${functions_sorted.join("|")})\\b\\(`,
-				// '\\(',
+				'(?<brace>[([{])',
 				"(-|^)(?<number>-?(\\d*\\.\\d+|\\d+))(?<unit>%|\\w+)?",
 				"$",
 			].join("|") +
@@ -232,11 +240,11 @@ const tokenize_value = (keywords: string[], options: object, value: string): str
 	while (value.length) {
 		let matches = value.match(next_token_regex);
 
-		if (!matches) return [];
-
-		const { custom_ident, delimeter, keyword, function_name, number, unit } = matches.groups;
+		if (!(matches && matches[0].length)) return [];
 
 		const match_length = matches[0].length;
+
+		const { custom_ident, delimeter, hash, keyword, function_name, brace, number, unit } = matches.groups;
 
 		let slice_index = match_length;
 
@@ -248,13 +256,18 @@ const tokenize_value = (keywords: string[], options: object, value: string): str
 			tokens.push(delimeter);
 		} else if (keyword) {
 			tokens.push(keyword);
+		} else if (hash) {
+			tokens.push(hash);
 		} else if (function_name) {
 			// this assumes that if the function_name group matches, that the match will end in an opening brace
-			const opening_brace_index = match_length - 1;
-			const closing_brace_index = find_closing_brace(opening_brace_index, value);
-			if (closing_brace_index === -1) return [];
-			slice_index = closing_brace_index + 1;
-			const token = function_name + value.slice(opening_brace_index, slice_index);
+			const brace_token = extract_brace_token(match_length-1, value);
+			if (!brace_token) return [];
+			slice_index = match_length + brace_token.length - 1;
+			tokens.push(function_name + brace_token);
+		} else if (brace) {
+			const token = extract_brace_token(match_length-1, value);
+			if (!token) return [];
+			slice_index = match_length + token.length - 1;
 			tokens.push(token);
 		} else if (number) {
 			const token = number + (unit || "");
