@@ -7,6 +7,7 @@ const _css_colors = require("colors.json");
 const css_colors = Object.keys(_css_colors);
 const color_string = require("color-string");
 const color_convert = require("color-convert");
+const glob = require("glob");
 
 const ignored_properties = [
 	"text-decoration-none",
@@ -797,13 +798,23 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 			);
 			selectors = undetermined;
 		} else if (files.length) {
-			files.forEach(file => {
-				result.messages.push({
-					type: "dependency",
-					parent: root.source.input.file,
-					file: path.resolve(file),
-				});
-			});
+			await Promise.all(
+				files.map(
+					file =>
+						new Promise(resolve => {
+							glob(file, {}, (err, files) => {
+								files.forEach(file => {
+									result.messages.push({
+										type: "dependency",
+										parent: root.source.input.file,
+										file: path.resolve(file),
+									});
+								});
+								resolve();
+							});
+						})
+				)
+			);
 
 			const { undetermined } = await new PurgeCSS().extractSelectorsFromFiles(files, [
 				{ extensions: ["html", "vue", "js"], extractor },
