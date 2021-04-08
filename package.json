@@ -1,6 +1,6 @@
 {
 	"name": "postcss-omnicss",
-	"version": "0.8.0",
+	"version": "0.8.1",
 	"description": "PostCSS plugin to create convention-based utility classes",
 	"keywords": [
 		"postcss",
