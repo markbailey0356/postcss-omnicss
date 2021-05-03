@@ -572,7 +572,7 @@ it("provides a modifier to style the last child of a container", async () => {
 it("provides a modifier to style all but the first child of a container", async () => {
 	await run(
 		"@omnicss",
-		`.not-first-child\\:display-flex > *:not(:first-child) {
+		`.not-first-child\\:display-flex > * + * {
 			display: flex
 		}`,
 		{
@@ -602,7 +602,7 @@ it("provides abbreviations for child selectors", async () => {
 		.last\\:display-flex > *:last-child {
 			display: flex
 		}
-		.\\!first\\:display-flex > *:not(:first-child) {
+		.\\!first\\:display-flex > * + * {
 			display: flex
 		}
 		.\\!last\\:display-flex > *:not(:last-child) {

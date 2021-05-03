@@ -859,7 +859,7 @@ module.exports = postcss.plugin("postcss-omnicss", (options = {}) => {
 				sub_container = 0;
 			}
 			if (modifiers.includes("not-first-child")) {
-				real_selector += " > *:not(:first-child)";
+				real_selector += " > * + *";
 				sub_container = 0;
 			}
 			if (modifiers.includes("not-last-child")) {
